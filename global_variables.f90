@@ -59,8 +59,8 @@ MODULE global_variables
   REAL(pr), DIMENSION (:,:),   ALLOCATABLE, SAVE :: ksq    ! Vorticity Field
 
   ! Directories for saving
-  CHARACTER(len=*), PARAMETER :: work_pathname    = "/scratch/mathap1/2DNavierStokes/NU2e-4/"
-  CHARACTER(len=*), PARAMETER :: scratch_pathname = "/scratch/mathap1/bin_files/"
+  CHARACTER(len=*), PARAMETER :: work_pathname    = "/home/zigicj/2DKS_optimization/2D_KS_Optimization/2DNavierStokes/NU2e-4/"
+  CHARACTER(len=*), PARAMETER :: scratch_pathname = "/home/zigicj/2DKS_optimization/2D_KS_Optimization/bin_files/"
 
   ! Variables for saving
   CHARACTER(4)  :: Nchar        ! Resolution as character

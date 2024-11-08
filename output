@@ -1,0 +1,962 @@
+ ============================================== 
+                  Optimization                  
+ ============================================== 
+ Resolution Nx  =  1024
+ Resolution Ny  =  1024
+ Time Step Size =      5.0000E-04
+ Final Time T   =      1.0000E+00
+ Viscosity      =      2.0000E-05
+ Processors     =    32
+ Initial guess  = jy
+ Norm Constr    = H1semi
+ Grad Type      = H1
+ Sobolev L      =      1.0000E+00
+ Prev Sobolev L =      1.0000E+00
+ Prev Time T    =      1.0000E+00
+ ============================================== 
+  Successful FFT Initialization. 
+ ============================================== 
+  Successful Initial Condition. 
+ ============================================== 
+ Mean of IC       =      -5.1392E-19
+ Constraint value =       1.0000E+03
+  Solving Forward DNS...
+ Initial time value      =      0.0000E+00
+ Number of elements      =   2000
+ Initial Enstrophy       =       5.7923E-01
+ Initial Kinetic Energy  =       6.3027E-03
+ Initial Palinstrophy    =       5.0000E+02
+ ============================================== 
+ Final time value       =      1.0000E+00
+ Time iterations        =   2001
+ Final Enstrophy        =       5.7256E-01
+ Final Kinetic Energy   =       6.2797E-03
+ Final Palinstrophy     =       1.5799E+02
+ Mean of final solution =      -4.9529E-19
+ ============================================== 
+  DNS solved.
+  Initial Cost Functional =    165.804794400289     
+  Solving Adjoint System...
+ Time iteration =      0
+ ============================================== 
+ Mean of final adjoint solution =              NaN
+  Adjoint solved.
+  Sobolev solved.
+ L2 size of grad =              NaN
+ sup-norm of grad =        -Infinity
+  Saving checkpoint.
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Created.
+  Before.
+  After.
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  x defined.
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  y defined.
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  t defined.
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  p defined.
+  dimids defined.
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  w defined.
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  w0 defined.
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Palin defined.
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Enst defined.
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Kin defined.
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  tvec defined.
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Jvec defined.
+  end of define.
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  put Palin.
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  put Ens.
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  put KinEnerg.
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  put t.
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  put J.
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Closed.
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. Permission denied                                  
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+  Printing Error. 
+  Error reading netCDF file. NetCDF: Not a valid ID                             
+                              
+ L2 size of grad =              NaN
+  Start bracketing.
+       brak; do iteration FuncEval =           1
+       brak;                   tau =   1.00000000000000     
+       brak;                    J2 =                     NaN
+       brent; do iteration j =           1
+       brent;              X =   1.00000000000000     
+       brent;             FX =                     NaN
+       brent; do iteration; golden step, from B
+       brent; do iteration; right interval is now new U step 
+       brent; do iteration; housekeeping 1 
+       brent; do iteration j =           2
+       brent;              X =   1.00000000000000     
+       brent;             FX =                     NaN
+       brent; do iteration; case 1; FLAG =           2
+       brent; do iteration; parabolic interpolation step 
+       brent; do iteration; right interval is now new U step 
+       brent; do iteration; housekeeping 2 
+       brent; do iteration j =           3
+       brent;              X =   1.00000000000000     
+       brent;             FX =                     NaN
+       brent; do iteration; case 1; FLAG =           2
+       brent; do iteration; parabolic interpolation step 
+       brent; do iteration; right interval is now new U step 
+       brent; do iteration j =           4
+       brent;              X =   1.00000000000000     
+       brent;             FX =                     NaN
+       brent; do iteration; golden step, from A
+       brent; do iteration; left interval is now new U step
+       brent; do iteration j =           5
+       brent;              X =   1.00000000000000     
+       brent;             FX =                     NaN
+       brent; do iteration; case 1; FLAG =           2
+       brent; do iteration; parabolic interpolation step 
+       brent; do iteration; right interval is now new U step 
+       brent; do iteration j =           6
+       brent;              X =   1.00000000000000     
+       brent;             FX =                     NaN
+       brent; do iteration; case 1; FLAG =           2
+       brent; do iteration; parabolic interpolation step 
+       brent; do iteration; right interval is now new U step 
+       brent; do iteration j =           7
+       brent;              X =   1.00000000000000     
+       brent;             FX =                     NaN
+       brent; do iteration; golden step, from A
+       brent; do iteration; left interval is now new U step
+       brent; do iteration j =           8
+       brent;              X =   1.00000000000000     
+       brent;             FX =                     NaN
+       brent; do iteration; case 1; FLAG =           2
+       brent; do iteration; parabolic interpolation step 
+       brent; do iteration; right interval is now new U step 
+       brent; do iteration j =           9
+       brent;              X =   1.00000000000000     
+       brent;             FX =                     NaN
+       brent; do iteration; case 1; FLAG =           2
+       brent; do iteration; parabolic interpolation step 
+       brent; do iteration; right interval is now new U step 
+       brent; do iteration j =          10
+       brent;              X =   1.00000000000000     
+       brent;             FX =                     NaN
+       brent; do iteration; golden step, from A
+       brent; do iteration; left interval is now new U step
+       brent; do iteration j =          11
+       brent;              X =   1.00000000000000     
+       brent;             FX =                     NaN
+       brent; do iteration; case 1; FLAG =           2
+       brent; do iteration; parabolic interpolation step 
