@@ -45,13 +45,22 @@
 # mpif90 -lmpi -o prog global_variables.f90 nse_initialize.f90 data_ops.f90 fftwfunction.f90 function_ops.f90 solvers.f90 dnsNS2D_main.f90 -lm -I${FFTWDIR}/include -L${FFTWDIR}/lib -lfftw3_mpi -lfftw3 -I${nCDF_DIR}/include -L${nCDF_DIR}/lib -lnetcdff -lnetcdf
 #
 #================================================================================================
-# Instructions (Jovan Zigic, 2024/11/08):
-# mkdir 2DNavierStokes
-# mkdir 2DNavierStokes/NU2e-4
-# mkdir bin_files
-# make clean
-# make
-# srun --account=def-bprotas --nodes=1 --ntasks-per-node=32 --mem=0M --time=0-01:00  ./prog > output &
+# Instructions to run program (Jovan Zigic, 2024/11/08):
+# First time:
+# 	check work_pathname and scratch_pathname in global_variables.f90
+# 	mkdir 2DNavierStokes
+# 	mkdir 2DNavierStokes/NU2e-4
+# 	mkdir bin_files
+# 	module load StdEnv/2020 fftw-mpi/3.3.8 netcdf-fortran-mpi/4.5.2
+# Every time:
+# 	make clean
+# 	make
+# 	srun --account=def-bprotas --nodes=1 --ntasks-per-node=32 --mem=0M --time=0-01:00  ./prog > output &
+# To check job status:
+# 	seff [job id] 
+# 	sq
+# To cancel:
+# 	scancel [job id] 
 #================================================================================================
 
 
