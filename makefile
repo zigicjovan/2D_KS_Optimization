@@ -51,6 +51,7 @@
 # 	mkdir 2DNavierStokes
 # 	mkdir 2DNavierStokes/NU2e-4
 # 	mkdir bin_files
+# 	mkdir bin_files/T10
 # 	module load StdEnv/2020 fftw-mpi/3.3.8 netcdf-fortran-mpi/4.5.2
 # Every time:
 # 	make clean
@@ -61,6 +62,19 @@
 # 	sq
 # To cancel:
 # 	scancel [job id] 
+# To remove a subdirectory:
+# 	rm -rf [subdirectory] 
+# To debug [not on VScode, only on terminal]:
+# [install XQuartz] 
+# [make with debugger on (see below)]
+# ssh -Y zigicj@graham.alliancecan.ca
+# [enter CCDB password and 2-factor] 
+# module load StdEnv/2020 fftw-mpi/3.3.8 netcdf-fortran-mpi/4.5.2
+# make clean
+# make
+# salloc --x11 --time=0-3:00 --mem-per-cpu=4G --ntasks=4 -A def-bprotas
+# module load ddt-cpu
+# ddt ./prog
 #================================================================================================
 
 
@@ -92,7 +106,7 @@ nCDF_LIB   = -lnetcdff -lnetcdf       # Load nCDF Library
 #                      in the "CompilationOptions" variables.
 #CompilationOptions= -O3
 # Remove the below "#" to activate compilation in debug mode
-#CompilationOptions= -g
+# CompilationOptions= -g
 # Remove the below "#" to use "gprof", which indicates the computation time in
 #    each subroutine
 #CompilationOptions= -O3 -pg
@@ -111,7 +125,7 @@ ObjOpt= global_variables.o fftwfunction.o nse_initialize.o data_ops.o function_o
 #ObjectFiles= global_variables.o fftwfunction.o nse_initialize.o data_ops.o function_ops.o solvers.o optimization.o OptNS2D_main.o
 
 # Determine if override at commandline was given
-type= Opt 			# Default is to make routine for optimization scheme
+type= DNS 			# Default is to make routine for optimization scheme
 ifeq ($(type), DNS)		# Make routine for DNS
         ObjectFiles= $(ObjDNS)
 else ifeq ($(type), Kappa)	# Make routine for Kappa Test
