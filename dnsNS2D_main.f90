@@ -41,7 +41,7 @@ PROGRAM dnsNS2D_main
   ! Flag for saving diagnostics
   diagn_flag = .TRUE.
   ! Flag for saving files for video (need diagn_flag to be true as well)
-  vid_flag   = .FALSE.
+  vid_flag   = .TRUE.
 
   ! Print parameters to .out file
   IF (rank==0) THEN
