@@ -45,7 +45,7 @@
 # mpif90 -lmpi -o prog global_variables.f90 nse_initialize.f90 data_ops.f90 fftwfunction.f90 function_ops.f90 solvers.f90 dnsNS2D_main.f90 -lm -I${FFTWDIR}/include -L${FFTWDIR}/lib -lfftw3_mpi -lfftw3 -I${nCDF_DIR}/include -L${nCDF_DIR}/lib -lnetcdff -lnetcdf
 #
 #================================================================================================
-# Instructions to run program (Jovan Zigic, 2024/11/08):
+# Instructions to run program (Jovan Zigic, 2024/11/18):
 # First time:
 # 	check work_pathname and scratch_pathname in global_variables.f90
 # 	mkdir 2DNavierStokes

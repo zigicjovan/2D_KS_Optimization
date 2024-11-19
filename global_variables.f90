@@ -19,11 +19,11 @@ MODULE global_variables
   CHARACTER(len=*), PARAMETER :: normconstr   = "H1semi"                  ! Type of norm constraint to enforce on problem
   CHARACTER(len=*), PARAMETER :: Grad_type    = "H1"                      ! Type of gradient used in optimization scheme
   REAL, PARAMETER             :: visc    = 2.2361e-6     ! Kinematic viscosity
-  INTEGER, PARAMETER          :: RESOL   = 1024       ! Number of discretization points in one direction
+  INTEGER, PARAMETER          :: RESOL   = 128       ! Number of discretization points in one direction
   REAL(pr), PARAMETER         :: dt      = 0.0005_pr  ! Time step size
   REAL(pr), PARAMETER         :: ell     = 1.0_pr     ! Sobolev parameter for H1 Gradient
-  CHARACTER(len=*), PARAMETER :: IC_type = "rand"    ! Type of initial vorticity to use (random)
- ! CHARACTER(len=*), PARAMETER :: IC_type = "jy"       ! Type of initial vorticity to use (Tsuyoshi)
+  ! CHARACTER(len=*), PARAMETER :: IC_type = "rand"    ! Type of initial vorticity to use (random)
+  CHARACTER(len=*), PARAMETER :: IC_type = "jy"       ! Type of initial vorticity to use (Tsuyoshi)
 
   INTEGER, PARAMETER          :: RESOLP   = RESOL     ! Number of discretization points from previous optimization for bootstrapping
   REAL, PARAMETER             :: viscP    = visc      ! Viscosity from previous optimization for bootstrapping
@@ -59,7 +59,7 @@ MODULE global_variables
   REAL(pr), DIMENSION (:,:),   ALLOCATABLE, SAVE :: ksq    ! Vorticity Field
 
   ! Directories for saving
-  CHARACTER(len=*), PARAMETER :: work_pathname    = "/home/zigicj/2DKS_optimization/2D_KS_Optimization/2DNavierStokes/NU2e-4/"
+  CHARACTER(len=*), PARAMETER :: work_pathname    = "/home/zigicj/2DKS_optimization/2D_KS_Optimization/2DNavierStokes/"
   CHARACTER(len=*), PARAMETER :: scratch_pathname = "/home/zigicj/2DKS_optimization/2D_KS_Optimization/bin_files/"
 
   ! Variables for saving

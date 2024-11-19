@@ -44,7 +44,7 @@ MODULE data_ops
       WRITE(indexchar, '(i6.6)') Time_iter
       WRITE(timechar, '(i2.2)')  int(endTime*1.0e1)
       ! Filename path for saving in the scratch folder, for current timestep
-      filename = TRIM(scratch_pathname)//"/T"//timechar//"/"//"Vort_fwdNS_"//IC_type//"_Norm"//normconstr//"_Grad"//Grad_type//"_N"//Nchar//"_NU"//TRIM(ADJUSTL(viscchar))//"_L"//TRIM(ADJUSTL(lchar))//"_T"//TRIM(ADJUSTL(tchar))//"_"//indexchar//".bin"
+      filename = TRIM(scratch_pathname)//"Vort_fwdNS_"//IC_type//"_Norm"//normconstr//"_Grad"//Grad_type//"_N"//Nchar//"_NU"//TRIM(ADJUSTL(viscchar))//"_L"//TRIM(ADJUSTL(lchar))//"_T"//TRIM(ADJUSTL(tchar))//"_"//indexchar//".bin"
       ! Delete any existing file
       IF (rank==0) THEN
         CALL MPI_File_delete(filename, MPI_INFO_NULL, Statinfo)
@@ -83,7 +83,7 @@ MODULE data_ops
       WRITE(indexchar, '(i6.6)') Time_iter
       WRITE(timechar, '(i2.2)')  int(endTime*1.0e1)
       ! Filename path for saving in the scratch folder, for current timestep
-      filename = TRIM(scratch_pathname)//"/T"//timechar//"/"//"Vort_fwdNS_"//IC_type//"_Norm"//normconstr//"_Grad"//Grad_type//"_N"//Nchar//"_NU"//TRIM(ADJUSTL(viscchar))//"_L"//TRIM(ADJUSTL(lchar))//"_T"//TRIM(ADJUSTL(tchar))//"_"//indexchar//".bin"
+      filename = TRIM(scratch_pathname)//"Vort_fwdNS_"//IC_type//"_Norm"//normconstr//"_Grad"//Grad_type//"_N"//Nchar//"_NU"//TRIM(ADJUSTL(viscchar))//"_L"//TRIM(ADJUSTL(lchar))//"_T"//TRIM(ADJUSTL(tchar))//"_"//indexchar//".bin"
       ! Open the file for reading
       CALL MPI_File_open(MPI_COMM_WORLD, filename, MPI_MODE_RDONLY, MPI_INFO_NULL, file_handle, Statinfo)
       ! Calculate the processors offset in the file
