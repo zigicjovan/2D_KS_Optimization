@@ -3,6 +3,7 @@
 #
 # by Alain Veilleux, 4 August 1993
 #    Modified to run 2D Navier-Stokes DNS by Pritpal Matharu: 2020/07/17
+#    Modified to run 2D Kuramoto-Sivashinsky DNS by Jovan Zigic: 2024/11/22
 #
 # GOAL AND FUNCTIONING OF THIS SCRIPT:
 #    Script in the form of a "Makefile" allowing to update a program containing
@@ -46,12 +47,10 @@
 #
 #================================================================================================
 # Instructions to run program (Jovan Zigic, 2024/11/18):
-# First time:
+# On startup:
 # 	check work_pathname and scratch_pathname in global_variables.f90
-# 	mkdir 2DNavierStokes
-# 	mkdir 2DNavierStokes/NU2e-4
-# 	mkdir bin_files
-# 	mkdir bin_files/T10
+# 	mkdir 2DNavierStokes (if necessary)
+# 	mkdir bin_files (if necessary)
 # 	module load StdEnv/2020 fftw-mpi/3.3.8 netcdf-fortran-mpi/4.5.2
 # Every time:
 # 	make clean
