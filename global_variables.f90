@@ -19,7 +19,7 @@ MODULE global_variables
   CHARACTER(len=*), PARAMETER :: normconstr   = "H1semi"                  ! Type of norm constraint to enforce on problem
   CHARACTER(len=*), PARAMETER :: Grad_type    = "H1"                      ! Type of gradient used in optimization scheme
   REAL, PARAMETER             :: visc    = 2.2361e-6     ! Kinematic viscosity
-  INTEGER, PARAMETER          :: RESOL   = 128       ! Number of discretization points in one direction
+  INTEGER, PARAMETER          :: RESOL   = 512       ! Number of discretization points in one direction
   REAL(pr), PARAMETER         :: dt      = 0.0005_pr  ! Time step size
   REAL(pr), PARAMETER         :: ell     = 1.0_pr     ! Sobolev parameter for H1 Gradient
   ! CHARACTER(len=*), PARAMETER :: IC_type = "rand"    ! Type of initial vorticity to use (random)

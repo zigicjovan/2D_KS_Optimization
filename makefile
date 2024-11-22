@@ -54,7 +54,7 @@
 # 	module load StdEnv/2020 fftw-mpi/3.3.8 netcdf-fortran-mpi/4.5.2
 # Every time:
 # 	make clean
-# 	make
+# 	make type=DNS
 # 	srun --account=def-bprotas --nodes=1 --ntasks-per-node=32 --mem=0M --time=0-01:00  ./prog > output &
 # To check job status:
 # 	seff [job id] 
