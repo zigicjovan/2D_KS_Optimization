@@ -65,12 +65,12 @@
 # 	rm -rf [subdirectory] 
 # To debug [not on VScode, only on terminal]:
 # [install XQuartz] 
-# [make with debugger on (see below)]
 # ssh -Y zigicj@graham.alliancecan.ca
 # [enter CCDB password and 2-factor] 
 # module load StdEnv/2020 fftw-mpi/3.3.8 netcdf-fortran-mpi/4.5.2
+# [turn on -g to use debugger (see below)]
 # make clean
-# make
+# make type=DNS
 # salloc --x11 --time=0-3:00 --mem-per-cpu=4G --ntasks=4 -A def-bprotas
 # module load ddt-cpu
 # ddt ./prog

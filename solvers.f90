@@ -67,7 +67,8 @@ MODULE solvers
       COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx)          :: conv0_hat      ! Storage for RK convection term in Fourier space
       COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx, 2)       :: u_hat          ! Fourier transform of velocity field
       INTEGER                                                :: rk, i1, i2     ! Integers for looping through values
-      INTEGER                                                :: Nsave, Ni      ! Integer for storing diagn_flag save interval and save position
+      INTEGER                                                :: Ni             ! Integer for storing diagn_flag save position
+      REAL(pr)                                               :: Nsave          ! Scalar for storing diagn_flag save interval
       REAL(pr)                                               :: mean_val       ! Scalar for storing the mean of vorticity
       REAL(pr) :: local_kin, local_enst, local_palins ! Temporary for storing values of local kinetic, local enstrophy, and palinstrophy
 
@@ -155,8 +156,8 @@ MODULE solvers
           END IF
 
           ! Save vorticity solution based on Nsave or every time step, if video flag active
-          IF (vid_flag .AND. (mod(Time_iter, Nsave) == 1) ) THEN
-!          IF (vid_flag) THEN
+          !IF (vid_flag .AND. (mod(Time_iter, Nsave) == 1) ) THEN
+          IF (vid_flag) THEN
             ! Compute backward Fourier transform of vorticity to save in physical space
             CALL fftbwd(w_hat, w1)
             ! Save vorticity for MATLAB analysis
