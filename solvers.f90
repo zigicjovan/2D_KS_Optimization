@@ -45,6 +45,35 @@ MODULE solvers
     END SUBROUTINE fwd_NS2D
 
     !=================================================================================
+    ! Numerical DNS solver of 2D Navier Stokes Forward System using a pseudo-spectral
+    ! Galerkin approach with dealiasing and a third order IMEX time stepping method
+    ! Input: w0 - Initial condition
+    !=================================================================================
+    SUBROUTINE fwd_2DKS(w0)
+      ! Load variables
+      USE global_variables, ONLY: pr, n_nse, local_Ny, Palin, Enst, KinEn, t_vec, rank, Time_iter, Statinfo
+      ! Load subroutines
+      USE data_ops          ! Contains functions/subroutines that read/write data
+      USE mpi               ! Use MPI module (binding works well with fftw libraries)
+      ! Initialize variables
+      REAL(pr), DIMENSION(:,:), INTENT(IN) :: w0 ! Vorticity in physical space
+
+      ! Save initial vorticity field
+      Time_iter = 0 ! Time iteration counter
+      CALL save_NS_vorticity(w0, Time_iter, "FWD")
+      ! Solve forward 2D DNS
+      IF (rank==0) PRINT *, " Solving Forward DNS..."
+      Time_iter = 1 ! Time iteration counter
+      CALL IMEX_fwd(w0, Palin)
+      IF (rank==0) PRINT *, " DNS solved."
+      ! Save vorticity and diagnostics for MATLAB analysis
+      CALL save_NS_DNS(w0, Palin, Enst, KinEn, t_vec)
+
+      ! Ensure all processes have completed
+      CALL MPI_BARRIER(MPI_COMM_WORLD,Statinfo)
+    END SUBROUTINE fwd_2DKS
+
+    !=================================================================================
     ! Forward solver with third order IMEX Time stepping
     ! Input: w0 - vorticity field (initial condition) in physical space
     !=================================================================================

@@ -34,7 +34,7 @@ PROGRAM dns2DKS_main
   CALL MPI_BARRIER(MPI_COMM_WORLD,Statinfo)         ! Ensure all processors sync before continuing
 
   ! Set variables and arrays required to solve the 2D system
-  CALL nse_initialize
+  CALL KS_initialize
 
   ! Flag for saving bin files
   bin_flag   = .FALSE.
@@ -84,7 +84,7 @@ PROGRAM dns2DKS_main
 
 
   ! Solve the forward problem for 2D Navier-Stokes
-  CALL fwd_NS2D(vort0)    ! Found in solvers.f90
+  CALL fwd_2DKS(vort0)    ! Found in solvers.f90
 
   ! Deallocate allocatable arrays
   DEALLOCATE(vort0)

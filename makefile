@@ -116,7 +116,8 @@ nCDF_LIB   = -lnetcdff -lnetcdf       # Load nCDF Library
 
 # Different routines, depending of type of simulation
 # DNS
-ObjDNS= global_variables.o fftwfunction.o nse_initialize.o data_ops.o function_ops.o solvers.o dnsNS2D_main.o
+# ObjDNS= global_variables.o fftwfunction.o nse_initialize.o data_ops.o function_ops.o solvers.o dnsNS2D_main.o
+ObjDNS= global_variables.o fftwfunction.o KS_initialize.o data_ops.o function_ops.o solvers.o dns2DKS_main.o
 # Kappa Test
 ObjKappa= global_variables.o fftwfunction.o nse_initialize.o data_ops.o function_ops.o solvers.o optimization.o KappaNS2D_main.o
 # Optimization
@@ -132,7 +133,6 @@ else ifeq ($(type), Kappa)	# Make routine for Kappa Test
 else				# Make routine for optimzation
     	ObjectFiles= $(ObjOpt)
 endif
-
 
 # Name of the final executable
 ProgramOut= prog

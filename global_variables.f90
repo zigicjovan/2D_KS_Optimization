@@ -22,7 +22,7 @@ MODULE global_variables
   INTEGER, PARAMETER          :: RESOL   = 512       ! Number of discretization points in one direction
   REAL(pr), PARAMETER         :: dt      = 0.005_pr  ! Time step size
   REAL(pr), PARAMETER         :: ell     = 1.0_pr     ! Sobolev parameter for H1 Gradient
-  CHARACTER(len=*), PARAMETER :: IC_type = "sine"    ! Type of initial vorticity to use (sinusoidal)
+  CHARACTER(len=*), PARAMETER :: IC_type = "sineKS"    ! Type of initial vorticity to use (sinusoidal)
   !CHARACTER(len=*), PARAMETER :: IC_type = "jy"       ! Type of initial vorticity to use (Tsuyoshi)
 
   INTEGER, PARAMETER          :: RESOLP   = RESOL     ! Number of discretization points from previous optimization for bootstrapping

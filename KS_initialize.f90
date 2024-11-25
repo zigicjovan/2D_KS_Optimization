@@ -47,7 +47,7 @@ SUBROUTINE KS_initialize
 
   ! Size of periodic domain
   Lx = 1.0_pr                ! Length in the x direction
-  Ly = 1.0_pr                ! Length in the y direction
+  Ly = 0.8_pr                ! Length in the y direction
 
   ! Step sizes in each direction
   dx(1) = Lx/REAL(n_nse(1), pr) ! Step size in x direction

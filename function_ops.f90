@@ -130,6 +130,17 @@ MODULE function_ops
           END DO
         END DO
 
+        ! Kuramoto-Sivashinsky Sinusoidal initial condition
+        CASE ("sineKS")
+        DO j=1,local_Ny
+          DO i=1,n_nse(1)
+            ! x and y coordinates
+            X = REAL(i-1,pr)*dx(1)
+            Y = REAL(local_y_offset-1+j,pr)*dx(2)
+            vort0(i,j) = sin(2.0_pr*PI*X + 2.0_pr*PI*Y) + sin(2.0_pr*PI*X) + sin(2.0_pr*PI*Y)
+          END DO
+        END DO
+
         ! Taylor-Green initial condition
         CASE ("tg")
         DO j=1,local_Ny
