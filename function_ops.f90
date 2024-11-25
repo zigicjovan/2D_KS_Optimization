@@ -597,7 +597,8 @@ MODULE function_ops
       CALL fftbwd(ghat_y, gy) ! Derivative wrt y of streamfunction transform
 
       ! Compute Jacobian, convective derivative (u,v).grad(w) and obtain correct sign for the Jacobian
-      J = -(fx*gy - fy*gx)
+      ! J = -(fx*gy - fy*gx) ! 2DNS
+      J = (1/2)*(fx*fy + fy*fx) ! 2DKS
       ! Compute Fourier transform of Jacobian
       CALL fftfwd(J, Jhat)
       ! Dealias

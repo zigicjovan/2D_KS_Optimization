@@ -18,7 +18,7 @@ MODULE global_variables
   REAL(pr), PARAMETER         :: iniTime      = 0.0_pr, endTime = 1.0_pr  ! Initial and final time
   CHARACTER(len=*), PARAMETER :: normconstr   = "H1semi"                  ! Type of norm constraint to enforce on problem
   CHARACTER(len=*), PARAMETER :: Grad_type    = "H1"                      ! Type of gradient used in optimization scheme
-  REAL, PARAMETER             :: visc    = 1.0e-1     ! Kinematic viscosity
+  REAL, PARAMETER             :: visc    = 1.0     ! Kinematic viscosity
   INTEGER, PARAMETER          :: RESOL   = 512       ! Number of discretization points in one direction
   REAL(pr), PARAMETER         :: dt      = 0.005_pr  ! Time step size
   REAL(pr), PARAMETER         :: ell     = 1.0_pr     ! Sobolev parameter for H1 Gradient
@@ -56,7 +56,8 @@ MODULE global_variables
   REAL(pr), DIMENSION (:),     ALLOCATABLE, SAVE :: KinEn  ! Kinetic Energy vector
   REAL(pr), DIMENSION (:),     ALLOCATABLE, SAVE :: Palin  ! Palinstrophy vector
   REAL(pr), DIMENSION (:,:),   ALLOCATABLE, SAVE :: vort0  ! Vorticity Field
-  REAL(pr), DIMENSION (:,:),   ALLOCATABLE, SAVE :: ksq    ! Vorticity Field
+  REAL(pr), DIMENSION (:,:),   ALLOCATABLE, SAVE :: ksq    ! Vorticity Field (laplace operator)
+  REAL(pr), DIMENSION (:,:),   ALLOCATABLE, SAVE :: lin_hat    ! Vorticity Field (linear term)
 
   ! Directories for saving
   CHARACTER(len=*), PARAMETER :: work_pathname    = "/home/zigicj/2DKS_optimization/2D_KS_Optimization/2DNavierStokes/"

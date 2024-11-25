@@ -166,8 +166,10 @@ MODULE solvers
           DO i2=1,local_Nx
             DO i1=1,n_nse(2)
               ! Compute vorticity
-              w2_hat(i1, i2) = ( ( 1.0_pr + BetaI(rk) * (-visc * ksq(i1, i2)) ) * w_hat(i1, i2) + BetaE(rk) * conv_hat(i1, i2) &
-                                + Gamma(rk) * conv0_hat(i1, i2) ) / ( 1.0_pr - Alpha(rk) * (-visc * ksq(i1, i2)) )
+              !w2_hat(i1, i2) = ( ( 1.0_pr + BetaI(rk) * (-visc * ksq(i1, i2)) ) * w_hat(i1, i2) + BetaE(rk) * conv_hat(i1, i2) &
+              !                  + Gamma(rk) * conv0_hat(i1, i2) ) / ( 1.0_pr - Alpha(rk) * (-visc * ksq(i1, i2)) ) ! 2DNS
+              w2_hat(i1, i2) = ( ( 1.0_pr - BetaI(rk) * (lin_hat(i1, i2)) ) * w_hat(i1, i2) - BetaE(rk) * conv_hat(i1, i2) &
+                                - Gamma(rk) * conv0_hat(i1, i2) ) / ( 1.0_pr + Alpha(rk) * (lin_hat(i1, i2)) ) ! 2DKS
             END DO
           END DO
           ! Update vorticity for next step

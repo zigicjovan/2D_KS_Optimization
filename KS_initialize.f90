@@ -83,7 +83,8 @@ SUBROUTINE KS_initialize
   ALLOCATE (Enst(1:numel_T+1))              ! Enstrophy vector
   ALLOCATE (Palin(1:numel_T+1))             ! Palinstrophy vector
   ALLOCATE (vort0(1:n_nse(1), 1:local_Ny))  ! Vorticity field
-  ALLOCATE (ksq(1:n_nse(2),1:local_Nx))     ! Vorticity field
+  ALLOCATE (ksq(1:n_nse(2),1:local_Nx))     ! Vorticity field (laplace operator)
+  ALLOCATE (lin_hat(1:n_nse(2),1:local_Nx))     ! Vorticity field (linear term)
 
   ! Set up vectors
   ! Wavenumbers in x
@@ -106,7 +107,8 @@ SUBROUTINE KS_initialize
   ! Local array, for the squared magnitude of the wavevector
   DO i2=1,local_Nx
     DO i1=1,n_nse(2)
-      ksq(i1, i2) = ( K1(i2+local_x_offset)**2 + K2(i1)**2 )
+      ksq(i1, i2) = ( K1(i2+local_x_offset)**2 + K2(i1)**2 ) ! 2DNS linear term + Laplace operator
+      lin_hat(i1, i2) = ( K1(i2+local_x_offset)**2 + K2(i1)**2 ) + ( K1(i2+local_x_offset)**4 + K2(i1)**4 ) ! 2DKS linear term
     END DO
   END DO
   ! Time vector

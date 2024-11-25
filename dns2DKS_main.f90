@@ -95,6 +95,7 @@ PROGRAM dns2DKS_main
   DEALLOCATE(KinEn)
   DEALLOCATE(Palin)
   DEALLOCATE(ksq)
+  DEALLOCATE(lin_hat)
 
   ! Print statement, for testing purposes
   IF (rank==0) THEN
