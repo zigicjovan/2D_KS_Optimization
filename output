@@ -3,9 +3,9 @@
  ============================================== 
  Resolution Nx  =   512
  Resolution Ny  =   512
- Time Step Size =      5.0000E-03
+ Time Step Size =      1.0000E-03
  Final Time T   =      1.0000E+00
- Viscosity      =      1.0000E-01
+ Viscosity      =      1.0000E+00
  Processors     =    64
   Initial guess  = sineKS
   Norm Constr    = H1semi
@@ -16,17 +16,17 @@
  ============================================== 
   Solving Forward DNS...
  Initial time value      =      0.0000E+00
- Number of elements      =    200
- Initial Enstrophy       =       5.3593E-01
- Initial Kinetic Energy  =       8.3062E-03
- Initial Palinstrophy    =       7.3855E+02
+ Number of elements      =   1000
+ Initial Enstrophy       =       1.5189E+01
+ Initial Kinetic Energy  =       7.4085E+00
+ Initial Palinstrophy    =       1.2938E+03
  ============================================== 
  Final time value       =      1.0000E+00
- Time iterations        =    201
- Final Enstrophy        =       7.7123E-03
- Final Kinetic Energy   =       1.2870E-06
- Final Palinstrophy     =       2.0364E-03
- Mean of final solution =       1.1072E-01
+ Time iterations        =   1001
+ Final Enstrophy        =       2.8363E+00
+ Final Kinetic Energy   =       1.0263E-01
+ Final Palinstrophy     =       1.0263E-01
+ Mean of final solution =       1.1380E+01
  ============================================== 
   DNS solved.
  ============================================== 

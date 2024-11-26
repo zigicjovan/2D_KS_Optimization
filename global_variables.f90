@@ -20,7 +20,7 @@ MODULE global_variables
   CHARACTER(len=*), PARAMETER :: Grad_type    = "H1"                      ! Type of gradient used in optimization scheme
   REAL, PARAMETER             :: visc    = 1.0     ! Kinematic viscosity
   INTEGER, PARAMETER          :: RESOL   = 512       ! Number of discretization points in one direction
-  REAL(pr), PARAMETER         :: dt      = 0.005_pr  ! Time step size
+  REAL(pr), PARAMETER         :: dt      = 0.001_pr  ! Time step size
   REAL(pr), PARAMETER         :: ell     = 1.0_pr     ! Sobolev parameter for H1 Gradient
   CHARACTER(len=*), PARAMETER :: IC_type = "sineKS"    ! Type of initial vorticity to use (sinusoidal)
   !CHARACTER(len=*), PARAMETER :: IC_type = "jy"       ! Type of initial vorticity to use (Tsuyoshi)

@@ -30,7 +30,7 @@ MODULE data_ops
     !==================================================================
     SUBROUTINE save_bin(mydata)
       ! Load variables
-      USE global_variables, ONLY: pr, rank, n_nse, RESOL, nx_dim, visc, local_Ny, scratch_pathname, IC_type, normconstr, Grad_type, endTime, ell, Time_iter, Nchar, lchar, tchar, viscchar, Statinfo
+      USE global_variables, ONLY: pr, rank, n_nse, RESOL, nx_dim, visc, Lx, Ly, local_Ny, scratch_pathname, IC_type, normconstr, Grad_type, endTime, ell, Time_iter, Nchar, lchar, tchar, viscchar, Statinfo
       USE mpi                 ! Use MPI module (binding works well with fftw libraries)
       ! Initialize variables
       COMPLEX(pr), DIMENSION(:,:), INTENT(IN)  :: mydata       ! Vorticity field, to be saved
@@ -69,7 +69,7 @@ MODULE data_ops
     !==================================================================
     SUBROUTINE read_bin(mydata)
       ! Load variables
-      USE global_variables, ONLY: pr, rank, n_nse, RESOL, nx_dim, visc, local_Ny, scratch_pathname, IC_type, normconstr, Grad_type, endTime, ell, Time_iter, Nchar, lchar, tchar, viscchar, Statinfo
+      USE global_variables, ONLY: pr, rank, n_nse, RESOL, nx_dim, visc, Lx, Ly, local_Ny, scratch_pathname, IC_type, normconstr, Grad_type, endTime, ell, Time_iter, Nchar, lchar, tchar, viscchar, Statinfo
       USE mpi                 ! Use MPI module (binding works well with fftw libraries)
       ! Initialize variables
       COMPLEX(pr), DIMENSION(:,:), INTENT(OUT) :: mydata       ! Vorticity field, to be read
@@ -511,7 +511,7 @@ MODULE data_ops
     !==================================================================
     SUBROUTINE save_NS_vorticity(w, myindex, mytype)
       ! Load variables
-      USE global_variables, ONLY: pr, n_nse, RESOL, visc, local_Ny, work_pathname, IC_type
+      USE global_variables, ONLY: pr, n_nse, RESOL, visc, Lx, Ly, local_Ny, work_pathname, IC_type
       ! Initialize variables
 !      REAL(pr), DIMENSION(1:n_nse(1),1:local_Ny), INTENT(IN) :: w         ! Vorticity field, to be saved
       REAL(pr), DIMENSION(:,:),                   INTENT(IN) :: w         ! Vorticity field, to be saved
@@ -544,7 +544,7 @@ MODULE data_ops
     !==================================================================
     SUBROUTINE save_NS_fwd(w, KinEnerg, Ens, Pal, t, myindex)
       ! Load variables
-      USE global_variables, ONLY: pr, n_nse, RESOL, visc, local_Ny, work_pathname, IC_type
+      USE global_variables, ONLY: pr, n_nse, RESOL, visc, Lx, Ly, local_Ny, work_pathname, IC_type
       ! Initialize variables
 !      REAL(pr), DIMENSION(1:n_nse(1),1:local_Ny), INTENT(IN) :: w         ! Vorticity field, to be saved
       REAL(pr), DIMENSION(:,:),                   INTENT(IN) :: w         ! Vorticity field, to be saved

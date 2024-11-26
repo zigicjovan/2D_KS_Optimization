@@ -137,7 +137,7 @@ MODULE function_ops
             ! x and y coordinates
             X = REAL(i-1,pr)*dx(1)
             Y = REAL(local_y_offset-1+j,pr)*dx(2)
-            vort0(i,j) = sin(2.0_pr*PI*X + 2.0_pr*PI*Y) + sin(2.0_pr*PI*X) + sin(2.0_pr*PI*Y)
+            vort0(i,j) = sin(X + Y) + sin(X) + sin(Y)
           END DO
         END DO
 
