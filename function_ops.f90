@@ -141,6 +141,17 @@ MODULE function_ops
           END DO
         END DO
 
+        ! Kuramoto-Sivashinsky Gaussian initial condition
+        CASE ("gaussianKS")
+        DO j=1,local_Ny
+          DO i=1,n_nse(1)
+            ! x and y coordinates
+            X = REAL(i-1,pr)*dx(1)
+            Y = REAL(local_y_offset-1+j,pr)*dx(2)
+            vort0(i,j) = exp(-0.1*( (X - 0.5*(2.0_pr*PI)*0.6_pr).^2 + (Y - 0.5*(2.0_pr*PI)*1.0_pr).^2))
+          END DO
+        END DO
+
         ! Taylor-Green initial condition
         CASE ("tg")
         DO j=1,local_Ny
