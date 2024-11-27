@@ -96,8 +96,8 @@ MODULE solvers
       COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx)          :: conv0_hat      ! Storage for RK convection term in Fourier space
       COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx, 2)       :: u_hat          ! Fourier transform of velocity field
       INTEGER                                                :: rk, i1, i2     ! Integers for looping through values
-      INTEGER                                                :: Ni             ! Integer for storing diagn_flag save position
-      REAL(pr)                                               :: Nsave          ! Scalar for storing diagn_flag save interval
+      INTEGER                                                :: Ni, Nsave             ! Integer for storing diagn_flag save position
+      !REAL(pr)                                               :: Nsave          ! Scalar for storing diagn_flag save interval
       REAL(pr)                                               :: mean_val       ! Scalar for storing the mean of vorticity
       REAL(pr) :: local_kin, local_enst, local_palins ! Temporary for storing values of local kinetic, local enstrophy, and palinstrophy
 
@@ -112,7 +112,8 @@ MODULE solvers
       ! If flag is true, save diagnostic quantities
       IF (diagn_flag) THEN
         ! Saving interval for number of times to save vorticity (number of times is in the denominator)
-        Nsave = (endTime/dt)/1000;
+        !Nsave = (endTime/dt)/1000; ! when T =< 1
+        Nsave = 100; ! when T > 1
 
         ! If flag true, save bin file for adjoint solver
         IF (bin_flag) THEN
@@ -187,8 +188,8 @@ MODULE solvers
           END IF
 
           ! Save vorticity solution based on Nsave or every time step, if video flag active
-          !IF (vid_flag .AND. (mod(Time_iter, Nsave) == 1) ) THEN
-          IF (vid_flag) THEN
+          IF (vid_flag .AND. (mod(Time_iter, Nsave) == 1) ) THEN
+          !IF (vid_flag) THEN
             ! Compute backward Fourier transform of vorticity to save in physical space
             CALL fftbwd(w_hat, w1)
             ! Save vorticity for MATLAB analysis
