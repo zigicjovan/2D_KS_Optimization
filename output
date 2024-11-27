@@ -7,7 +7,7 @@
  Final Time T   =      1.0000E+01
  Viscosity      =      1.0000E+00
  Processors     =    64
-  Initial guess  = sineKS
+  Initial guess  = gaussianKS
   Norm Constr    = H1semi
  ============================================== 
   Successful FFT Initialization. 
@@ -17,16 +17,16 @@
   Solving Forward DNS...
  Initial time value      =      0.0000E+00
  Number of elements      =   9999
- Initial Enstrophy       =       1.7765E+03
- Initial Kinetic Energy  =       1.4804E+03
- Initial Palinstrophy    =       2.3687E+03
+ Initial Enstrophy       =       5.7398E+00
+ Initial Kinetic Energy  =       3.8818E-01
+ Initial Palinstrophy    =       6.6666E-01
  ============================================== 
  Final time value       =      9.9990E+00
  Time iterations        =  10000
- Final Enstrophy        =       5.0517E-15
- Final Kinetic Energy   =       5.0517E-15
- Final Palinstrophy     =       5.0517E-15
- Mean of final solution =       3.6361E-14
+ Final Enstrophy        =       5.3050E+00
+ Final Kinetic Energy   =       1.5615E-18
+ Final Palinstrophy     =       1.5615E-18
+ Mean of final solution =       1.5853E+01
  ============================================== 
   DNS solved.
  ============================================== 
