@@ -124,7 +124,7 @@ MODULE solvers
         ! Transform vorticity to velocity in Fourier space
         CALL vort2velFR(w_hat, u_hat)
         ! Compute enstrophy in physical space (could equivalently do this in Fourier space as well)
-        Enst(1) = 0.5_pr*inner_product(w0, w0, "L2")
+        Enst(1) = 0.5_pr*inner_product(w0, w0, "L2") ! 2DNS
         ! Compute the kinetic energy in Fourier space
         local_kin = kinetic_energy(u_hat)
         ! Store kinetic energy (only on rank 0 needs a copy)
@@ -160,21 +160,22 @@ MODULE solvers
         ! IMEX time stepping
         DO rk = 1, 4
           ! Determine the streamfunction in Fourier space: -lap(p) = w
-          CALL cal_stream(w_hat, psi_hat)
+          !CALL cal_stream(w_hat, psi_hat) ! 2DNS
           ! Use stream function, and get the velocity and gradient of vorticity
-          CALL J_bilinear_form(w_hat, psi_hat, conv_hat) ! Compute the Jacobian
+          !CALL J_bilinear_form(w_hat, psi_hat, conv_hat) ! Compute the Jacobian ! 2DNS
+          CALL J_bilinear_form(u_hat, u_hat, conv_hat) ! Compute the Jacobian ! 2DKS
           ! Compute Solution at the next step using IMEX time-stepping
           DO i2=1,local_Nx
             DO i1=1,n_nse(2)
               ! Compute vorticity
               !w2_hat(i1, i2) = ( ( 1.0_pr + BetaI(rk) * (-visc * ksq(i1, i2)) ) * w_hat(i1, i2) + BetaE(rk) * conv_hat(i1, i2) &
               !                  + Gamma(rk) * conv0_hat(i1, i2) ) / ( 1.0_pr - Alpha(rk) * (-visc * ksq(i1, i2)) ) ! 2DNS
-              w2_hat(i1, i2) = ( ( 1.0_pr - BetaI(rk) * (lin_hat(i1, i2)) ) * w_hat(i1, i2) - BetaE(rk) * conv_hat(i1, i2) &
+              u2_hat(i1, i2) = ( ( 1.0_pr - BetaI(rk) * (lin_hat(i1, i2)) ) * u_hat(i1, i2) - BetaE(rk) * conv_hat(i1, i2) &
                                 - Gamma(rk) * conv0_hat(i1, i2) ) / ( 1.0_pr + Alpha(rk) * (lin_hat(i1, i2)) ) ! 2DKS
             END DO
           END DO
           ! Update vorticity for next step
-          w_hat = w2_hat
+          u_hat = u2_hat
           ! Update explicit part, for next substep
           conv0_hat = conv_hat
         END DO
@@ -191,16 +192,18 @@ MODULE solvers
           IF (vid_flag .AND. (mod(Time_iter, Nsave) == 1) ) THEN
           !IF (vid_flag) THEN
             ! Compute backward Fourier transform of vorticity to save in physical space
-            CALL fftbwd(w_hat, w1)
+            !CALL fftbwd(w_hat, w1) ! 2DNS
+            CALL fftbwd(u_hat, u1) ! 2DKS
             ! Save vorticity for MATLAB analysis
-            CALL save_NS_vorticity(w1, Ni, "FWD")
+            !CALL save_NS_vorticity(w1, Ni, "FWD") ! 2DNS
+            CALL save_NS_vorticity(u1, Ni, "FWD") ! 2DKS
             ! Update video counter
             Ni = Ni + 1
           END IF
           ! Compute enstrophy in Fourier space
           local_enst = enstrophy(w_hat)
           ! Transform vorticity to velocity in Fourier space
-          CALL vort2velFR(w_hat, u_hat)
+          !CALL vort2velFR(w_hat, u_hat)
           ! Compute the kinetic energy in Fourier space
           local_kin = kinetic_energy(u_hat)
           ! Store enstrophy (only on rank 0 needs a copy)
@@ -248,7 +251,8 @@ MODULE solvers
         IF (bin_flag) THEN
           ! Transform to physical space
           CALL MPI_BARRIER(MPI_COMM_WORLD,Statinfo)
-          CALL fftbwd(w_hat, w1)
+          CALL fftbwd(w_hat, w1) ! 2DNS
+          ! CALL fftbwd(u_hat, w1) ! 2DKS
           ! Compute mean of the final solution in physical space
           mean_val = mean_vort(w1)
 
