@@ -91,24 +91,28 @@ SUBROUTINE KS_initialize
 !  DO i = 0, n_nse(1)-1
   DO i = 0, nh-1
     IF (i<=n_nse(1)/2) THEN
-      K1(i+1) = ((2.0_pr*PI)/Lx)*REAL(i,pr)
+      K1(i+1) = ((2.0_pr*PI)/Lx)*REAL(i,pr) ! 2DNS
+      !K1(i+1) = ((1)/Lx)*REAL(i,pr) ! 2DKS
     ELSE
-      K1(i+1) = ((2.0_pr*PI)/Lx)*REAL(i-n_nse(1),pr)
+      K1(i+1) = ((2.0_pr*PI)/Lx)*REAL(i-n_nse(1),pr) ! 2DNS
+      !K1(i+1) = ((1)/Lx)*REAL(i-n_nse(1),pr) ! 2DKS
     END IF
   END DO
   ! Wavenumbers in y
   DO i = 0,n_nse(2)-1
     IF (i <= n_nse(2)/2) THEN
-      K2(i+1) = ((2.0_pr*PI)/Ly)*REAL(i,pr)
+      K2(i+1) = ((2.0_pr*PI)/Ly)*REAL(i,pr) ! 2DNS
+      !K2(i+1) = ((1)/Ly)*REAL(i,pr) ! 2DKS
     ELSE
-      K2(i+1) = ((2.0_pr*PI)/Ly)*REAL(i-n_nse(2),pr)
+      K2(i+1) = ((2.0_pr*PI)/Ly)*REAL(i-n_nse(2),pr) ! 2DNS
+      !K2(i+1) = ((1)/Ly)*REAL(i-n_nse(2),pr) ! 2DKS
     END IF
   END DO
   ! Local array, for the squared magnitude of the wavevector
   DO i2=1,local_Nx
     DO i1=1,n_nse(2)
       ksq(i1, i2) = ( K1(i2+local_x_offset)**2 + K2(i1)**2 ) ! 2DNS linear term + Laplace operator
-      lin_hat(i1, i2) = ( K1(i2+local_x_offset)**2 + K2(i1)**2 ) + ( K1(i2+local_x_offset)**4 + K2(i1)**4 ) ! 2DKS linear term
+      lin_hat(i1, i2) = (-1)*(( K1(i2+local_x_offset)**2 + K2(i1)**2 ) + ( K1(i2+local_x_offset)**4 + K2(i1)**4 )) ! 2DKS linear term
     END DO
   END DO
   ! Time vector
@@ -116,7 +120,7 @@ SUBROUTINE KS_initialize
     t_vec(i+1) = i*dt
   END DO
   ! Frequency cutoff for dealiasing
-  Kcut = SQRT( K1(n_nse(1)/2+1)**2 + K2(n_nse(2)/2+1)**2 ) * (2.0_pr/3.0_pr)
+  Kcut = SQRT( K1(n_nse(1)/2+1)**2 + K2(n_nse(2)/2+1)**2 ) * (2.0_pr/3.0_pr) ! 2DNS
 
   ! Resolution as a character
   WRITE(Nchar, '(i4.4)') RESOL

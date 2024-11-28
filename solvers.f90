@@ -114,7 +114,7 @@ MODULE solvers
       IF (diagn_flag) THEN
         ! Saving interval for number of times to save vorticity (number of times is in the denominator)
         !Nsave = (endTime/dt)/1000; ! when T =< 1
-        Nsave = 100; ! when T > 1
+        Nsave = 5000; ! when T > 1
 
         ! If flag true, save bin file for adjoint solver
         IF (bin_flag) THEN
@@ -171,8 +171,8 @@ MODULE solvers
               ! Compute vorticity
               !w2_hat(i1, i2) = ( ( 1.0_pr + BetaI(rk) * (-visc * ksq(i1, i2)) ) * w_hat(i1, i2) + BetaE(rk) * conv_hat(i1, i2) &
               !                  + Gamma(rk) * conv0_hat(i1, i2) ) / ( 1.0_pr - Alpha(rk) * (-visc * ksq(i1, i2)) ) ! 2DNS
-              w2_hat(i1, i2) = ( ( 1.0_pr - BetaI(rk) * (lin_hat(i1, i2)) ) * w_hat(i1, i2) - BetaE(rk) * conv_hat(i1, i2) &
-                                - Gamma(rk) * conv0_hat(i1, i2) ) / ( 1.0_pr + Alpha(rk) * (lin_hat(i1, i2)) ) ! 2DKS
+              w2_hat(i1, i2) = ( ( 1.0_pr + BetaI(rk) * (lin_hat(i1, i2)) ) * w_hat(i1, i2) + BetaE(rk) * conv_hat(i1, i2) &
+                                + Gamma(rk) * conv0_hat(i1, i2) ) / ( 1.0_pr - Alpha(rk) * (lin_hat(i1, i2)) ) ! 2DKS
             END DO
           END DO
           ! Update vorticity for next step

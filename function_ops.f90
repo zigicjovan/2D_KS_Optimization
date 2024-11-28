@@ -148,7 +148,7 @@ MODULE function_ops
             ! x and y coordinates
             X = REAL(i-1,pr)*dx(1)
             Y = REAL(local_y_offset-1+j,pr)*dx(2)
-            vort0(i,j) = exp(-0.1*( (X - 0.5*(2.0_pr*PI)*0.6)**(2) + (Y - 0.5*(2.0_pr*PI)*1.0_pr)**(2)))
+            vort0(i,j) = exp(-10*( (X - 0.5*(2.0_pr*PI)*1.0_pr)**(2) + (Y - 0.5*(2.0_pr*PI)*1.0_pr)**(2)))
           END DO
         END DO
 
@@ -610,7 +610,7 @@ MODULE function_ops
 
       ! Compute Jacobian, convective derivative (u,v).grad(w) and obtain correct sign for the Jacobian
       ! J = -(fx*gy - fy*gx) ! 2DNS
-      J = (1/2)*(fx*fy + fy*fx) ! 2DKS
+      J = (-1/2)*(fx*fy + fy*fx) ! 2DKS
       ! Compute Fourier transform of Jacobian
       CALL fftfwd(J, Jhat)
       ! Dealias
@@ -638,7 +638,8 @@ MODULE function_ops
             ! Determine the values of the Fourier modes
             mode = SQRT( ksq(i1, i2) )
             ! Use a Gaussian spectral filter with cutoff for dealiasing
-            ff(i1,i2) = ff(i1,i2)*EXP(-36.0_pr*(mode/Kcut)**36)
+            ff(i1,i2) = ff(i1,i2)*EXP(-36.0_pr*(mode/Kcut)**36) ! 2DNS
+            !ff(i1,i2) = ff(i1,i2) ! 2DKS
           ELSE
             ff(i1,i2) = 0.0_pr
           END IF
