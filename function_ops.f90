@@ -336,7 +336,8 @@ MODULE function_ops
 !      COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx),   INTENT(IN)  :: fw   ! Fourier transform of vorticity
 !      COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx,2), INTENT(OUT) :: fU   ! Fourier transform of velocity
       COMPLEX(pr), DIMENSION(:,:),   INTENT(IN)  :: fw   ! Fourier transform of vorticity
-      COMPLEX(pr), DIMENSION(:,:,:), INTENT(OUT) :: fU   ! Fourier transform of velocity
+      COMPLEX(pr), DIMENSION(:,:,:), INTENT(OUT) :: fU   ! Fourier transform of velocity ! 2DNS
+      !COMPLEX(pr), DIMENSION(:,:), INTENT(OUT) :: fU   ! Fourier transform of velocity ! 2DKS
       INTEGER :: i1, i2                                                    ! Integers for looping through values
 
       ! Compute the velocity field by using the Laplace operator and grad^perp (via the streamfunction)
