@@ -18,11 +18,12 @@ MODULE global_variables
   REAL(pr), PARAMETER         :: iniTime      = 0.0_pr, endTime = 10.0_pr  ! Initial and final time
   CHARACTER(len=*), PARAMETER :: normconstr   = "H1semi"                  ! Type of norm constraint to enforce on problem
   CHARACTER(len=*), PARAMETER :: Grad_type    = "H1"                      ! Type of gradient used in optimization scheme
-  REAL, PARAMETER             :: visc    = 1.0     ! Kinematic viscosity
+  REAL, PARAMETER             :: visc    = 1e0     ! Kinematic viscosity
   INTEGER, PARAMETER          :: RESOL   = 512       ! Number of discretization points in one direction
-  REAL(pr), PARAMETER         :: dt      = 1.0e-3  ! Time step size
+  REAL(pr), PARAMETER         :: dt      = 0.001_pr  ! Time step size
   REAL(pr), PARAMETER         :: ell     = 1.0_pr     ! Sobolev parameter for H1 Gradient
-  CHARACTER(len=*), PARAMETER :: IC_type = "sineKS"    ! Type of initial vorticity to use (sinusoidal)
+  CHARACTER(len=*), PARAMETER :: IC_type = "sineKS"    ! Type of initial vorticity to use (sinusoidal) ! 2DKS
+  !CHARACTER(len=*), PARAMETER :: IC_type = "sine"    ! Type of initial vorticity to use (sinusoidal) ! 2DNS Taylor-Green vortex
   !CHARACTER(len=*), PARAMETER :: IC_type = "gaussianKS"       ! Type of initial vorticity to use (gaussian)
 
   INTEGER, PARAMETER          :: RESOLP   = RESOL     ! Number of discretization points from previous optimization for bootstrapping

@@ -114,7 +114,7 @@ MODULE solvers
       IF (diagn_flag) THEN
         ! Saving interval for number of times to save vorticity (number of times is in the denominator)
         !Nsave = (endTime/dt)/1000; ! when T =< 1
-        Nsave = 5000; ! when T > 1
+        Nsave = 100; ! when T > 1
 
         ! If flag true, save bin file for adjoint solver
         IF (bin_flag) THEN
@@ -161,23 +161,23 @@ MODULE solvers
         ! IMEX time stepping
         DO rk = 1, 4
           ! Determine the streamfunction in Fourier space: -lap(p) = w
-          !CALL cal_stream(w_hat, psi_hat) ! 2DNS
+          CALL cal_stream(w_hat, psi_hat) ! 2DNS
           ! Use stream function, and get the velocity and gradient of vorticity
           CALL J_bilinear_form(w_hat, psi_hat, conv_hat) ! Compute the Jacobian ! 2DNS
-          !CALL J_bilinear_form(u_hat, u_hat, conv_hat) ! Compute the Jacobian ! 2DKS
+          !CALL J_bilinear_form(u_hat, u_hat, conv_hat) ! Compute the Jacobian ! 2DKS n/a
           ! Compute Solution at the next step using IMEX time-stepping
           DO i2=1,local_Nx
             DO i1=1,n_nse(2)
               ! Compute vorticity
               !w2_hat(i1, i2) = ( ( 1.0_pr + BetaI(rk) * (-visc * ksq(i1, i2)) ) * w_hat(i1, i2) + BetaE(rk) * conv_hat(i1, i2) &
-              !                  + Gamma(rk) * conv0_hat(i1, i2) ) / ( 1.0_pr - Alpha(rk) * (-visc * ksq(i1, i2)) ) ! 2DNS
+               !                 + Gamma(rk) * conv0_hat(i1, i2) ) / ( 1.0_pr - Alpha(rk) * (-visc * ksq(i1, i2)) ) ! 2DNS
               w2_hat(i1, i2) = ( ( 1.0_pr + BetaI(rk) * (lin_hat(i1, i2)) ) * w_hat(i1, i2) + BetaE(rk) * conv_hat(i1, i2) &
                                 + Gamma(rk) * conv0_hat(i1, i2) ) / ( 1.0_pr - Alpha(rk) * (lin_hat(i1, i2)) ) ! 2DKS
             END DO
           END DO
           ! Update vorticity for next step
           w_hat = w2_hat ! 2DNS
-          !u_hat = u2_hat ! 2DKS
+          !u_hat = u2_hat ! 2DKS n/a
           ! Update explicit part, for next substep
           conv0_hat = conv_hat
         END DO
@@ -195,10 +195,10 @@ MODULE solvers
           !IF (vid_flag) THEN
             ! Compute backward Fourier transform of vorticity to save in physical space
             CALL fftbwd(w_hat, w1) ! 2DNS
-            !CALL fftbwd(u_hat, u1) ! 2DKS
+            !CALL fftbwd(u_hat, u1) ! 2DKS n/a
             ! Save vorticity for MATLAB analysis
             CALL save_NS_vorticity(w1, Ni, "FWD") ! 2DNS
-            !CALL save_NS_vorticity(u1, Ni, "FWD") ! 2DKS
+            !CALL save_NS_vorticity(u1, Ni, "FWD") ! 2DKS n/a
             ! Update video counter
             Ni = Ni + 1
           END IF

@@ -68,12 +68,11 @@
 # [install XQuartz] 
 # ssh -Y zigicj@graham.alliancecan.ca
 # [enter CCDB password and 2-factor] 
-# module load StdEnv/2020 fftw-mpi/3.3.8 netcdf-fortran-mpi/4.5.2
+# module load StdEnv/2020 fftw-mpi/3.3.8 netcdf-fortran-mpi/4.5.2 ddt-cpu
 # [turn on -g to use debugger (see below)]
 # make clean
 # make type=DNS
 # salloc --x11 --time=0-3:00 --mem-per-cpu=4G --ntasks=4 -A def-bprotas
-# module load ddt-cpu
 # ddt ./prog
 #================================================================================================
 
@@ -106,7 +105,7 @@ nCDF_LIB   = -lnetcdff -lnetcdf       # Load nCDF Library
 #                      in the "CompilationOptions" variables.
 #CompilationOptions= -O3
 # Remove the below "#" to activate compilation in debug mode
-# CompilationOptions= -g
+#CompilationOptions= -g
 # Remove the below "#" to use "gprof", which indicates the computation time in
 #    each subroutine
 #CompilationOptions= -O3 -pg
@@ -117,7 +116,7 @@ nCDF_LIB   = -lnetcdff -lnetcdf       # Load nCDF Library
 
 # Different routines, depending of type of simulation
 # DNS
-# ObjDNS= global_variables.o fftwfunction.o nse_initialize.o data_ops.o function_ops.o solvers.o dnsNS2D_main.o
+#ObjDNS= global_variables.o fftwfunction.o nse_initialize.o data_ops.o function_ops.o solvers.o dnsNS2D_main.o
 ObjDNS= global_variables.o fftwfunction.o KS_initialize.o data_ops.o function_ops.o solvers.o dns2DKS_main.o
 # Kappa Test
 ObjKappa= global_variables.o fftwfunction.o nse_initialize.o data_ops.o function_ops.o solvers.o optimization.o KappaNS2D_main.o

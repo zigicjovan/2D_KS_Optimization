@@ -46,8 +46,11 @@ SUBROUTINE KS_initialize
   nh       = int(n_nse(1)/2) + 1 ! Half the number of points in x with padding, for R2C and C2R transforms (using conjugate symmetry)
 
   ! Size of periodic domain
-  Lx = (2.0_pr*PI)*0.6_pr                ! Length in the x direction
-  Ly = (2.0_pr*PI)*1.0_pr                ! Length in the y direction
+  Lx = (2.0_pr*PI)*2.0_pr                ! Length in the x direction
+  Ly = (2.0_pr*PI)*2.0_pr                ! Length in the y direction
+  !Lx = 1.0_pr                ! Length in the x direction
+  !Ly = 1.0_pr                ! Length in the y direction
+
 
   ! Step sizes in each direction
   dx(1) = Lx/REAL(n_nse(1), pr) ! Step size in x direction
@@ -112,7 +115,7 @@ SUBROUTINE KS_initialize
   DO i2=1,local_Nx
     DO i1=1,n_nse(2)
       ksq(i1, i2) = ( K1(i2+local_x_offset)**2 + K2(i1)**2 ) ! 2DNS linear term + Laplace operator
-      lin_hat(i1, i2) = (-1)*(( K1(i2+local_x_offset)**2 + K2(i1)**2 ) + ( K1(i2+local_x_offset)**4 + K2(i1)**4 )) ! 2DKS linear term
+      lin_hat(i1, i2) = ( ( K1(i2+local_x_offset)**2 + K2(i1)**2 ) - ( K1(i2+local_x_offset)**4 + K2(i1)**4 )) ! 2DKS linear term
     END DO
   END DO
   ! Time vector
