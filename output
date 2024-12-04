@@ -17,16 +17,16 @@
   Solving Forward DNS...
  Initial time value      =      0.0000E+00
  Number of elements      =  10000
- Initial Enstrophy       =       1.1844E+02
- Initial Kinetic Energy  =       9.8696E+01
- Initial Palinstrophy    =       1.5791E+02
+ Initial Enstrophy       =       5.9218E+03
+ Initial Kinetic Energy  =       3.4544E+03
+ Initial Palinstrophy    =       7.8957E+03
  ============================================== 
  Final time value       =      1.0000E+01
  Time iterations        =  10001
- Final Enstrophy        =       3.3494E+01
- Final Kinetic Energy   =       9.8696E+01
- Final Palinstrophy     =       6.6947E+01
- Mean of final solution =       1.6653E-15
+ Final Enstrophy        =       8.3861E+02
+ Final Kinetic Energy   =       3.4544E+03
+ Final Palinstrophy     =       3.3473E+03
+ Mean of final solution =       8.4377E-14
  ============================================== 
   DNS solved.
  ============================================== 

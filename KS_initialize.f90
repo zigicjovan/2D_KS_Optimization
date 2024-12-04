@@ -46,8 +46,8 @@ SUBROUTINE KS_initialize
   nh       = int(n_nse(1)/2) + 1 ! Half the number of points in x with padding, for R2C and C2R transforms (using conjugate symmetry)
 
   ! Size of periodic domain
-  Lx = (2.0_pr*PI)*2.0_pr                ! Length in the x direction
-  Ly = (2.0_pr*PI)*2.0_pr                ! Length in the y direction
+  Lx = (2.0_pr*PI)*20.0_pr                ! Length in the x direction
+  Ly = (2.0_pr*PI)*10.0_pr                ! Length in the y direction
   !Lx = 1.0_pr                ! Length in the x direction
   !Ly = 1.0_pr                ! Length in the y direction
 
@@ -94,21 +94,17 @@ SUBROUTINE KS_initialize
 !  DO i = 0, n_nse(1)-1
   DO i = 0, nh-1
     IF (i<=n_nse(1)/2) THEN
-      K1(i+1) = ((2.0_pr*PI)/Lx)*REAL(i,pr) ! 2DNS
-      !K1(i+1) = ((1)/Lx)*REAL(i,pr) ! 2DKS
+      K1(i+1) = ((2.0_pr*PI)/Lx)*REAL(i,pr) 
     ELSE
-      K1(i+1) = ((2.0_pr*PI)/Lx)*REAL(i-n_nse(1),pr) ! 2DNS
-      !K1(i+1) = ((1)/Lx)*REAL(i-n_nse(1),pr) ! 2DKS
+      K1(i+1) = ((2.0_pr*PI)/Lx)*REAL(i-n_nse(1),pr)
     END IF
   END DO
   ! Wavenumbers in y
   DO i = 0,n_nse(2)-1
     IF (i <= n_nse(2)/2) THEN
-      K2(i+1) = ((2.0_pr*PI)/Ly)*REAL(i,pr) ! 2DNS
-      !K2(i+1) = ((1)/Ly)*REAL(i,pr) ! 2DKS
+      K2(i+1) = ((2.0_pr*PI)/Ly)*REAL(i,pr) 
     ELSE
-      K2(i+1) = ((2.0_pr*PI)/Ly)*REAL(i-n_nse(2),pr) ! 2DNS
-      !K2(i+1) = ((1)/Ly)*REAL(i-n_nse(2),pr) ! 2DKS
+      K2(i+1) = ((2.0_pr*PI)/Ly)*REAL(i-n_nse(2),pr)
     END IF
   END DO
   ! Local array, for the squared magnitude of the wavevector
