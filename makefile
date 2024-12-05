@@ -56,7 +56,7 @@
 #   mkdir 2DKS_data
 # 	make clean
 # 	make type=DNS
-# 	srun --account=def-bprotas --nodes=2 --ntasks-per-node=32 --mem=0M --time=0-01:00  ./prog > output &
+# 	srun --account=def-bprotas --nodes=2 --ntasks-per-node=32 --mem=0M --time=0-01:00  ./prog > output_ &
 # To check job status:
 # 	seff [job id] 
 # 	sq
