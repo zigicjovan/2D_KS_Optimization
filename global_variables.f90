@@ -15,7 +15,7 @@ MODULE global_variables
   INTEGER, PARAMETER          :: pr           = KIND (0.0d0)              ! Integer label for compiler, used to represent double precision
   REAL, PARAMETER             :: MACH_EPSILON = 1.0e-16                   ! Define machine epsilon
   REAL(pr), PARAMETER         :: PalinIV      = 0.0_pr                 ! Value of initial cost functional at time 0 (for H1 semi norm)
-  REAL(pr), PARAMETER         :: iniTime      = 0.0_pr, endTime = 10.0_pr  ! Initial and final time
+  REAL(pr), PARAMETER         :: iniTime      = 0.0_pr, endTime = 400.0_pr  ! Initial and final time
   CHARACTER(len=*), PARAMETER :: normconstr   = "H1semi"                  ! Type of norm constraint to enforce on problem
   CHARACTER(len=*), PARAMETER :: Grad_type    = "H1"                      ! Type of gradient used in optimization scheme
   REAL, PARAMETER             :: visc    = 1e0     ! Kinematic viscosity
