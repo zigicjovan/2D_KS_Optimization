@@ -39,7 +39,7 @@ MODULE function_ops
     !==========================================================================
     SUBROUTINE initial_guess(mytype)
       ! Load variables
-      USE global_variables, ONLY: pr, PI, n_nse, dx, local_Ny, local_Nx, local_y_offset, vort0, BS_flag
+      USE global_variables, ONLY: pr, PI, n_nse, dx, local_Ny, local_Nx, local_y_offset, vort0, BS_flag, Lx, Ly
       ! Load subroutines
       USE fftwfunction, ONLY: fftfwd, fftbwd                    ! FFT routines
       USE data_ops,     ONLY: read_IC, read_NS_Opt, read_BS_Opt ! Functions for reading IC from file
