@@ -46,23 +46,23 @@ SUBROUTINE KS_initialize
   nh       = int(n_nse(1)/2) + 1 ! Half the number of points in x with padding, for R2C and C2R transforms (using conjugate symmetry)
 
   ! Size of periodic domain
-  !Lx = (2.0_pr*PI)*0.2_pr                ! Length in the x direction
-  !Lx = (2.0_pr*PI)*0.5_pr                ! Length in the x direction
-  !Lx = (2.0_pr*PI)*0.8_pr                ! Length in the x direction
-  !Lx = (2.0_pr*PI)*1.0_pr                ! Length in the x direction
-  !Lx = (2.0_pr*PI)*1.2_pr                ! Length in the x direction
+  !!Lx = (2.0_pr*PI)*0.2_pr                ! Length in the x direction
+  !!Lx = (2.0_pr*PI)*0.5_pr                ! Length in the x direction
+  !!Lx = (2.0_pr*PI)*0.8_pr                ! Length in the x direction
+  !!Lx = (2.0_pr*PI)*1.0_pr                ! Length in the x direction
+  Lx = (2.0_pr*PI)*1.2_pr                ! Length in the x direction
   !Lx = (2.0_pr*PI)*1.5_pr                ! Length in the x direction
   !Lx = (2.0_pr*PI)*1.8_pr                ! Length in the x direction
   !Lx = (2.0_pr*PI)*2.0_pr                ! Length in the x direction
   !Lx = (2.0_pr*PI)*5.0_pr                ! Length in the x direction
-  Lx = (2.0_pr*PI)*10.0_pr               ! Length in the x direction
+  !!Lx = (2.0_pr*PI)*10.0_pr               ! Length in the x direction
 
-  !Ly = (2.0_pr*PI)*0.5_pr                ! Length in the y direction
-  !Ly = (2.0_pr*PI)*1.0_pr                ! Length in the y direction
-  !Ly = (2.0_pr*PI)*1.5_pr                ! Length in the y direction
-  !Ly = (2.0_pr*PI)*2.0_pr                ! Length in the y direction
-  !Ly = (2.0_pr*PI)*5.0_pr                ! Length in the y direction
-  Ly = (2.0_pr*PI)*10.0_pr               ! Length in the y direction
+  !!Ly = (2.0_pr*PI)*0.5_pr                ! Length in the y direction
+  !!Ly = (2.0_pr*PI)*1.0_pr                ! Length in the y direction
+  Ly = (2.0_pr*PI)*1.5_pr                ! Length in the y direction
+  !!Ly = (2.0_pr*PI)*2.0_pr                ! Length in the y direction
+  !!Ly = (2.0_pr*PI)*5.0_pr                ! Length in the y direction
+  !!Ly = (2.0_pr*PI)*10.0_pr               ! Length in the y direction
 
   ! Step sizes in each direction
   dx(1) = Lx/REAL(n_nse(1), pr) ! Step size in x direction

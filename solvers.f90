@@ -114,7 +114,7 @@ MODULE solvers
       IF (diagn_flag) THEN
         ! Saving interval for number of times to save vorticity (number of times is in the denominator)
         !Nsave = (endTime/dt)/1000; ! when T =< 1
-        Nsave = 100; ! when T > 1
+        Nsave = 500; ! when T > 1
 
         ! If flag true, save bin file for adjoint solver
         IF (bin_flag) THEN

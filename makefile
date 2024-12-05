@@ -53,7 +53,7 @@
 # 	mkdir bin_files (if necessary)
 # 	module load StdEnv/2020 fftw-mpi/3.3.8 netcdf-fortran-mpi/4.5.2
 # Every time:
-#   mkdir 2DKS_data
+#   mkdir DNS_T400_dt1e-3_
 # 	make clean
 # 	make type=DNS
 # 	srun --account=def-bprotas --nodes=2 --ntasks-per-node=32 --mem=0M --time=0-01:00  ./prog > output_ &
