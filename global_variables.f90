@@ -22,7 +22,7 @@ MODULE global_variables
   INTEGER, PARAMETER          :: RESOL   = 512       ! Number of discretization points in one direction
   REAL(pr), PARAMETER         :: dt      = 0.001_pr  ! Time step size
   REAL(pr), PARAMETER         :: ell     = 1.0_pr     ! Sobolev parameter for H1 Gradient
-  CHARACTER(len=*), PARAMETER :: IC_type = "sineKS"    ! Type of initial vorticity to use (sinusoidal) ! 2DKS
+  CHARACTER(len=*), PARAMETER :: IC_type = "sineL"    ! Type of initial vorticity to use (sinusoidal) ! 2DKS
   !CHARACTER(len=*), PARAMETER :: IC_type = "sine"    ! Type of initial vorticity to use (sinusoidal) ! 2DNS Taylor-Green vortex
   !CHARACTER(len=*), PARAMETER :: IC_type = "gaussianKS"       ! Type of initial vorticity to use (gaussian)
 
@@ -61,7 +61,7 @@ MODULE global_variables
   REAL(pr), DIMENSION (:,:),   ALLOCATABLE, SAVE :: lin_hat    ! Vorticity Field (linear term)
 
   ! Directories for saving
-  CHARACTER(len=*), PARAMETER :: work_pathname    = "/home/zigicj/2DKS_optimization/2D_KS_Optimization/2DKS_data/"
+  CHARACTER(len=*), PARAMETER :: work_pathname    = "/home/zigicj/2DKS_optimization/2D_KS_Optimization/DNS_T10_dt1e-3_/"
   CHARACTER(len=*), PARAMETER :: scratch_pathname = "/home/zigicj/2DKS_optimization/2D_KS_Optimization/bin_files/"
 
   ! Variables for saving

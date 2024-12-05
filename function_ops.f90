@@ -130,7 +130,7 @@ MODULE function_ops
           END DO
         END DO
 
-        ! Kuramoto-Sivashinsky Sinusoidal initial condition
+        ! Kuramoto-Sivashinsky sinusoidal initial condition
         CASE ("sineKS")
         DO j=1,local_Ny
           DO i=1,n_nse(1)
@@ -138,7 +138,17 @@ MODULE function_ops
             X = REAL(i-1,pr)*dx(1)
             Y = REAL(local_y_offset-1+j,pr)*dx(2)
             vort0(i,j) = sin(X + Y) + sin(X) + sin(Y)
-            !vort0(i,j) = sin(2.0_pr*PI*X + 2.0_pr*PI*Y) + sin(2.0_pr*PI*X) + sin(2.0_pr*PI*Y)
+          END DO
+        END DO
+
+        ! Domain-scaled sinusoidal initial condition
+        CASE ("sineL")
+        DO j=1,local_Ny
+          DO i=1,n_nse(1)
+            ! x and y coordinates
+            X = REAL(i-1,pr)*dx(1)
+            Y = REAL(local_y_offset-1+j,pr)*dx(2)
+            vort0(i,j) = sin(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y) + sin(((2.0_pr*PI)/Lx)*X) + sin(((2.0_pr*PI)/Ly)*Y)
           END DO
         END DO
 
@@ -149,7 +159,7 @@ MODULE function_ops
             ! x and y coordinates
             X = REAL(i-1,pr)*dx(1)
             Y = REAL(local_y_offset-1+j,pr)*dx(2)
-            vort0(i,j) = exp(-10*( (X - 0.5*(2.0_pr*PI)*1.0_pr)**(2) + (Y - 0.5*(2.0_pr*PI)*1.0_pr)**(2)))
+            vort0(i,j) = exp(-10*( (X - 0.5*(2.0_pr*PI)*10.0_pr)**(2) + (Y - 0.5*(2.0_pr*PI)*10.0_pr)**(2)))
           END DO
         END DO
 
