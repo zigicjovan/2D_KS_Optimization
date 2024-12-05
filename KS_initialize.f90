@@ -50,11 +50,11 @@ SUBROUTINE KS_initialize
   !!Lx = (2.0_pr*PI)*0.5_pr                ! Length in the x direction
   !!Lx = (2.0_pr*PI)*0.8_pr                ! Length in the x direction
   !!Lx = (2.0_pr*PI)*1.0_pr                ! Length in the x direction
-  Lx = (2.0_pr*PI)*1.2_pr                ! Length in the x direction
+  !Lx = (2.0_pr*PI)*1.2_pr                ! Length in the x direction
   !Lx = (2.0_pr*PI)*1.5_pr                ! Length in the x direction
   !Lx = (2.0_pr*PI)*1.8_pr                ! Length in the x direction
   !Lx = (2.0_pr*PI)*2.0_pr                ! Length in the x direction
-  !Lx = (2.0_pr*PI)*5.0_pr                ! Length in the x direction
+  Lx = (2.0_pr*PI)*5.0_pr                ! Length in the x direction
   !!Lx = (2.0_pr*PI)*10.0_pr               ! Length in the x direction
 
   !!Ly = (2.0_pr*PI)*0.5_pr                ! Length in the y direction

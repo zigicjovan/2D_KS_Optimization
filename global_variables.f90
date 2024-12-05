@@ -61,7 +61,7 @@ MODULE global_variables
   REAL(pr), DIMENSION (:,:),   ALLOCATABLE, SAVE :: lin_hat    ! Vorticity Field (linear term)
 
   ! Directories for saving
-  CHARACTER(len=*), PARAMETER :: work_pathname    = "/home/zigicj/2DKS_optimization/2D_KS_Optimization/DNS_T10_dt1e-3_/"
+  CHARACTER(len=*), PARAMETER :: work_pathname    = "/home/zigicj/2DKS_optimization/2D_KS_Optimization/DNS_T400_dt1e-3_/"
   CHARACTER(len=*), PARAMETER :: scratch_pathname = "/home/zigicj/2DKS_optimization/2D_KS_Optimization/bin_files/"
 
   ! Variables for saving
