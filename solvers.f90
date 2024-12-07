@@ -192,7 +192,7 @@ MODULE solvers
           END IF
           
           local_enst = enstrophy(w_hat) ! Compute enstrophy in Fourier space
-          !CALL vort2velFR(w_hat, u_hat) ! Transform vorticity to velocity in Fourier space         
+          CALL vort2velFR(w_hat, u_hat) ! Transform vorticity to velocity in Fourier space         
           local_kin = kinetic_energy(u_hat) ! Compute the kinetic energy in Fourier space
           ! Compute inner products in Fourier space
           CALL fftbwd(w_hat, w1) ! 2DNS 

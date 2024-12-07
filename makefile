@@ -49,7 +49,6 @@
 # Instructions to run program (Jovan Zigic, 2024/11/18):
 # On startup:
 # 	check work_pathname and scratch_pathname in global_variables.f90
-# 	mkdir 2DNavierStokes (if necessary)
 # 	mkdir bin_files (if necessary)
 # 	module load StdEnv/2020 fftw-mpi/3.3.8 netcdf-fortran-mpi/4.5.2
 # Every time:
