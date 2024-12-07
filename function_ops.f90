@@ -1,10 +1,9 @@
 !==================================================================================================================
 ! MODULE CONTAINS ROUTINES REPRESENTING OPERATIONS APPLIED TO FUNCTIONS
 !
-! Author: Pritpal Matharu                             
-! Department of Mathematics and Statistics            
+! Author: Jovan Zigic (inherited from Pritpal Matharu)                                   
 ! McMaster University                                 
-! Date: 2020/12/24                                    
+! Date: 2024/12/06                                     
 !
 ! CONTAINS:
 ! (*) initial_guess   - Creates/loads initial condition of system
@@ -468,7 +467,7 @@ MODULE function_ops
 
       ! Start with zero value
       ens = 0.0_pr
-      ! Periodic domain, so guassian quadrature is equivalent to taking a double sum over the domain
+      ! Periodic domain, so gaussian quadrature is equivalent to taking a double sum over the domain
       DO i2 = 1,local_Nx
         DO i1 = 1,n_nse(2)
           ! Determine Fourier mode for dealiasing
@@ -480,7 +479,7 @@ MODULE function_ops
           ELSE
             ens = ens + ABS(fw(i1,i2)*EXP(-36.0_pr*(mode/Kcut)**36))**2*dV
           END IF
-!          ens = ens + 0.5_pr*ABS(fw(i1,i2)*EXP(-36.0_pr*(mode/Kcut)**36))**2*dV
+
         END DO
       END DO
       ! Normalize enstrophy
@@ -499,13 +498,13 @@ MODULE function_ops
       ! Initialize variables
 !      COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx), INTENT(IN) :: fw     ! Vorticity in Fourier space
       COMPLEX(pr), DIMENSION(:,:), INTENT(IN) :: fw     ! Vorticity in Fourier space
-      REAL(pr)                                                  :: palins ! Scalar value of enstrophy
+      REAL(pr)                                                  :: palins ! Scalar value of palinstrophy
       REAL(pr)                                                  :: mode   ! Temporary value for Fourier mode
       INTEGER                                                   :: i1, i2 ! Temporary integers for loops
 
       ! Start with zero value
       palins = 0.0_pr
-      ! Periodic domain, so guassian quadrature is equivalent to taking a double sum over the domain
+      ! Periodic domain, so gaussian quadrature is equivalent to taking a double sum over the domain
       DO i2=1,local_Nx
         DO i1=1,n_nse(2)
 !        ! Determine Fourier mode for dealiasing
@@ -660,8 +659,8 @@ MODULE function_ops
 
     !==========================================================================
     ! *** Calculate the inner product between two functions (note recursive)***
-    ! Input:      f    - function in physical space
-    !             g    - function in physical space
+    ! Input:      f    - function in physical or Fourier space
+    !             g    - function in physical or Fourier space
     !          mytype  - function space to perform inner product
     ! Output: inn_prod - inner product result
     !==========================================================================
@@ -681,40 +680,56 @@ MODULE function_ops
       REAL(pr)                                       :: local_inn_prod ! Temporary value of local results
       INTEGER                                        :: i1, i2         ! Temporary integers for loops
 
-      ! Function space for inner product
-      SELECT CASE (mytype)
-      ! L2 inner product
-      CASE ("L2")
-        ! Start with zero value
-        local_inn_prod = 0.0_pr
+      SELECT CASE (mytype) ! Function space for inner product
+      CASE ("L2") ! L^2 inner product
+        local_inn_prod = 0.0_pr ! Start with zero value
         ! Periodic domain, so guassian quadrature is equivalent to taking a double sum over the domain
         DO i2=1,local_Ny
           DO i1=1,n_nse(1)
-            ! Integration of product of functions over entire domain
-            local_inn_prod = local_inn_prod + f(i1,i2)*g(i1,i2)*dV
+            local_inn_prod = local_inn_prod + f(i1,i2)*g(i1,i2)*dV ! Integration of product of functions over entire domain
           END DO
         END DO
-        ! Sum over all processor
-        CALL MPI_ALLREDUCE(local_inn_prod, inn_prod, 1, MPI_DOUBLE_PRECISION, MPI_SUM, MPI_COMM_WORLD, Statinfo)
-      ! H1 inner product
-      CASE ("H1")
-        ! Transform to Fourier space to compute derivatives
-        CALL fftfwd(f, fhat)
+        
+        CALL MPI_ALLREDUCE(local_inn_prod, inn_prod, 1, MPI_DOUBLE_PRECISION, MPI_SUM, MPI_COMM_WORLD, Statinfo) ! Sum over all processor
+
+      CASE ("H1") ! H^1 inner product
+        CALL fftfwd(f, fhat) ! Transform to Fourier space to compute derivatives
         ! Periodic domain, so we can integrate by parts and compute by one minus Laplacian on one function
         DO i2=1,local_Nx
           DO i1=1,n_nse(2)
             fhat(i1,i2) = (1.0_pr + (ell**2)*ksq(i1, i2))*fhat(i1,i2)
           END DO
         END DO
+        
+        CALL fftbwd(fhat, ftmp) ! Transform back to physical space, to compute the L2 inner product
+        inn_prod = inner_product(ftmp, g, "L2") ! Now, compute over L2 inner product    
+      
+      CASE ("H2") ! H^2 inner product
+        CALL fftfwd(f, fhat) ! Transform to Fourier space to compute derivatives
+        ! Periodic domain, so we can integrate by parts and compute by one minus Laplacian on one function
+        DO i2=1,local_Nx
+          DO i1=1,n_nse(2)
+            fhat(i1,i2) = ((1.0_pr + (ell**2)*ksq(i1, i2))**2)*fhat(i1,i2)
+          END DO
+        END DO
+        
+        CALL fftbwd(fhat, ftmp)  ! Transform back to physical space, to compute the L2 inner product
+        inn_prod = inner_product(ftmp, g, "L2") ! Now, compute over L2 inner product
 
-        ! Transform back to physical space, to compute the L2 inner product
-        CALL fftbwd(fhat, ftmp)
-        ! Now, compute over L2 inner product
-        inn_prod = inner_product(ftmp, g, "L2")
-      ! H1 semi-norm inner product
-      CASE ("H1semi")
-        ! Transform to Fourier space to compute derivatives
-        CALL fftfwd(f, fhat)
+      CASE ("Hn1") ! H^(-1) inner product
+        CALL fftfwd(f, fhat) ! Transform to Fourier space to compute derivatives
+        ! Periodic domain, so we can integrate by parts and compute by one minus Laplacian on one function
+        DO i2=1,local_Nx
+          DO i1=1,n_nse(2)
+            fhat(i1,i2) = fhat(i1,i2)/(1.0_pr + (ell**2)*ksq(i1, i2))
+          END DO
+        END DO
+        
+        CALL fftbwd(fhat, ftmp) ! Transform back to physical space, to compute the L2 inner product
+        inn_prod = inner_product(ftmp, g, "L2") ! Now, compute over L2 inner product
+
+      CASE ("H1semi") ! H^1 semi-norm inner product
+        CALL fftfwd(f, fhat) ! Transform to Fourier space to compute derivatives
 
         ! Periodic domain, so we can integrate by parts and compute by negative Laplacian on one function
         DO i2=1,local_Nx
@@ -723,11 +738,10 @@ MODULE function_ops
           END DO
         END DO
 
-        ! Transform back to physical space, to compute the L2 inner product
-        CALL fftbwd(fhat, ftmp)
-        ! Now, compute over L2 inner product
-        inn_prod = inner_product(ftmp, g, "L2")
+        CALL fftbwd(fhat, ftmp) ! Transform back to physical space, to compute the L2 inner product
+        inn_prod = inner_product(ftmp, g, "L2") ! Now, compute over L2 inner product
       END SELECT
+
     END FUNCTION inner_product
 
     !==========================================================================
@@ -919,7 +933,7 @@ MODULE function_ops
       ! Compute Sobolev gradient
       DO i2=1,local_Nx
         DO i1=1,n_nse(2)
-          ghat(i1,i2) = fhat(i1, i2)/(1.0_pr + (ell**2)*ksq(i1, i2))
+          ghat(i1,i2) = fhat(i1,i2)/(1.0_pr + (ell**2)*ksq(i1, i2))
         END DO
       END DO
       ! Transform to physical space

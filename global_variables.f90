@@ -1,10 +1,9 @@
 !===================================================================================================
 ! MODULE CONTAINS GLOBAL VARIABLES TO BE DECLARED TO RUN THE FORWARD NAVIER-STOKES SOLVER
 !
-! Author: Pritpal Matharu                             
-! Department of Mathematics and Statistics            
+! Author: Jovan Zigic (inherited from Pritpal Matharu)                                          
 ! McMaster University                                 
-! Date: 2020/12/24                                    
+! Date: 2024/12/06                                   
 !
 !===================================================================================================
 MODULE global_variables
@@ -14,17 +13,16 @@ MODULE global_variables
   ! Define parameters to use throughout codes (Note: variables that are initialized when declared have an implicit save attribute)
   INTEGER, PARAMETER          :: pr           = KIND (0.0d0)              ! Integer label for compiler, used to represent double precision
   REAL, PARAMETER             :: MACH_EPSILON = 1.0e-16                   ! Define machine epsilon
-  REAL(pr), PARAMETER         :: PalinIV      = 0.0_pr                 ! Value of initial cost functional at time 0 (for H1 semi norm)
-  REAL(pr), PARAMETER         :: iniTime      = 0.0_pr, endTime = 400.0_pr  ! Initial and final time
+  REAL(pr), PARAMETER         :: PalinIV      = 0.0_pr                    ! Value of initial cost functional at time 0 (for H1 semi norm)
+  REAL(pr), PARAMETER         :: iniTime      = 0.0_pr, endTime = 0.1_pr ! Initial and final time
   CHARACTER(len=*), PARAMETER :: normconstr   = "H1semi"                  ! Type of norm constraint to enforce on problem
   CHARACTER(len=*), PARAMETER :: Grad_type    = "H1"                      ! Type of gradient used in optimization scheme
-  REAL, PARAMETER             :: visc    = 1e0     ! Kinematic viscosity
-  INTEGER, PARAMETER          :: RESOL   = 512       ! Number of discretization points in one direction
-  REAL(pr), PARAMETER         :: dt      = 0.001_pr  ! Time step size
-  REAL(pr), PARAMETER         :: ell     = 1.0_pr     ! Sobolev parameter for H1 Gradient
-  CHARACTER(len=*), PARAMETER :: IC_type = "sineL"    ! Type of initial vorticity to use (sinusoidal) ! 2DKS
-  !CHARACTER(len=*), PARAMETER :: IC_type = "sine"    ! Type of initial vorticity to use (sinusoidal) ! 2DNS Taylor-Green vortex
-  !CHARACTER(len=*), PARAMETER :: IC_type = "gaussianKS"       ! Type of initial vorticity to use (gaussian)
+  REAL, PARAMETER             :: visc    = 1e0         ! Kinematic viscosity
+  INTEGER, PARAMETER          :: RESOL   = 512         ! Number of discretization points in one direction
+  REAL(pr), PARAMETER         :: dt      = 0.00001_pr  ! Time step size
+  REAL(pr), PARAMETER         :: ell     = 1.0_pr      ! Sobolev parameter for H1 Gradient
+  CHARACTER(len=*), PARAMETER :: IC_type = "sineL"     ! Type of initial vorticity to use (sinusoidal) ! 2DKS
+  !CHARACTER(len=*), PARAMETER :: IC_type = "sine"     ! Type of initial vorticity to use (sinusoidal) ! 2DNS Taylor-Green vortex
 
   INTEGER, PARAMETER          :: RESOLP   = RESOL     ! Number of discretization points from previous optimization for bootstrapping
   REAL, PARAMETER             :: viscP    = visc      ! Viscosity from previous optimization for bootstrapping
@@ -49,13 +47,17 @@ MODULE global_variables
   INTEGER,  SAVE                 :: nh                     ! Number of discretization points for x stored in Fourier space
   INTEGER,  DIMENSION(2),   SAVE :: n_nse                  ! Number of discretization points for (x, y)
   REAL(pr), DIMENSION(2),   SAVE :: dx                     ! Step size in spatial directions in (x, y)
-  REAL(pr), DIMENSION(1:4), SAVE :: Alpha, BetaI, BetaE, Gamma    ! Values for the IMEX Method
+  REAL(pr), DIMENSION(1:4), SAVE :: AlphaI, BetaI, AlphaE, BetaE    ! Values for the IMEX Method
 
   REAL(pr), DIMENSION (:),     ALLOCATABLE, SAVE :: K1, K2 ! Wavenumbers in x and y
   REAL(pr), DIMENSION (:),     ALLOCATABLE, SAVE :: t_vec  ! Time vector
   REAL(pr), DIMENSION (:),     ALLOCATABLE, SAVE :: Enst   ! Enstrophy vector
   REAL(pr), DIMENSION (:),     ALLOCATABLE, SAVE :: KinEn  ! Kinetic Energy vector
   REAL(pr), DIMENSION (:),     ALLOCATABLE, SAVE :: Palin  ! Palinstrophy vector
+  REAL(pr), DIMENSION (:),     ALLOCATABLE, SAVE :: InnerProduct_L2   ! inner product vector
+  REAL(pr), DIMENSION (:),     ALLOCATABLE, SAVE :: InnerProduct_H1   ! inner product vector
+  REAL(pr), DIMENSION (:),     ALLOCATABLE, SAVE :: InnerProduct_H2   ! inner product vector
+  REAL(pr), DIMENSION (:),     ALLOCATABLE, SAVE :: InnerProduct_Hn1   ! inner product vector
   REAL(pr), DIMENSION (:,:),   ALLOCATABLE, SAVE :: vort0  ! Vorticity Field
   REAL(pr), DIMENSION (:,:),   ALLOCATABLE, SAVE :: ksq    ! Vorticity Field (laplace operator)
   REAL(pr), DIMENSION (:,:),   ALLOCATABLE, SAVE :: lin_hat    ! Vorticity Field (linear term)

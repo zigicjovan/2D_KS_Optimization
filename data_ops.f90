@@ -1,10 +1,9 @@
 !===================================================================================================
 ! MODULE CONTAINS ROUTINES REPRESENTING OPERATIONS FOR WRITING OR READING FILES
 !
-! Author: Pritpal Matharu                             
-! Department of Mathematics and Statistics            
+! Author: Jovan Zigic (inherited from Pritpal Matharu)                                          
 ! McMaster University                                 
-! Date: 2020/12/24                                    
+! Date: 2024/12/06                                  
 !
 ! CONTAINS:
 ! (*) save_bin               - Saves bin file of vorticity field
@@ -262,8 +261,12 @@ MODULE data_ops
     !         Ens    - enstrophy vector
     !    KinEnerg    - kinetic energy vector
     !           t    - time vector
+    !        ipL2    - L^2 inner product vector
+    !        ipH1    - H^1 inner product vector
+    !        ipH2    - H^2 inner product vector
+    !        ipHn1   - H^(-1) inner product vector
     !==================================================================
-    SUBROUTINE save_NS_DNS(w0, Pal, Ens, KinEnerg, t)
+    SUBROUTINE save_NS_DNS(w0, Pal, Ens, KinEnerg, t, ipL2, ipH1, ipH2, ipHn1)
       ! Load variables
       USE global_variables    ! Declares variables and defines parameters of the system
       USE netcdf              ! Use netcdf for saving files
@@ -275,15 +278,20 @@ MODULE data_ops
       REAL(pr), DIMENSION(:),   INTENT(IN) :: Ens       ! Enstrophy vector, to be saved
       REAL(pr), DIMENSION(:),   INTENT(IN) :: KinEnerg  ! Kinetic energy vector, to be saved
       REAL(pr), DIMENSION(:),   INTENT(IN) :: t         ! Time vector, to be saved
-      CHARACTER(200)                       :: filename                                      ! Filename for writing the file
-      INTEGER, DIMENSION(1:2)              :: starts, counts, dimids                        ! Positioning for saving
-      INTEGER                              :: ncout, ncid                                   ! Temporary integers for saving
-      INTEGER                              :: varid, varid0, varidP, varidE, varidK, varidt ! Temporary integers for saving
-      INTEGER                              :: x_dimid, y_dimid, t_dimid, j_dimid, p_dimid   ! Temporary dimensions for saving
-      INTEGER                              :: ii, t_len                                     ! Temporary integer for looping and reference length
+      REAL(pr), DIMENSION(:),   INTENT(IN) :: ipL2      ! inner product vector, to be saved
+      REAL(pr), DIMENSION(:),   INTENT(IN) :: ipH1      ! inner product vector, to be saved
+      REAL(pr), DIMENSION(:),   INTENT(IN) :: ipH2      ! inner product vector, to be saved
+      REAL(pr), DIMENSION(:),   INTENT(IN) :: ipHn1     ! inner product vector, to be saved
+      CHARACTER(200)                       :: filename                                        ! Filename for writing the file
+      INTEGER, DIMENSION(1:2)              :: starts, counts, dimids                          ! Positioning for saving
+      INTEGER                              :: ncout, ncid                                     ! Temporary integers for saving
+      INTEGER                              :: varid, varid0, varidP, varidE, varidK, varidt   ! Temporary integers for saving
+      INTEGER                              :: varidLONE, varidHONE, varidHTWO, varidHNONE     ! Temporary integers for saving
+      INTEGER                              :: x_dimid, y_dimid, t_dimid, j_dimid, p_dimid     ! Temporary dimensions for saving
+      INTEGER                              :: ii, t_len                                       ! Temporary integer for looping and reference length
 
       ! Filename path for saving file
-      filename = TRIM(work_pathname)//"DNS_"//IC_type//"_Norm"//normconstr//"_Grad"//Grad_type//"_N"//Nchar//"_NU"//TRIM(ADJUSTL(viscchar))//"_L"//TRIM(ADJUSTL(lchar))//"_T"//TRIM(ADJUSTL(tchar))//".nc"
+      filename = TRIM(work_pathname)//"DNS_"//IC_type//"_Norm"//normconstr//"_Grad"//Grad_type//"_N"//Nchar//"_L"//TRIM(ADJUSTL(lchar))//"_T"//TRIM(ADJUSTL(tchar))//".nc"
 
       t_len = size(t)
       ! Initialize file for writing
@@ -307,6 +315,14 @@ MODULE data_ops
         IF (ncout /= NF90_NOERR) CALL ncdf_error_handle(ncout)
         ncout = nf90_def_var(ncid, TRIM("Kin"), NF90_DOUBLE, (/ t_dimid /), varidK)
         IF (ncout /= NF90_NOERR) CALL ncdf_error_handle(ncout)
+        ncout = nf90_def_var(ncid, TRIM("InnerProduct_L2"), NF90_DOUBLE, (/ t_dimid /), varidLONE)
+        IF (ncout /= NF90_NOERR) CALL ncdf_error_handle(ncout)
+        ncout = nf90_def_var(ncid, TRIM("InnerProduct_H1"), NF90_DOUBLE, (/ t_dimid /), varidHONE)
+        IF (ncout /= NF90_NOERR) CALL ncdf_error_handle(ncout)
+        ncout = nf90_def_var(ncid, TRIM("InnerProduct_H2"), NF90_DOUBLE, (/ t_dimid /), varidHTWO)
+        IF (ncout /= NF90_NOERR) CALL ncdf_error_handle(ncout)
+        ncout = nf90_def_var(ncid, TRIM("InnerProduct_Hn1"), NF90_DOUBLE, (/ t_dimid /), varidHNONE)
+        IF (ncout /= NF90_NOERR) CALL ncdf_error_handle(ncout)
 
         ncout = nf90_def_var(ncid, TRIM("tvec"), NF90_DOUBLE, (/ t_dimid /), varidt)
         IF (ncout /= NF90_NOERR) CALL ncdf_error_handle(ncout)
@@ -318,6 +334,14 @@ MODULE data_ops
         ncout = nf90_put_var(ncid, varidE, Ens)
         IF (ncout /= NF90_NOERR) CALL ncdf_error_handle(ncout)
         ncout = nf90_put_var(ncid, varidK, KinEnerg)
+        IF (ncout /= NF90_NOERR) CALL ncdf_error_handle(ncout)
+        ncout = nf90_put_var(ncid, varidLONE, ipL2)
+        IF (ncout /= NF90_NOERR) CALL ncdf_error_handle(ncout)
+        ncout = nf90_put_var(ncid, varidHONE, ipH1)
+        IF (ncout /= NF90_NOERR) CALL ncdf_error_handle(ncout)
+        ncout = nf90_put_var(ncid, varidHTWO, ipH2)
+        IF (ncout /= NF90_NOERR) CALL ncdf_error_handle(ncout)
+        ncout = nf90_put_var(ncid, varidHNONE, ipHn1)
         IF (ncout /= NF90_NOERR) CALL ncdf_error_handle(ncout)
         ncout = nf90_put_var(ncid, varidt, t)
         IF (ncout /= NF90_NOERR) CALL ncdf_error_handle(ncout)
@@ -519,7 +543,7 @@ MODULE data_ops
       INTEGER,                                    INTENT(IN) :: myindex   ! Current time iteration
       CHARACTER(4)                                           :: Nchar     ! Resolution as character
       CHARACTER(6)                                           :: indexchar ! Time iteration as character
-      CHARACTER(13)                                          :: viscchar  ! Viscosity as character
+      !CHARACTER(13)                                          :: viscchar  ! Viscosity as character
       CHARACTER(200)                                         :: filename  ! Filename for writing the file
 
       ! Resolution as a character
@@ -527,9 +551,9 @@ MODULE data_ops
       ! Iteration number as a character
       WRITE(indexchar, '(i6.6)') myindex
       ! Viscosity as a character
-      WRITE(viscchar, '(i13.13)') int(visc*(1.0e12))
+      !WRITE(viscchar, '(i13.13)') int(visc*(1.0e12)) ! 2DNS
       ! Filename path for saving in the scratch folder, for current timestep
-      filename = TRIM(work_pathname)//"Vorticity_"//IC_type//"_N"//Nchar//"_NU"//viscchar//"_"//mytype//"_"//indexchar//".nc"
+      filename = TRIM(work_pathname)//"Vorticity_"//IC_type//"_N"//Nchar//"_"//mytype//"_"//indexchar//".nc"
       ! Save the vorticity as a netCDF file
       CALL save_field_R2toR1_ncdf(w, "w", filename)
     END SUBROUTINE save_NS_vorticity

@@ -27,10 +27,10 @@ SUBROUTINE nse_initialize
   ! Values for the IMEX method
   ! Coefficients from https://doi.org/10.1007/s10898-019-00855-1
   ! Journal of Global Optimization (2020) - Alimo, Cavaglieri, Beyhaghi, Bewley
-  Alpha  = dt*[343038331393.0_pr/1130875731271.0_pr, 288176579239.0_pr/1140253497719.0_pr,  253330171251.0_pr/677500478386.0_pr,   189462239225.0_pr/1091147436423.0_pr]
+  AlphaI  = dt*[343038331393.0_pr/1130875731271.0_pr, 288176579239.0_pr/1140253497719.0_pr,  253330171251.0_pr/677500478386.0_pr,   189462239225.0_pr/1091147436423.0_pr]
   BetaI  = dt*[35965327958.0_pr/140127563663.0_pr,   19632212512.0_pr/2700543775099.0_pr,  -173747147147.0_pr/351772688865.0_pr,   91958533623.0_pr/727726057489.0_pr]
-  BetaE  = dt*[14.0_pr/25.0_pr,                      777974228744.0_pr/1346157007247.0_pr,  251277807242.0_pr/1103637129625.0_pr,  113091689455.0_pr/220187950967.0_pr]
-  Gamma  = dt*[0.0_pr,                              -251352885992.0_pr/790610919619.0_pr,  -383714262797.0_pr/1103637129625.0_pr, -403360439203.0_pr/1888264787188.0_pr]
+  AlphaE  = dt*[14.0_pr/25.0_pr,                      777974228744.0_pr/1346157007247.0_pr,  251277807242.0_pr/1103637129625.0_pr,  113091689455.0_pr/220187950967.0_pr]
+  BetaE  = dt*[0.0_pr,                              -251352885992.0_pr/790610919619.0_pr,  -383714262797.0_pr/1103637129625.0_pr, -403360439203.0_pr/1888264787188.0_pr]
 
   ! Define pi
   PI = 4.0_pr*ATAN2(1.0_pr,1.0_pr)
@@ -81,6 +81,10 @@ SUBROUTINE nse_initialize
   ALLOCATE (t_vec(1:numel_T+1))             ! Time vector
   ALLOCATE (KinEn(1:numel_T+1))             ! Kinetic Energy vector
   ALLOCATE (Enst(1:numel_T+1))              ! Enstrophy vector
+  ALLOCATE (InnerProduct_L2(1:numel_T+1))   ! L^2 inner product vector
+  ALLOCATE (InnerProduct_H1(1:numel_T+1))   ! H^1 inner product vector
+  ALLOCATE (InnerProduct_H2(1:numel_T+1))   ! H^2 inner product vector
+  ALLOCATE (InnerProduct_Hn1(1:numel_T+1))  ! H^(-1) inner product vector
   ALLOCATE (Palin(1:numel_T+1))             ! Palinstrophy vector
   ALLOCATE (vort0(1:n_nse(1), 1:local_Ny))  ! Vorticity field
   ALLOCATE (ksq(1:n_nse(2),1:local_Nx))     ! Vorticity field

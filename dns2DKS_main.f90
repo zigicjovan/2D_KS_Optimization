@@ -1,18 +1,17 @@
-!-----------------------------------------------------!
-! Fortran code using MPI to solve a DNS of the 2D     !
-! Navier-Stokes system.                               !
-!                                                     !
-! -Parallel version using MPI, Real-Complex FFT       !
-! -Uses tranposed distributions in Fourier space      !
-! -Uses pseudo-spectral Galerkin approach with        !
-!   dealiasing and a third-order, four step IMEX time !
-!   stepping method                                   !
-!                                                     !
-! Author: Pritpal Matharu                             !
-! Department of Mathematics and Statistics            !
-! McMaster University                                 !
-! Date: 2020/12/04                                    !
-!-----------------------------------------------------!
+!-----------------------------------------------------
+! Fortran code using MPI to solve a DNS of the 2D     
+! Navier-Stokes system.                              
+!                                                     
+! -Parallel version using MPI, Real-Complex FFT       
+! -Uses tranposed distributions in Fourier space      
+! -Uses pseudo-spectral Galerkin approach with        
+!   dealiasing and a third-order, four step IMEX time 
+!   stepping method                                   
+!                                                     
+! Author: Jovan Zigic (inherited from Pritpal Matharu)                                          
+! McMaster University                                 
+! Date: 2024/12/06 
+!-----------------------------------------------------
 
 PROGRAM dns2DKS_main
   USE mpi                 ! Use MPI module (binding works well with fftw libraries)
@@ -92,6 +91,10 @@ PROGRAM dns2DKS_main
   DEALLOCATE(K2)
   DEALLOCATE(t_vec)
   DEALLOCATE(Enst)
+  DEALLOCATE(InnerProduct_L2)
+  DEALLOCATE(InnerProduct_H1)
+  DEALLOCATE(InnerProduct_H2)
+  DEALLOCATE(InnerProduct_Hn1)
   DEALLOCATE(KinEn)
   DEALLOCATE(Palin)
   DEALLOCATE(ksq)

@@ -1,13 +1,13 @@
 !==================================================================================================
-! MODULE CONTAINING INTERFACES FOR NAVIER-STOKES DIRECT NUMERICAL SIMULATION SOLVERS
+! MODULE CONTAINING INTERFACES FOR KURAMOTO-SIVASHINSKY DIRECT NUMERICAL SIMULATION SOLVERS
 !
-! Author: Pritpal Matharu                             
-! Department of Mathematics and Statistics            
+! Author: Jovan Zigic (inherited from Pritpal Matharu)                                      
 ! McMaster University                                 
-! Date: 2020/12/24                                    
+! Date: 2024/12/06                                    
 !
 ! CONTAINS:
 ! (*) fwd_NS2D               - Forward DNS of 2D NS
+! (*) fwd_2DKS               - Forward DNS of 2D KS
 ! (*) IMEX_fwd               - Third-order, four step IMEX time stepping method
 ! (*) IMEX_bwd               - Third-order, four step IMEX time stepping method for adjoint system
 !==================================================================================================
@@ -22,7 +22,7 @@ MODULE solvers
     !=================================================================================
     SUBROUTINE fwd_NS2D(w0)
       ! Load variables
-      USE global_variables, ONLY: pr, n_nse, local_Ny, Palin, Enst, KinEn, t_vec, rank, Time_iter, Statinfo
+      USE global_variables, ONLY: pr, n_nse, local_Ny, Palin, Enst, KinEn, t_vec, rank, Time_iter, Statinfo, InnerProduct_L2, InnerProduct_H1, InnerProduct_H2, InnerProduct_Hn1
       ! Load subroutines
       USE data_ops          ! Contains functions/subroutines that read/write data
       USE mpi               ! Use MPI module (binding works well with fftw libraries)
@@ -38,7 +38,7 @@ MODULE solvers
       CALL IMEX_fwd(w0, Palin)
       IF (rank==0) PRINT *, " DNS solved."
       ! Save vorticity and diagnostics for MATLAB analysis
-      CALL save_NS_DNS(w0, Palin, Enst, KinEn, t_vec)
+      CALL save_NS_DNS(w0, Palin, Enst, KinEn, t_vec, InnerProduct_L2, InnerProduct_H1, InnerProduct_H2, InnerProduct_Hn1)
 
       ! Ensure all processes have completed
       CALL MPI_BARRIER(MPI_COMM_WORLD,Statinfo)
@@ -51,7 +51,7 @@ MODULE solvers
     !=================================================================================
     SUBROUTINE fwd_2DKS(w0)
       ! Load variables
-      USE global_variables, ONLY: pr, n_nse, local_Ny, Palin, Enst, KinEn, t_vec, rank, Time_iter, Statinfo
+      USE global_variables, ONLY: pr, n_nse, local_Ny, Palin, Enst, KinEn, t_vec, rank, Time_iter, Statinfo, InnerProduct_L2, InnerProduct_H1, InnerProduct_H2, InnerProduct_Hn1
       ! Load subroutines
       USE data_ops          ! Contains functions/subroutines that read/write data
       USE mpi               ! Use MPI module (binding works well with fftw libraries)
@@ -67,7 +67,7 @@ MODULE solvers
       CALL IMEX_fwd(w0, Palin)
       IF (rank==0) PRINT *, " DNS solved."
       ! Save vorticity and diagnostics for MATLAB analysis
-      CALL save_NS_DNS(w0, Palin, Enst, KinEn, t_vec)
+      CALL save_NS_DNS(w0, Palin, Enst, KinEn, t_vec, InnerProduct_L2, InnerProduct_H1, InnerProduct_H2, InnerProduct_Hn1)
 
       ! Ensure all processes have completed
       CALL MPI_BARRIER(MPI_COMM_WORLD,Statinfo)
@@ -101,85 +101,76 @@ MODULE solvers
       !REAL(pr)                                               :: Nsave          ! Scalar for storing diagn_flag save interval
       REAL(pr)                                               :: mean_val       ! Scalar for storing the mean of vorticity
       REAL(pr) :: local_kin, local_enst, local_palins ! Temporary for storing values of local kinetic, local enstrophy, and palinstrophy
-
-      ! If saving video flag true, start counter
-      IF (vid_flag) THEN
+      REAL(pr) :: local_L2, local_H1, local_H2, local_Hn1 ! Temporary for storing values of local inner products
+      
+      IF (vid_flag) THEN ! If saving video flag true, start counter
         Ni = 1
       END IF
 
-      ! Compute Fourier transform of vorticity
-      CALL fftfwd(w0,w_hat)
+      CALL fftfwd(w0,w_hat) ! Compute Fourier transform of vorticity
 
-      ! If flag is true, save diagnostic quantities
-      IF (diagn_flag) THEN
+      IF (diagn_flag) THEN ! If flag is true, save diagnostic quantities
         ! Saving interval for number of times to save vorticity (number of times is in the denominator)
         !Nsave = (endTime/dt)/1000; ! when T =< 1
-        Nsave = 500; ! when T > 1
+        Nsave = 10000; ! when T > 1
 
-        ! If flag true, save bin file for adjoint solver
-        IF (bin_flag) THEN
-          ! Save vorticity
-          CALL save_bin(w_hat)
+        IF (bin_flag) THEN ! If flag true, save bin file for adjoint solver
+          CALL save_bin(w_hat)   ! Save vorticity
         END IF
+ 
+        CALL vort2velFR(w_hat, u_hat) ! Transform vorticity to velocity in Fourier space
+        Enst(1) = 0.5_pr*inner_product(w0, w0, "L2") ! 2DNS ! Compute enstrophy in physical space (could equivalently do this in Fourier space as well)
+        ! Compute norms in physical space (could equivalently do this in Fourier space as well)
+        InnerProduct_L2(1) = inner_product(w0, w0, "L2")   ! 2DKS
+        InnerProduct_H1(1) = inner_product(w0, w0, "H1")   ! 2DKS
+        InnerProduct_H2(1) = inner_product(w0, w0, "H2")   ! 2DKS
+        InnerProduct_Hn1(1) = inner_product(w0, w0, "Hn1") ! 2DKS
+        
+        local_kin = kinetic_energy(u_hat) ! Compute the kinetic energy in Fourier space
+        
+        CALL MPI_REDUCE(local_kin,    KinEn(1), 1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo) ! Store kinetic energy (only on rank 0 needs a copy)
+        palins(1) = palinstrophyreal(w_hat) ! Compute Palinstrophy
 
-        ! Transform vorticity to velocity in Fourier space
-        CALL vort2velFR(w_hat, u_hat)
-        ! Compute enstrophy in physical space (could equivalently do this in Fourier space as well)
-        Enst(1) = 0.5_pr*inner_product(w0, w0, "L2") ! 2DNS
-        ! Compute the kinetic energy in Fourier space
-        local_kin = kinetic_energy(u_hat)
-        ! Store kinetic energy (only on rank 0 needs a copy)
-        CALL MPI_REDUCE(local_kin,    KinEn(1), 1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)
-        ! Compute Palinstrophy
-        palins(1) = palinstrophyreal(w_hat)
-        ! Print information
-        IF (rank==0) THEN
+        IF (rank==0) THEN  ! Print information
           PRINT'(a,ES15.4)', " Initial time value      = ", t_vec(1)
           PRINT'(a,I6)',     " Number of elements      = ", numel_T
           PRINT'(a,ES16.4)', " Initial Enstrophy       = ", Enst(1)
+          PRINT'(a,ES16.4)', " Initial L^2 In.Prod.    = ", InnerProduct_L2(1)
+          PRINT'(a,ES16.4)', " Initial H^1 In.Prod.    = ", InnerProduct_H1(1)
+          PRINT'(a,ES16.4)', " Initial H^2 In.Prod.    = ", InnerProduct_H2(1)
+          PRINT'(a,ES16.4)', " Initial H^(-1) In.Prod. = ", InnerProduct_Hn1(1)
           PRINT'(a,ES16.4)', " Initial Kinetic Energy  = ", KinEn(1)
           PRINT'(a,ES16.4)', " Initial Palinstrophy    = ", palins(1)
           PRINT *, "============================================== "
         END IF
       ELSE
         ! If flag true, save bin file for adjoint solver
-        ! Save vorticity in physical space, in binary format, to use in the adjoint solver
-        IF (bin_flag) THEN
-          ! Save vorticity
-          CALL save_bin(w_hat)
+        IF (bin_flag) THEN ! Save vorticity in physical space, in binary format, to use in the adjoint solver
+          CALL save_bin(w_hat) ! Save vorticity
         END IF
 
-        ! Compute Palinstrophy
-        palins(1) = palinstrophyreal(w_hat)
+        palins(1) = palinstrophyreal(w_hat) ! Compute Palinstrophy
         ! MPI Reduce is a blocking communication, so all processes are good to proceed with timestepping
       END IF
 
-      ! Main time-stepping loop
-      DO Time_iter = 2, numel_T+1
-        ! Storage of convection term for RK method, and set to zero for first substep
-        conv0_hat = 0.0_pr
-        ! IMEX time stepping
-        DO rk = 1, 4
-          ! Determine the streamfunction in Fourier space: -lap(p) = w
-          CALL cal_stream(w_hat, psi_hat) ! 2DNS
-          ! Use stream function, and get the velocity and gradient of vorticity
-          CALL J_bilinear_form(w_hat, psi_hat, conv_hat) ! Compute the Jacobian ! 2DNS
-          !CALL J_bilinear_form(u_hat, u_hat, conv_hat) ! Compute the Jacobian ! 2DKS n/a
-          ! Compute Solution at the next step using IMEX time-stepping
-          DO i2=1,local_Nx
+      DO Time_iter = 2, numel_T+1 ! Main time-stepping loop
+        conv0_hat = 0.0_pr ! Storage of convection term for RK method, and set to zero for first substep
+        DO rk = 1, 4 ! IMEX time stepping
+          CALL cal_stream(w_hat, psi_hat) ! 2DNS ! Determine the streamfunction in Fourier space: -lap(p) = w
+          CALL J_bilinear_form(w_hat, psi_hat, conv_hat) ! Compute the Jacobian ! 2DNS ! Use stream function, and get the velocity and gradient of vorticity
+          
+          DO i2=1,local_Nx ! Compute Solution at the next step using IMEX time-stepping
+            ! Compute vorticity
             DO i1=1,n_nse(2)
-              ! Compute vorticity
-              !w2_hat(i1, i2) = ( ( 1.0_pr + BetaI(rk) * (-visc * ksq(i1, i2)) ) * w_hat(i1, i2) + BetaE(rk) * conv_hat(i1, i2) &
-               !                 + Gamma(rk) * conv0_hat(i1, i2) ) / ( 1.0_pr - Alpha(rk) * (-visc * ksq(i1, i2)) ) ! 2DNS
-              w2_hat(i1, i2) = ( ( 1.0_pr + BetaI(rk) * (lin_hat(i1, i2)) ) * w_hat(i1, i2) + BetaE(rk) * conv_hat(i1, i2) &
-                                + Gamma(rk) * conv0_hat(i1, i2) ) / ( 1.0_pr - Alpha(rk) * (lin_hat(i1, i2)) ) ! 2DKS
+              !w2_hat(i1, i2) = ( ( 1.0_pr + BetaI(rk) * (-visc * ksq(i1, i2)) ) * w_hat(i1, i2) + AlphaE(rk) * conv_hat(i1, i2) &
+               !                 + BetaE(rk) * conv0_hat(i1, i2) ) / ( 1.0_pr - AlphaI(rk) * (-visc * ksq(i1, i2)) ) ! 2DNS
+              w2_hat(i1, i2) = ( ( 1.0_pr + BetaI(rk) * (lin_hat(i1, i2)) ) * w_hat(i1, i2) + AlphaE(rk) * conv_hat(i1, i2) &
+                                + BetaE(rk) * conv0_hat(i1, i2) ) / ( 1.0_pr - AlphaI(rk) * (lin_hat(i1, i2)) ) ! 2DKS
             END DO
           END DO
-          ! Update vorticity for next step
-          w_hat = w2_hat ! 2DNS
-          !u_hat = u2_hat ! 2DKS n/a
-          ! Update explicit part, for next substep
-          conv0_hat = conv_hat
+          
+          w_hat = w2_hat ! Update vorticity for next step ! 2DNS
+          conv0_hat = conv_hat ! Update explicit part, for next substep
         END DO
 
         ! If flag is true, save diagnostic quantities
@@ -194,22 +185,30 @@ MODULE solvers
           IF (vid_flag .AND. (mod(Time_iter, Nsave) == 1) ) THEN
           !IF (vid_flag) THEN
             ! Compute backward Fourier transform of vorticity to save in physical space
-            CALL fftbwd(w_hat, w1) ! 2DNS
-            !CALL fftbwd(u_hat, u1) ! 2DKS n/a
-            ! Save vorticity for MATLAB analysis
-            CALL save_NS_vorticity(w1, Ni, "FWD") ! 2DNS
-            !CALL save_NS_vorticity(u1, Ni, "FWD") ! 2DKS n/a
+            CALL fftbwd(w_hat, w1) ! 2DNS            
+            CALL save_NS_vorticity(w1, Ni, "FWD") ! Save vorticity for MATLAB analysis ! 2DNS
+
             ! Update video counter
             Ni = Ni + 1
           END IF
-          ! Compute enstrophy in Fourier space
-          local_enst = enstrophy(w_hat)
-          ! Transform vorticity to velocity in Fourier space
-          !CALL vort2velFR(w_hat, u_hat)
-          ! Compute the kinetic energy in Fourier space
-          local_kin = kinetic_energy(u_hat)
+          
+          local_enst = enstrophy(w_hat) ! Compute enstrophy in Fourier space
+          !CALL vort2velFR(w_hat, u_hat) ! Transform vorticity to velocity in Fourier space         
+          local_kin = kinetic_energy(u_hat) ! Compute the kinetic energy in Fourier space
+          ! Compute inner products in Fourier space
+          CALL fftbwd(w_hat, w1) ! 2DNS 
+          local_L2 = inner_product(w1, w1, "L2")   ! 2DKS
+          local_H1 = inner_product(w1, w1, "H1")   ! 2DKS
+          local_H2 = inner_product(w1, w1, "H2")   ! 2DKS
+          local_Hn1 = inner_product(w1, w1, "Hn1") ! 2DKS
+
           ! Store enstrophy (only on rank 0 needs a copy)
           CALL MPI_REDUCE(local_enst,   Enst(Time_iter),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)
+          ! Store inner products (only on rank 0 needs a copy)
+          CALL MPI_REDUCE(local_L2,   InnerProduct_L2(Time_iter),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)
+          CALL MPI_REDUCE(local_H1,   InnerProduct_H1(Time_iter),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)
+          CALL MPI_REDUCE(local_H2,   InnerProduct_H2(Time_iter),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)
+          CALL MPI_REDUCE(local_Hn1,   InnerProduct_Hn1(Time_iter),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)
           ! Store kinetic energy (only on rank 0 needs a copy)
           CALL MPI_REDUCE(local_kin,    KinEn(Time_iter), 1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)
           ! Compute Palinstrophy
@@ -242,6 +241,10 @@ MODULE solvers
           PRINT'(a,ES15.4)', " Final time value       = ", t_vec(numel_T+1)
           PRINT'(a,I6)',     " Time iterations        = ", Time_iter
           PRINT'(a,ES16.4)', " Final Enstrophy        = ", Enst(Time_iter)
+          PRINT'(a,ES16.4)', " Final L^2 In.Prod.     = ", InnerProduct_L2(Time_iter)
+          PRINT'(a,ES16.4)', " Final H^1 In.Prod.     = ", InnerProduct_H1(Time_iter)
+          PRINT'(a,ES16.4)', " Final H^2 In.Prod.     = ", InnerProduct_H2(Time_iter)
+          PRINT'(a,ES16.4)', " Final H^(-1) In.Prod.  = ", InnerProduct_Hn1(Time_iter)
           PRINT'(a,ES16.4)', " Final Kinetic Energy   = ", KinEn(Time_iter)
           PRINT'(a,ES16.4)', " Final Palinstrophy     = ", palins(Time_iter)
           PRINT'(a,ES16.4)', " Mean of final solution = ", mean_val
@@ -342,9 +345,9 @@ MODULE solvers
               ! hence the additional implicitly treated w_hat term independent of the RK scheme (dt/4 to account for the 4 step method).
               z2_hat(i1, i2) = (  ( 1.0_pr + BetaI(rk) * (-visc * ksq(i1, i2)) ) * z_hat(i1, i2) + &
                                   (dt/4.0_pr) * ( ksq(i1, i2) ) * w_hat(i1, i2) + &
-                                  BetaE(rk) * nonlin_hat(i1, i2) + &
-                                  Gamma(rk) * nonlin0_hat(i1, i2) ) / &
-                                  ( 1.0_pr - Alpha(rk) * (-visc * ksq(i1, i2)) )
+                                  AlphaE(rk) * nonlin_hat(i1, i2) + &
+                                  BetaE(rk) * nonlin0_hat(i1, i2) ) / &
+                                  ( 1.0_pr - AlphaI(rk) * (-visc * ksq(i1, i2)) )
             END DO
           END DO
           ! Update vorticity for next step

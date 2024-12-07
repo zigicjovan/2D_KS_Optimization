@@ -1,10 +1,9 @@
 !===========================================================================================================
 ! MODULE CONTAINS ROUTINES TO PERFORM REAL-COMPLEX FFT WITH TRANSPOSED DISTRIBUTIONS IN 2D
 !
-! Author: Pritpal Matharu                             
-! Department of Mathematics and Statistics            
+! Author: Jovan Zigic (inherited from Pritpal Matharu)                                          
 ! McMaster University                                 
-! Date: 2020/12/24                                    
+! Date: 2024/12/06                                 
 !
 ! SEE FFTW VERSION 3 OFFICIAL DOCUMENTATION FOR MORE INFORMATION ON FOURIER TRANFORMS USED HERE
 ! http://www.fftw.org/fftw3_doc/
