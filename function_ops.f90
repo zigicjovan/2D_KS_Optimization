@@ -597,7 +597,7 @@ MODULE function_ops
 !      COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx), INTENT(OUT) :: Jhat           ! Convection term in Fourier space
       COMPLEX(pr), DIMENSION(:,:), INTENT(IN)       :: fhat, ghat                     ! Vorticity and streamfunction in Fourier space
       COMPLEX(pr), DIMENSION(:,:), INTENT(OUT)      :: Jhat                           ! Convection term in Fourier space
-      COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx) :: fhat_x, fhat_y, ghat_x, ghat_y ! Temporary matrices to store complex ourier space values
+      COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx) :: fhat_x, fhat_y, ghat_x, ghat_y ! Temporary matrices to store complex Fourier space values
       REAL(pr), DIMENSION(1:n_nse(1), 1:local_Ny)   :: J                              ! Temporary matrix to store Jacobian in physical space
       REAL(pr), DIMENSION(1:n_nse(1), 1:local_Ny)   :: fx, fy, gx, gy                 ! Temporary matrices to store derivatives in physical space
       INTEGER                                       :: i1, i2                         ! Temporary integers for loops
@@ -659,8 +659,8 @@ MODULE function_ops
 
     !==========================================================================
     ! *** Calculate the inner product between two functions (note recursive)***
-    ! Input:      f    - function in physical or Fourier space
-    !             g    - function in physical or Fourier space
+    ! Input:      f    - function in physical space
+    !             g    - function in physical space
     !          mytype  - function space to perform inner product
     ! Output: inn_prod - inner product result
     !==========================================================================
@@ -671,7 +671,7 @@ MODULE function_ops
       USE fftwfunction, ONLY: fftfwd, fftbwd  ! FFT routines
       USE mpi                                 ! Use MPI module (binding works well with fftw libraries)
       ! Initialize variables
-!      REAL(pr), DIMENSION(1:n_nse(1),1:local_Ny), INTENT(IN) :: f,g            ! Functions for inner product in physical space
+!      REAL(pr), DIMENSION(1:n_nse(1),1:local_Ny), INTENT(IN) :: f,g     ! Functions for inner product in physical space
       REAL(pr), DIMENSION(:,:), INTENT(IN)           :: f,g            ! Functions for inner product in physical space
       CHARACTER(len=*),         INTENT(IN)           :: mytype         ! String for function space
       COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx)  :: fhat           ! Temporary matrix to store complex Fourier space values
@@ -698,23 +698,25 @@ MODULE function_ops
         DO i2=1,local_Nx
           DO i1=1,n_nse(2)
             fhat(i1,i2) = (1.0_pr + (ell**2)*ksq(i1, i2))*fhat(i1,i2)
+            !fhat(i1,i2) = (1.0_pr + (ell**2)*ksq(i1, i2))*ABS(fhat(i1,i2))**2
           END DO
         END DO
         
         CALL fftbwd(fhat, ftmp) ! Transform back to physical space, to compute the L2 inner product
-        inn_prod = inner_product(ftmp, g, "L2") ! Now, compute over L2 inner product    
+        inn_prod = inner_product(ftmp, ftmp, "L2") ! Now, compute over L2 inner product    
       
       CASE ("H2") ! H^2 inner product
         CALL fftfwd(f, fhat) ! Transform to Fourier space to compute derivatives
         ! Periodic domain, so we can integrate by parts and compute by one minus Laplacian on one function
         DO i2=1,local_Nx
           DO i1=1,n_nse(2)
-            fhat(i1,i2) = ((1.0_pr + (ell**2)*ksq(i1, i2))**2)*fhat(i1,i2)
+            fhat(i1,i2) = ((1.0_pr + (ell**2)*ksq(i1, i2))**2)*fhat(i1,i2) 
+            !fhat(i1,i2) = ((1.0_pr + (ell**2)*ksq(i1, i2))**2)*ABS(fhat(i1,i2))**2
           END DO
         END DO
         
         CALL fftbwd(fhat, ftmp)  ! Transform back to physical space, to compute the L2 inner product
-        inn_prod = inner_product(ftmp, g, "L2") ! Now, compute over L2 inner product
+        inn_prod = inner_product(ftmp, ftmp, "L2") ! Now, compute over L2 inner product
 
       CASE ("Hn1") ! H^(-1) inner product
         CALL fftfwd(f, fhat) ! Transform to Fourier space to compute derivatives
@@ -722,11 +724,12 @@ MODULE function_ops
         DO i2=1,local_Nx
           DO i1=1,n_nse(2)
             fhat(i1,i2) = fhat(i1,i2)/(1.0_pr + (ell**2)*ksq(i1, i2))
+            !fhat(i1,i2) = (ABS(fhat(i1,i2))**2)/(1.0_pr + (ell**2)*ksq(i1, i2))
           END DO
         END DO
         
         CALL fftbwd(fhat, ftmp) ! Transform back to physical space, to compute the L2 inner product
-        inn_prod = inner_product(ftmp, g, "L2") ! Now, compute over L2 inner product
+        inn_prod = inner_product(ftmp, ftmp, "L2") ! Now, compute over L2 inner product
 
       CASE ("H1semi") ! H^1 semi-norm inner product
         CALL fftfwd(f, fhat) ! Transform to Fourier space to compute derivatives
@@ -739,7 +742,7 @@ MODULE function_ops
         END DO
 
         CALL fftbwd(fhat, ftmp) ! Transform back to physical space, to compute the L2 inner product
-        inn_prod = inner_product(ftmp, g, "L2") ! Now, compute over L2 inner product
+        inn_prod = inner_product(ftmp, ftmp, "L2") ! Now, compute over L2 inner product
       END SELECT
 
     END FUNCTION inner_product
