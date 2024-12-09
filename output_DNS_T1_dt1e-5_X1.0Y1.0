@@ -1,0 +1,43 @@
+ ============================================== 
+           Direct Numerical Simulation          
+ ============================================== 
+ Resolution Nx  =   512
+ Resolution Ny  =   512
+ Time Step Size =      1.0000E-05
+ Final Time T   =      1.0000E-02
+ Viscosity      =      1.0000E+00
+ Processors     =    64
+  Initial guess  = noise
+  Norm Constr    = H1semi
+ ============================================== 
+  Successful FFT Initialization. 
+ ============================================== 
+  Successful Initial Condition. 
+ ============================================== 
+  Solving Forward DNS...
+ Initial time value      =      0.0000E+00
+ Number of elements      =    999
+ Initial Enstrophy       =       6.5834E+00
+ Initial L^2 In.Prod.    =       1.3167E+01
+ Initial H^1 In.Prod.    =       3.5133E+10
+ Initial H^2 In.Prod.    =       2.0439E+20
+ Initial H^(-1) In.Prod. =       1.6694E-04
+ Initial Kinetic Energy  =       9.7943E-04
+ Initial Palinstrophy    =       2.8656E+05
+ ============================================== 
+ Final time value       =      9.9900E-03
+ Time iterations        =   1000
+ Final Enstrophy        =       7.7885E-04
+ Final L^2 In.Prod.     =       9.9694E-02
+ Final H^1 In.Prod.     =       5.0681E+00
+ Final H^2 In.Prod.     =       5.9446E+02
+ Final H^(-1) In.Prod.  =       9.4101E-03
+ Final Kinetic Energy   =       3.2465E-04
+ Final Palinstrophy     =       3.9477E-03
+ Mean of final solution =      -1.5004E-02
+ ============================================== 
+  DNS solved.
+ ============================================== 
+  Successful Deallocation. 
+ ============================================== 
+ Exit Normally!

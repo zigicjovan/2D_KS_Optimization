@@ -38,7 +38,7 @@ MODULE function_ops
     !==========================================================================
     SUBROUTINE initial_guess(mytype)
       ! Load variables
-      USE global_variables, ONLY: pr, PI, n_nse, dx, local_Ny, local_Nx, local_y_offset, vort0, BS_flag, Lx, Ly
+      USE global_variables, ONLY: pr, PI, n_nse, dx, local_Ny, local_Nx, local_y_offset, vort0, BS_flag, Lx, Ly, MACH_EPSILON
       ! Load subroutines
       USE fftwfunction, ONLY: fftfwd, fftbwd                    ! FFT routines
       USE data_ops,     ONLY: read_IC, read_NS_Opt, read_BS_Opt ! Functions for reading IC from file
@@ -47,6 +47,7 @@ MODULE function_ops
       COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx) :: w_hat  ! Fourier transform of complex vorticity and RK storage term
       REAL(pr)                                      :: X, Y   ! Scalars for storing x and y coordinates
       INTEGER                                       :: i, j   ! Temporary integers for loops
+      REAL(pr)                                      :: noise(n_nse(1))  ! Scalars for random noise
 
       ! Determine initial condtion selected
       SELECT CASE (mytype)
@@ -148,6 +149,20 @@ MODULE function_ops
             X = REAL(i-1,pr)*dx(1)
             Y = REAL(local_y_offset-1+j,pr)*dx(2)
             vort0(i,j) = sin(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y) + sin(((2.0_pr*PI)/Lx)*X) + sin(((2.0_pr*PI)/Ly)*Y)
+          END DO
+        END DO
+
+        ! Random noise initial condition
+        CASE ("noise")
+        DO j=1,local_Ny
+          DO i=1,n_nse(1)
+            ! x and y coordinates
+            X = REAL(i-1,pr)*dx(1)
+            Y = REAL(local_y_offset-1+j,pr)*dx(2)
+            call random_seed() ! Seed the random number generator
+            call random_number(noise) ! Generate uniform random noise in the range [0,1)
+            noise = 2.0 * noise - 1.0 ! Generate random noise in the range [-1, 1)
+            vort0(i,j) = noise(i)*MACH_EPSILON*10 ! assign value at mach-eps magnitude to solution grid
           END DO
         END DO
 
@@ -620,7 +635,8 @@ MODULE function_ops
 
       ! Compute Jacobian, convective derivative (u,v).grad(w) and obtain correct sign for the Jacobian
       !J = -(fx*gy - fy*gx) ! 2DNS
-      J = -(1.0_pr/2.0_pr)*(fx*fy + fy*fx) ! 2DKS
+      !J = -(1.0_pr/2.0_pr)*(fx*fy + fy*fx) ! 2DKS
+      J = 0 ! Linearized equation
       ! Compute Fourier transform of Jacobian
       CALL fftfwd(J, Jhat)
       ! Dealias
