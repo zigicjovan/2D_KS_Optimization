@@ -55,7 +55,7 @@
 #   mkdir DNS_T10_dt1e-3_X1.0Y1.0
 # 	make clean
 # 	make type=DNS
-# 	srun --account=def-bprotas --nodes=2 --ntasks-per-node=32 --mem=0M --time=0-01:00  ./prog > output_DNS_T10_dt1e-3_X1.0Y1.0 &
+# 	srun --account=def-bprotas --nodes=2 --ntasks-per-node=32 --mem=0M --time=0-01:00  ./prog > output_DNS_T400_dt1e-5_X1.0Y1.0_lin_macheps &
 # To check job status:
 # 	seff [job id] 
 # 	sq
