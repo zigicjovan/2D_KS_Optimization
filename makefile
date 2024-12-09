@@ -33,7 +33,7 @@
 # We now reload these modules : module restore 2DNS_modules
 #
 # To send the job (prog) to the scheduler, appropriately modify the shell file "run_2DNS_****.sh"
-# then run: sbatch run_2DNS_****.sh
+# then run: sbatch run_2DKS.sh
 #
 #================================================================================================
 #

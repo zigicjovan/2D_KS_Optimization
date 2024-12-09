@@ -111,7 +111,7 @@ MODULE solvers
 
       IF (diagn_flag) THEN ! If flag is true, save diagnostic quantities
         ! Saving interval for number of times to save vorticity (number of times is in the denominator)
-        Nsave = (endTime/dt)/400.0_pr; 
+        Nsave = (endTime/dt)/100.0_pr; 
 
         IF (bin_flag) THEN ! If flag true, save bin file for adjoint solver
           CALL save_bin(w_hat)   ! Save vorticity
