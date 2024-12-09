@@ -118,7 +118,7 @@ MODULE solvers
         END IF
  
         CALL vort2velFR(w_hat, u_hat) ! Transform vorticity to velocity in Fourier space
-        Enst(1) = 0.5_pr*inner_product(w0, w0, "L2") ! 2DNS ! Compute enstrophy in physical space (could equivalently do this in Fourier space as well)
+        Enst(1) = 0.5_pr*inner_product(w0, w0, "L2") ! 2DNS, not 2DKS ! Compute enstrophy in physical space (could equivalently do this in Fourier space as well)
         ! Compute norms in physical space (could equivalently do this in Fourier space as well)
         InnerProduct_L2(1) = inner_product(w0, w0, "L2")   ! 2DKS
         InnerProduct_H1(1) = inner_product(w0, w0, "H1")   ! 2DKS

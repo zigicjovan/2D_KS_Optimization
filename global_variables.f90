@@ -51,7 +51,7 @@ MODULE global_variables
 
   REAL(pr), DIMENSION (:),     ALLOCATABLE, SAVE :: K1, K2 ! Wavenumbers in x and y
   REAL(pr), DIMENSION (:),     ALLOCATABLE, SAVE :: t_vec  ! Time vector
-  REAL(pr), DIMENSION (:),     ALLOCATABLE, SAVE :: Enst   ! Enstrophy vector
+  REAL(pr), DIMENSION (:),     ALLOCATABLE, SAVE :: Enst   ! Enstrophy vector ! For 2DNS, not 2DKS
   REAL(pr), DIMENSION (:),     ALLOCATABLE, SAVE :: KinEn  ! Kinetic Energy vector
   REAL(pr), DIMENSION (:),     ALLOCATABLE, SAVE :: Palin  ! Palinstrophy vector
   REAL(pr), DIMENSION (:),     ALLOCATABLE, SAVE :: InnerProduct_L2   ! inner product vector
