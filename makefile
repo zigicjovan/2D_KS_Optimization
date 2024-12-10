@@ -29,8 +29,8 @@
 # Before running make command, must load the modules!!!
 # Load Modules : StdEnv/2020 fftw-mpi/3.3.8 netcdf-fortran-mpi/4.5.2
 # Modules were loaded using:    module load StdEnv/2020 fftw-mpi/3.3.8 netcdf-fortran-mpi/4.5.2
-# Then saved as "2DNS_modules": module save 2DNS_modules
-# We now reload these modules : module restore 2DNS_modules
+# Then saved as "2DNS_modules": module save 2DKS_modules
+# We now reload these modules : module restore 2DKS_modules
 #
 # To send the job (prog) to the scheduler, appropriately modify the shell file "run_2DNS_****.sh"
 # then run: sbatch run_2DKS.sh
