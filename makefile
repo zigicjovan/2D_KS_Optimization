@@ -51,7 +51,7 @@
 # 	check work_pathname and scratch_pathname in global_variables.f90
 # 	mkdir bin_files (if necessary)
 # 	module load StdEnv/2020 fftw-mpi/3.3.8 netcdf-fortran-mpi/4.5.2
-# Every time:
+# For quick tests:
 #   mkdir DNS_T10_dt1e-3_X1.0Y1.0
 # 	make clean
 # 	make type=DNS

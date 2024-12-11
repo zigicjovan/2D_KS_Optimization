@@ -14,7 +14,7 @@ MODULE global_variables
   INTEGER, PARAMETER          :: pr           = KIND (0.0d0)              ! Integer label for compiler, used to represent double precision
   REAL, PARAMETER             :: MACH_EPSILON = 1.0e-16                   ! Define machine epsilon
   REAL(pr), PARAMETER         :: PalinIV      = 0.0_pr                    ! Value of initial cost functional at time 0 (for H1 semi norm)
-  REAL(pr), PARAMETER         :: iniTime      = 0.0_pr, endTime = 1.0_pr ! Initial and final time
+  REAL(pr), PARAMETER         :: iniTime      = 0.0_pr, endTime = 10.0_pr ! Initial and final time ! {700k elts/hr} => {10m elts = 15h, 1m elts = 1.5h}, {<700k = 1 hour}
   CHARACTER(len=*), PARAMETER :: normconstr   = "H1semi"                  ! Type of norm constraint to enforce on problem
   CHARACTER(len=*), PARAMETER :: Grad_type    = "H1"                      ! Type of gradient used in optimization scheme
   REAL, PARAMETER             :: visc    = 1e0         ! Kinematic viscosity
@@ -65,7 +65,7 @@ MODULE global_variables
   ! Directories for saving
   !CHARACTER(len=*), PARAMETER :: work_pathname    = "/home/zigicj/2DKS_optimization/2D_KS_Optimization/DNS_/" !! graham
   !CHARACTER(len=*), PARAMETER :: scratch_pathname = "/home/zigicj/2DKS_optimization/2D_KS_Optimization/bin_files/" !! graham
-  CHARACTER(len=*), PARAMETER :: work_pathname    = "/home/zigicj/scratch/2D_KS_Optimization/DNS_T100_dt1e-5_X1.01Y1.01_lin_macheps/" !! beluga
+  CHARACTER(len=*), PARAMETER :: work_pathname    = "/home/zigicj/scratch/2D_KS_Optimization/DNS_T10_dt1e-5_X1.01Y1.01_lin_macheps/" !! beluga
   CHARACTER(len=*), PARAMETER :: scratch_pathname = "/home/zigicj/scratch/2D_KS_Optimization/bin_files/" !! beluga
 
   ! Variables for saving
