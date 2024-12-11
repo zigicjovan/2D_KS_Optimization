@@ -10,8 +10,8 @@
 #SBATCH --job-name=DNS01            	# keep track of jobs
 
 module load StdEnv/2020 fftw-mpi/3.3.8 netcdf-fortran-mpi/4.5.2
-rm -rf DNS_T10_dt1e-5_X1.01Y1.01_lin_macheps
-mkdir DNS_T10_dt1e-5_X1.01Y1.01_lin_macheps
+rm -rf /home/zigicj/scratch/2D_KS_Optimization/DNS_T10_dt1e-5_X1.01Y1.01_lin_macheps
+mkdir /home/zigicj/scratch/2D_KS_Optimization/DNS_T10_dt1e-5_X1.01Y1.01_lin_macheps
 make clean
 make type=DNS
 srun ./prog			        # run the job

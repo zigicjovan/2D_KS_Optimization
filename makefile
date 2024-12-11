@@ -59,8 +59,14 @@
 # To check job status:
 # 	seff [job id] 
 # 	sq
+# Tp copy all files to a testing subdirectory:
+# 	mkdir test1
+#   cd test1
+# 	scp /home/zigicj/scratch/2D_KS_Optimization/* .
 # To cancel:
 # 	scancel [job id] 
+# To add time:
+# 	scontrol update jobid=[job_id] TimeLimit=0-02:00
 # To remove a subdirectory:
 # 	rm -rf [subdirectory] 
 # To debug [not on VScode, only on terminal]:
