@@ -62,7 +62,7 @@
 # Tp copy all files to a testing subdirectory:
 # 	mkdir test1
 #   cd test1
-# 	scp /home/zigicj/scratch/2D_KS_Optimization/* .
+# 	scp /home/zigicj/scratch/2D_KS_Optimization-1/* .
 # To cancel:
 # 	scancel [job id] 
 # To add time:
@@ -70,15 +70,15 @@
 # To remove a subdirectory:
 # 	rm -rf [subdirectory] 
 # To debug [not on VScode, only on terminal]:
-# [install XQuartz] 
-# ssh -Y zigicj@graham.alliancecan.ca
-# [enter CCDB password and 2-factor] 
-# module load StdEnv/2020 fftw-mpi/3.3.8 netcdf-fortran-mpi/4.5.2 ddt-cpu
-# [turn on -g to use debugger (see below)]
-# make clean
-# make type=DNS
-# salloc --x11 --time=0-3:00 --mem-per-cpu=4G --ntasks=4 -A def-bprotas
-# ddt ./prog
+# 	[install XQuartz] 
+# 	ssh -Y zigicj@graham.alliancecan.ca
+# 	[enter CCDB password and 2-factor] 
+# 	module load StdEnv/2020 fftw-mpi/3.3.8 netcdf-fortran-mpi/4.5.2 ddt-cpu
+# 	[turn on -g to use debugger (see below)]
+# 	make clean
+# 	make type=DNS
+# 	salloc --x11 --time=0-3:00 --mem-per-cpu=4G --ntasks=4 -A def-bprotas
+# 	ddt ./prog
 #================================================================================================
 
 

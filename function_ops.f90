@@ -162,7 +162,7 @@ MODULE function_ops
             call random_seed() ! Seed the random number generator
             call random_number(noise) ! Generate uniform random noise in the range [0,1)
             noise = 2.0 * noise - 1.0 ! Generate random noise in the range [-1, 1)
-            vort0(i,j) = noise(i)*MACH_EPSILON*10 ! assign value at mach-eps magnitude to solution grid
+            vort0(i,j) = noise(i)*MACH_EPSILON*100 ! assign value at mach-eps magnitude to solution grid
           END DO
         END DO
 

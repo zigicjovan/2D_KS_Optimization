@@ -5,13 +5,13 @@
 #SBATCH --nodes=2		        # number of nodes (32 cpus per node)
 #SBATCH --ntasks-per-node=32	        # number of MPI processes
 #SBATCH --mem=0M		        # total memory required; default unit is megabytes
-#SBATCH --time=00-02:00		        # time (DD-HH:MM) or (HH:MM:SS)
-#SBATCH --output=output_DNS_T10_dt1e-5_X1.01Y1.01_lin_macheps.out		# output file
-#SBATCH --job-name=DNS01            	# keep track of jobs
+#SBATCH --time=00-00:30		        # time (DD-HH:MM) or (HH:MM:SS)
+#SBATCH --output=output_DNS_T10_dt1e-3_X1.5Y1.5_macheps.out		# output file
+#SBATCH --job-name=DNST10L15            	# keep track of jobs
 
 module load StdEnv/2020 fftw-mpi/3.3.8 netcdf-fortran-mpi/4.5.2
-rm -rf /home/zigicj/scratch/2D_KS_Optimization/DNS_T10_dt1e-5_X1.01Y1.01_lin_macheps
-mkdir /home/zigicj/scratch/2D_KS_Optimization/DNS_T10_dt1e-5_X1.01Y1.01_lin_macheps
+rm -rf /home/zigicj/scratch/2D_KS_Optimization-1/DNS_T10_dt1e-3_X1.5Y1.5_macheps/
+mkdir /home/zigicj/scratch/2D_KS_Optimization-1/DNS_T10_dt1e-3_X1.5Y1.5_macheps/
 make clean
 make type=DNS
 srun ./prog			        # run the job
