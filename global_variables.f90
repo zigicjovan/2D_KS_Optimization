@@ -14,12 +14,12 @@ MODULE global_variables
   INTEGER, PARAMETER          :: pr           = KIND (0.0d0)              ! Integer label for compiler, used to represent double precision
   REAL, PARAMETER             :: MACH_EPSILON = 1.0e-16                   ! Define machine epsilon
   REAL(pr), PARAMETER         :: PalinIV      = 0.0_pr                    ! Value of initial cost functional at time 0 (for H1 semi norm)
-  REAL(pr), PARAMETER         :: iniTime      = 0.0_pr, endTime = 10.0_pr ! Initial and final time ! {700k elts/hr} => {10m elts = 15h, 1m elts = 1.5h}, {<700k = 1 hour}
+  REAL(pr), PARAMETER         :: iniTime      = 0.0_pr, endTime = 40.0_pr ! Initial and final time ! {700k elts/hr} => {10m elts = 15h, 1m elts = 1.5h}, {<700k = 1 hour}
   CHARACTER(len=*), PARAMETER :: normconstr   = "H1semi"                  ! Type of norm constraint to enforce on problem
   CHARACTER(len=*), PARAMETER :: Grad_type    = "H1"                      ! Type of gradient used in optimization scheme
   REAL, PARAMETER             :: visc    = 1e0         ! Kinematic viscosity
   INTEGER, PARAMETER          :: RESOL   = 512         ! Number of discretization points in one direction
-  REAL(pr), PARAMETER         :: dt      = 0.00001_pr  ! Time step size
+  REAL(pr), PARAMETER         :: dt      = 0.001_pr  ! Time step size
   REAL(pr), PARAMETER         :: ell     = 1.0_pr      ! Sobolev parameter for H1 Gradient
   CHARACTER(len=*), PARAMETER :: IC_type = "noise"     ! Type of initial vorticity to use (sinusoidal) ! 2DKS
   !CHARACTER(len=*), PARAMETER :: IC_type = "sine"     ! Type of initial vorticity to use (sinusoidal) ! 2DNS Taylor-Green vortex
