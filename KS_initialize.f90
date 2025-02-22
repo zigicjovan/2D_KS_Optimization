@@ -45,7 +45,7 @@ SUBROUTINE KS_initialize
   nh       = int(n_nse(1)/2) + 1 ! Half the number of points in x with padding, for R2C and C2R transforms (using conjugate symmetry)
 
   ! Size of periodic domain
-  Lx = (2.0_pr*PI)*1.01_pr      ! Length in the x direction
+  Lx = (2.0_pr*PI)*1.1_pr      ! Length in the x direction
   !!Lx = (2.0_pr*PI)*1.2_pr    ! Length in the x direction
   !!Lx = (2.0_pr*PI)*1.5_pr    ! Length in the x direction
   !!Lx = (2.0_pr*PI)*1.8_pr    ! Length in the x direction
