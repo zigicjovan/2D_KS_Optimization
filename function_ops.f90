@@ -166,6 +166,28 @@ MODULE function_ops
           END DO
         END DO
 
+        ! mach eps level sinusoidal initial condition
+        CASE ("machepssinL")
+        DO j=1,local_Ny
+          DO i=1,n_nse(1)
+            ! x and y coordinates
+            X = REAL(i-1,pr)*dx(1)
+            Y = REAL(local_y_offset-1+j,pr)*dx(2)
+            vort0(i,j) = MACH_EPSILON*100*(sin(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y) + sin(((2.0_pr*PI)/Lx)*X) + sin(((2.0_pr*PI)/Ly)*Y))
+          END DO
+        END DO
+
+        ! mach eps level sinusoidal initial condition
+        CASE ("machepssinN")
+        DO j=1,local_Ny
+          DO i=1,n_nse(1)
+            ! x and y coordinates
+            X = REAL(i-1,pr)*dx(1)
+            Y = REAL(local_y_offset-1+j,pr)*dx(2)
+            vort0(i,j) = MACH_EPSILON*100*( sin(n_nse(1)*2.0_pr*PI*((2.0_pr*PI)/Lx)*X) + sin(n_nse(2)*2.0_pr*PI*((2.0_pr*PI)/Ly)*Y) +  cos(n_nse(1)*2.0_pr*PI*((2.0_pr*PI)/Lx)*X) + cos(n_nse(2)*2.0_pr*PI*((2.0_pr*PI)/Ly)*Y) )
+          END DO
+        END DO
+
         ! Kuramoto-Sivashinsky Gaussian initial condition
         CASE ("gaussianKS")
         DO j=1,local_Ny
@@ -635,8 +657,8 @@ MODULE function_ops
 
       ! Compute Jacobian, convective derivative (u,v).grad(w) and obtain correct sign for the Jacobian
       !J = -(fx*gy - fy*gx) ! 2DNS
-      J = -(1.0_pr/2.0_pr)*(fx*fy + fy*fx) ! 2DKS
-      !J = 0 ! Linearized equation
+      !J = -(1.0_pr/2.0_pr)*(fx*fy + fy*fx) ! 2DKS
+      J = 0 ! Linearized equation
       ! Compute Fourier transform of Jacobian
       CALL fftfwd(J, Jhat)
       ! Dealias
