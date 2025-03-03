@@ -167,17 +167,6 @@ MODULE function_ops
         END DO
 
         ! mach eps level sinusoidal initial condition
-        CASE ("machepssinL")
-        DO j=1,local_Ny
-          DO i=1,n_nse(1)
-            ! x and y coordinates
-            X = REAL(i-1,pr)*dx(1)
-            Y = REAL(local_y_offset-1+j,pr)*dx(2)
-            vort0(i,j) = MACH_EPSILON*100*(sin(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y) + sin(((2.0_pr*PI)/Lx)*X) + sin(((2.0_pr*PI)/Ly)*Y))
-          END DO
-        END DO
-
-        ! mach eps level sinusoidal initial condition
         CASE ("machepssinN")
         DO j=1,local_Ny
           DO i=1,n_nse(1)
