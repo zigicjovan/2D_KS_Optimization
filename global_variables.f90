@@ -11,28 +11,40 @@ MODULE global_variables
   IMPLICIT NONE                   ! Prevent using implicit typing rules
 
   ! Define parameters to use throughout codes (Note: variables that are initialized when declared have an implicit save attribute)
-  INTEGER, PARAMETER          :: pr           = KIND (0.0d0)              ! Integer label for compiler, used to represent double precision
-  REAL, PARAMETER             :: MACH_EPSILON = 1.0e-16                   ! Define machine epsilon
-  REAL(pr), PARAMETER         :: PalinIV      = 0.0_pr                    ! Value of initial cost functional at time 0 (for H1 semi norm)
-  REAL(pr), PARAMETER         :: iniTime      = 0.0_pr, endTime = 40.0_pr ! Initial and final time ! {700k elts/hr} => {10m elts = 15h, 1m elts = 1h30}, {<700k = 1 hour}
-  REAL(pr), PARAMETER         :: domain1      = 1.2_pr, domain2 = 1.2_pr  ! domain size 
-  CHARACTER(len=*), PARAMETER :: normconstr   = "H1semi"                  ! Type of norm constraint to enforce on problem
-  CHARACTER(len=*), PARAMETER :: Grad_type    = "H1"                      ! Type of gradient used in optimization scheme
-  REAL, PARAMETER             :: visc    = 1e0         ! Kinematic viscosity
-  INTEGER, PARAMETER          :: RESOL   = 512         ! Number of discretization points in one direction
-  REAL(pr), PARAMETER         :: dt      = 0.001_pr  ! Time step size
-  REAL(pr), PARAMETER         :: ell     = 1.0_pr      ! Sobolev parameter for H1 Gradient
-  CHARACTER(len=*), PARAMETER :: IC_type = "machepssinL"     ! Type of initial vorticity to use (mach eps level noise) ! 2DKS
-  !CHARACTER(len=*), PARAMETER :: IC_type = "sineL"     ! Type of initial vorticity to use (sinusoidal) ! 2DKS
-  !CHARACTER(len=*), PARAMETER :: IC_type = "sine"     ! Type of initial vorticity to use (sinusoidal) ! 2DNS Taylor-Green vortex
+  INTEGER, PARAMETER          :: pr           = KIND (0.0d0)   ! Integer label for compiler, used to represent double precision
+  REAL, PARAMETER             :: MACH_EPSILON = 1.0e-16        ! Define machine epsilon
+  REAL(pr), PARAMETER         :: PalinIV      = 0.0_pr         ! Value of initial cost functional at time 0 (for H1 semi norm)
+  REAL(pr), PARAMETER         :: iniTime      = 0.0_pr         ! Initial time 
+  REAL(pr), PARAMETER         :: endTime      = 40.0_pr        ! final time ! {700k elts/hr} => {10m elts = 15h, 1m elts = 1h30}, {<700k = 1 hour}
+  INTEGER, PARAMETER          :: RESOL        = 512            ! Number of discretization points in one direction
+  REAL(pr), PARAMETER         :: dt           = 0.001_pr       ! Time step size
+  REAL(pr), PARAMETER         :: domain1      = 1.2_pr         ! domain size 
+  REAL(pr), PARAMETER         :: domain2      = 1.2_pr         ! domain size 
+  CHARACTER(len=*), PARAMETER :: IC_type      = "machepsnoise" ! Type of initial vorticity to use ! 2DKS
+  CHARACTER(len=*), PARAMETER :: normconstr   = "H1semi"       ! Type of norm constraint to enforce on problem
+  CHARACTER(len=*), PARAMETER :: Grad_type    = "H1"           ! Type of gradient used in optimization scheme
+  REAL, PARAMETER             :: visc         = 1e0            ! Kinematic viscosity
+  REAL(pr), PARAMETER         :: ell          = 1.0_pr         ! Sobolev parameter for H1 Gradient
+
+  ! Directories for saving (update strings according to parameters above)
+  CHARACTER(len=*), PARAMETER :: str_endTime = "40"
+  CHARACTER(len=*), PARAMETER :: str_dt      = "1e-3"
+  CHARACTER(len=*), PARAMETER :: str_domain1 = "1.2"
+  CHARACTER(len=*), PARAMETER :: str_domain2 = "1.2" 
+  CHARACTER(len=*), PARAMETER :: bin_pathname = "/home/zigicj/scratch/2D_KS_Optimization-1/DNS_T"//str_endTime//"_dt"//str_dt//"_X"//str_domain1//"Y"//str_domain2//"_"//IC_type//"/" !! beluga
+  CHARACTER(len=*), PARAMETER :: dir_pathname = "/home/zigicj/scratch/2D_KS_Optimization-1/bin_files/" !! beluga
 
   INTEGER, PARAMETER          :: RESOLP   = RESOL     ! Number of discretization points from previous optimization for bootstrapping
   REAL, PARAMETER             :: viscP    = visc      ! Viscosity from previous optimization for bootstrapping
   REAL, PARAMETER             :: endTimeP = endTime   ! Final time from previous optimization for bootstrapping
-  REAL, PARAMETER             :: domain1P = domain1   
-  REAL, PARAMETER             :: domain2P = domain2   
   REAL(pr), PARAMETER         :: ellP     = ell       ! Sobolev parameter from previous optimization for bootstrapping
   LOGICAL, PARAMETER          :: BS_flag  = .FALSE.   ! Flag to indicate if this is more than first bootstrap (first bs, set to false; more, set to true)
+
+  ! Variables for saving
+  CHARACTER(4)  :: Nchar        ! Resolution as character
+  CHARACTER(8)  :: lchar        ! Sobolev parameter as character
+  CHARACTER(10) :: tchar        ! Final time as character
+  CHARACTER(10) :: viscchar     ! Viscosity as character
 
   ! Initialize variables
   LOGICAL                        :: diagn_flag             ! Flag to indicate if code should save data
@@ -67,23 +79,8 @@ MODULE global_variables
   REAL(pr), DIMENSION (:,:),   ALLOCATABLE, SAVE :: lin_hat    ! Vorticity Field (linear term)
 
   ! Directories for saving
-  !CHARACTER(len=*), PARAMETER :: work_pathname    = "/home/zigicj/2DKS_optimization/2D_KS_Optimization/DNS_/" !! graham
-  !CHARACTER(len=*), PARAMETER :: scratch_pathname = "/home/zigicj/2DKS_optimization/2D_KS_Optimization/bin_files/" !! graham
-  CHARACTER(len=*), PARAMETER :: work_pathname    = "/home/zigicj/scratch/2D_KS_Optimization-1/DNS_T40_dt1e-3_X1.2Y1.2_lin_machepssinL/" !! beluga
+  CHARACTER(len=*), PARAMETER :: work_pathname    = "/home/zigicj/scratch/2D_KS_Optimization-1/DNS_T40_dt1e-3_X1.2Y1.2_"//IC_type//"/" !! beluga
   CHARACTER(len=*), PARAMETER :: scratch_pathname = "/home/zigicj/scratch/2D_KS_Optimization-1/bin_files/" !! beluga
-  !CHARACTER(3)   :: tcharP       
-  !CHARACTER(4)   :: domain1char        
-  !CHARACTER(4)   :: domain2char        
-  !WRITE(tcharP, '(i3)') endTimeP
-  !WRITE(domain1char, '(f4.2)') domain1P
-  !WRITE(domain2char, '(f4.2)') domain2P
-  !CHARACTER(len=*), PARAMETER :: work_pathname    = "/home/zigicj/scratch/2D_KS_Optimization-1/DNS_T"//TRIM(tcharP)//"_dt1e-3_X"//TRIM(domain1char)//"Y"//TRIM(domain2char)//"_lin_machepssinL/" !! beluga
-
-  ! Variables for saving
-  CHARACTER(4)  :: Nchar        ! Resolution as character
-  CHARACTER(8)  :: lchar        ! Sobolev parameter as character
-  CHARACTER(10) :: tchar        ! Final time as character
-  CHARACTER(10) :: viscchar     ! Viscosity as character
 
   !==========================================================================
   !                            MPI VARIABLES

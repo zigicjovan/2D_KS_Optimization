@@ -29,7 +29,7 @@ MODULE data_ops
     !==================================================================
     SUBROUTINE save_bin(mydata)
       ! Load variables
-      USE global_variables, ONLY: pr, rank, n_nse, RESOL, nx_dim, visc, Lx, Ly, local_Ny, scratch_pathname, IC_type, normconstr, Grad_type, endTime, ell, Time_iter, Nchar, lchar, tchar, viscchar, Statinfo
+      USE global_variables, ONLY: pr, rank, n_nse, RESOL, nx_dim, visc, Lx, Ly, local_Ny, dir_pathname, IC_type, normconstr, Grad_type, endTime, ell, Time_iter, Nchar, lchar, tchar, viscchar, Statinfo
       USE mpi                 ! Use MPI module (binding works well with fftw libraries)
       ! Initialize variables
       COMPLEX(pr), DIMENSION(:,:), INTENT(IN)  :: mydata       ! Vorticity field, to be saved
@@ -43,7 +43,7 @@ MODULE data_ops
       WRITE(indexchar, '(i6.6)') Time_iter
       WRITE(timechar, '(i2.2)')  int(endTime*1.0e1)
       ! Filename path for saving in the scratch folder, for current timestep
-      filename = TRIM(scratch_pathname)//"Vort_fwdNS_"//IC_type//"_Norm"//normconstr//"_Grad"//Grad_type//"_N"//Nchar//"_NU"//TRIM(ADJUSTL(viscchar))//"_L"//TRIM(ADJUSTL(lchar))//"_T"//TRIM(ADJUSTL(tchar))//"_"//indexchar//".bin"
+      filename = TRIM(dir_pathname)//"Vort_fwdNS_"//IC_type//"_Norm"//normconstr//"_Grad"//Grad_type//"_N"//Nchar//"_NU"//TRIM(ADJUSTL(viscchar))//"_L"//TRIM(ADJUSTL(lchar))//"_T"//TRIM(ADJUSTL(tchar))//"_"//indexchar//".bin"
       ! Delete any existing file
       IF (rank==0) THEN
         CALL MPI_File_delete(filename, MPI_INFO_NULL, Statinfo)
@@ -68,7 +68,7 @@ MODULE data_ops
     !==================================================================
     SUBROUTINE read_bin(mydata)
       ! Load variables
-      USE global_variables, ONLY: pr, rank, n_nse, RESOL, nx_dim, visc, Lx, Ly, local_Ny, scratch_pathname, IC_type, normconstr, Grad_type, endTime, ell, Time_iter, Nchar, lchar, tchar, viscchar, Statinfo
+      USE global_variables, ONLY: pr, rank, n_nse, RESOL, nx_dim, visc, Lx, Ly, local_Ny, dir_pathname, IC_type, normconstr, Grad_type, endTime, ell, Time_iter, Nchar, lchar, tchar, viscchar, Statinfo
       USE mpi                 ! Use MPI module (binding works well with fftw libraries)
       ! Initialize variables
       COMPLEX(pr), DIMENSION(:,:), INTENT(OUT) :: mydata       ! Vorticity field, to be read
@@ -82,7 +82,7 @@ MODULE data_ops
       WRITE(indexchar, '(i6.6)') Time_iter
       WRITE(timechar, '(i2.2)')  int(endTime*1.0e1)
       ! Filename path for saving in the scratch folder, for current timestep
-      filename = TRIM(scratch_pathname)//"Vort_fwdNS_"//IC_type//"_Norm"//normconstr//"_Grad"//Grad_type//"_N"//Nchar//"_NU"//TRIM(ADJUSTL(viscchar))//"_L"//TRIM(ADJUSTL(lchar))//"_T"//TRIM(ADJUSTL(tchar))//"_"//indexchar//".bin"
+      filename = TRIM(dir_pathname)//"Vort_fwdNS_"//IC_type//"_Norm"//normconstr//"_Grad"//Grad_type//"_N"//Nchar//"_NU"//TRIM(ADJUSTL(viscchar))//"_L"//TRIM(ADJUSTL(lchar))//"_T"//TRIM(ADJUSTL(tchar))//"_"//indexchar//".bin"
       ! Open the file for reading
       CALL MPI_File_open(MPI_COMM_WORLD, filename, MPI_MODE_RDONLY, MPI_INFO_NULL, file_handle, Statinfo)
       ! Calculate the processors offset in the file
@@ -132,7 +132,7 @@ MODULE data_ops
       INTEGER                              :: ii, t_len, j_len                                               ! Temporary integer for looping and reference lengths
 
       ! Filename path for saving file
-      filename = TRIM(work_pathname)//"Optimization_"//IC_type//"_Norm"//normconstr//"_Grad"//Grad_type//"_N"//Nchar//"_NU"//TRIM(ADJUSTL(viscchar))//"_L"//TRIM(ADJUSTL(lchar))//"_T"//TRIM(ADJUSTL(tchar))//".nc"
+      filename = TRIM(bin_pathname)//"Optimization_"//IC_type//"_Norm"//normconstr//"_Grad"//Grad_type//"_N"//Nchar//"_NU"//TRIM(ADJUSTL(viscchar))//"_L"//TRIM(ADJUSTL(lchar))//"_T"//TRIM(ADJUSTL(tchar))//".nc"
       CALL MPI_BARRIER(MPI_COMM_WORLD, Statinfo)
 
       IF (rank==0) THEN
@@ -291,7 +291,7 @@ MODULE data_ops
       INTEGER                              :: ii, t_len                                       ! Temporary integer for looping and reference length
 
       ! Filename path for saving file
-      filename = TRIM(work_pathname)//"DNS_"//IC_type//"_Norm"//normconstr//"_Grad"//Grad_type//"_N"//Nchar//"_L"//TRIM(ADJUSTL(lchar))//"_T"//TRIM(ADJUSTL(tchar))//".nc"
+      filename = TRIM(bin_pathname)//"DNS_"//IC_type//"_Norm"//normconstr//"_Grad"//Grad_type//"_N"//Nchar//"_L"//TRIM(ADJUSTL(lchar))//"_T"//TRIM(ADJUSTL(tchar))//".nc"
 
       t_len = size(t)
       ! Initialize file for writing
@@ -438,7 +438,7 @@ MODULE data_ops
       INTEGER                               :: ii             ! Temporary integer for looping
 
       ! Filename path for reading file
-      filename = TRIM(work_pathname)//"Optimization_"//myIC//"_Norm"//normconstr//"_Grad"//Grad_type//"_N"//Nchar//"_NU"//TRIM(ADJUSTL(viscchar))//"_L"//TRIM(ADJUSTL(lchar))//"_T"//TRIM(ADJUSTL(tchar))//".nc"
+      filename = TRIM(bin_pathname)//"Optimization_"//myIC//"_Norm"//normconstr//"_Grad"//Grad_type//"_N"//Nchar//"_NU"//TRIM(ADJUSTL(viscchar))//"_L"//TRIM(ADJUSTL(lchar))//"_T"//TRIM(ADJUSTL(tchar))//".nc"
 
       CALL MPI_BARRIER(MPI_COMM_WORLD, Statinfo)
 
@@ -473,7 +473,7 @@ MODULE data_ops
     !==================================================================
     SUBROUTINE read_BS_Opt( myIC, w )
       ! Load variables
-      USE global_variables!, ONLY: pr, n_nse, visc, local_Ny, work_pathname, IC_type
+      USE global_variables!, ONLY: pr, n_nse, visc, local_Ny, bin_pathname, IC_type
       USE netcdf              ! Use netcdf for saving files
       USE mpi                 ! Use MPI module (binding works well with fftw libraries)
       ! Initialize variables
@@ -499,7 +499,7 @@ MODULE data_ops
       ! Previous final time as a character
       WRITE(tcharP, '(ES10.2)') endTimeP
       ! Filename path for saving file
-      filename = TRIM(work_pathname)//"Optimization_"//myIC//"_Norm"//normconstr//"_Grad"//Grad_type//"_N"//NcharP//"_NU"//TRIM(ADJUSTL(visccharP))//"_L"//TRIM(ADJUSTL(lcharP))//"_T"//TRIM(ADJUSTL(tcharP))//".nc"
+      filename = TRIM(bin_pathname)//"Optimization_"//myIC//"_Norm"//normconstr//"_Grad"//Grad_type//"_N"//NcharP//"_NU"//TRIM(ADJUSTL(visccharP))//"_L"//TRIM(ADJUSTL(lcharP))//"_T"//TRIM(ADJUSTL(tcharP))//".nc"
 
       CALL MPI_BARRIER(MPI_COMM_WORLD, Statinfo)
 
@@ -535,7 +535,7 @@ MODULE data_ops
     !==================================================================
     SUBROUTINE save_NS_vorticity(w, myindex, mytype)
       ! Load variables
-      USE global_variables, ONLY: pr, n_nse, RESOL, visc, Lx, Ly, local_Ny, work_pathname, IC_type
+      USE global_variables, ONLY: pr, n_nse, RESOL, visc, Lx, Ly, local_Ny, bin_pathname, IC_type
       ! Initialize variables
 !      REAL(pr), DIMENSION(1:n_nse(1),1:local_Ny), INTENT(IN) :: w         ! Vorticity field, to be saved
       REAL(pr), DIMENSION(:,:),                   INTENT(IN) :: w         ! Vorticity field, to be saved
@@ -553,7 +553,7 @@ MODULE data_ops
       ! Viscosity as a character
       !WRITE(viscchar, '(i13.13)') int(visc*(1.0e12)) ! 2DNS
       ! Filename path for saving in the scratch folder, for current timestep
-      filename = TRIM(work_pathname)//"Vorticity_"//IC_type//"_N"//Nchar//"_"//mytype//"_"//indexchar//".nc"
+      filename = TRIM(bin_pathname)//"Vorticity_"//IC_type//"_N"//Nchar//"_"//mytype//"_"//indexchar//".nc"
       ! Save the vorticity as a netCDF file
       CALL save_field_R2toR1_ncdf(w, "w", filename)
     END SUBROUTINE save_NS_vorticity
@@ -568,7 +568,7 @@ MODULE data_ops
     !==================================================================
     SUBROUTINE save_NS_fwd(w, KinEnerg, Ens, Pal, t, myindex)
       ! Load variables
-      USE global_variables, ONLY: pr, n_nse, RESOL, visc, Lx, Ly, local_Ny, work_pathname, IC_type
+      USE global_variables, ONLY: pr, n_nse, RESOL, visc, Lx, Ly, local_Ny, bin_pathname, IC_type
       ! Initialize variables
 !      REAL(pr), DIMENSION(1:n_nse(1),1:local_Ny), INTENT(IN) :: w         ! Vorticity field, to be saved
       REAL(pr), DIMENSION(:,:),                   INTENT(IN) :: w         ! Vorticity field, to be saved
@@ -589,19 +589,19 @@ MODULE data_ops
       ! Viscosity as a character
       WRITE(viscchar, '(i13.13)') int(visc*(1.0e12))
       ! Filename path for saving vorticity
-      filename = TRIM(work_pathname)//"Vorticity_"//IC_type//"_N"//Nchar//"_NU"//viscchar//"_FWDFinal_"//indexchar//".nc"
+      filename = TRIM(bin_pathname)//"Vorticity_"//IC_type//"_N"//Nchar//"_NU"//viscchar//"_FWDFinal_"//indexchar//".nc"
       CALL save_field_R2toR1_ncdf(w, "w", filename) ! Save vorticity field
       ! Filename path for saving enstrophy
-      filename = TRIM(work_pathname)//"Vorticity_"//IC_type//"_N"//Nchar//"_NU"//viscchar//"_Kin_"//indexchar//".nc"
+      filename = TRIM(bin_pathname)//"Vorticity_"//IC_type//"_N"//Nchar//"_NU"//viscchar//"_Kin_"//indexchar//".nc"
       CALL save_field_R1toR1_ncdf(KinEnerg, "Kin", filename) ! Save Kinetic Energy
       ! Filename path for saving enstrophy
-      filename = TRIM(work_pathname)//"Vorticity_"//IC_type//"_N"//Nchar//"_NU"//viscchar//"_Enst_"//indexchar//".nc"
+      filename = TRIM(bin_pathname)//"Vorticity_"//IC_type//"_N"//Nchar//"_NU"//viscchar//"_Enst_"//indexchar//".nc"
       CALL save_field_R1toR1_ncdf(Ens, "Enst", filename) ! Save Enstrophy
       ! Filename path for saving enstrophy
-      filename = TRIM(work_pathname)//"Vorticity_"//IC_type//"_N"//Nchar//"_NU"//viscchar//"_Palin_"//indexchar//".nc"
+      filename = TRIM(bin_pathname)//"Vorticity_"//IC_type//"_N"//Nchar//"_NU"//viscchar//"_Palin_"//indexchar//".nc"
       CALL save_field_R1toR1_ncdf(Pal, "Palin", filename) ! Save Palinstrophy
       ! Filename path for saving time vector
-      filename = TRIM(work_pathname)//"Vorticity_"//IC_type//"_N"//Nchar//"_NU"//viscchar//"_t_"//indexchar//".nc"
+      filename = TRIM(bin_pathname)//"Vorticity_"//IC_type//"_N"//Nchar//"_NU"//viscchar//"_t_"//indexchar//".nc"
       CALL save_field_R1toR1_ncdf(t, "tvec", filename)  ! Save time vector
     END SUBROUTINE save_NS_fwd
 
