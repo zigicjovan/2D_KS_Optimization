@@ -153,7 +153,7 @@ MODULE function_ops
         END DO
 
         ! Random noise initial condition
-        CASE ("noise")
+        CASE ("machepsnoise")
         DO j=1,local_Ny
           DO i=1,n_nse(1)
             ! x and y coordinates
