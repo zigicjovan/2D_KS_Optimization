@@ -646,8 +646,8 @@ MODULE function_ops
 
       ! Compute Jacobian, convective derivative (u,v).grad(w) and obtain correct sign for the Jacobian
       !J = -(fx*gy - fy*gx) ! 2DNS
-      !J = -(1.0_pr/2.0_pr)*(fx*fy + fy*fx) ! 2DKS
-      J = 0 ! Linearized equation
+      J = -(1.0_pr/2.0_pr)*(fx*fy + fy*fx) ! 2DKS
+      !J = 0 ! Linearized equation
       ! Compute Fourier transform of Jacobian
       CALL fftfwd(J, Jhat)
       ! Dealias
