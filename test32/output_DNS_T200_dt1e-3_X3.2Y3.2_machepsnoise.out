@@ -1,0 +1,74 @@
+
+Due to MODULEPATH changes, the following have been reloaded:
+  1) mii/1.1.2
+
+The following have been reloaded with a version change:
+  1) StdEnv/2023 => StdEnv/2020           5) libfabric/1.18.0 => libfabric/1.10.1
+  2) gcccore/.12.3 => gcccore/.9.3.0      6) openmpi/4.1.5 => openmpi/4.0.3
+  3) gentoo/2023 => gentoo/2020           7) ucx/1.14.1 => ucx/1.8.0
+  4) imkl/2023.2.0 => imkl/2020.1.217
+
+rm -f *.o *~ *.mod
+mpif90  -c   global_variables.f90
+mpif90  -c   fftwfunction.f90
+mpif90  -c   KS_initialize.f90
+mpif90  -c   data_ops.f90
+mpif90  -c   function_ops.f90
+mpif90  -c   solvers.f90
+mpif90  -c   dns2DKS_main.f90
+mpif90  -o prog global_variables.o fftwfunction.o KS_initialize.o data_ops.o function_ops.o solvers.o dns2DKS_main.o -lm -lmpi                 -lfftw3_mpi -lfftw3 -lm   -lnetcdff -lnetcdf       
+ ============================================== 
+           Direct Numerical Simulation          
+ ============================================== 
+ Resolution Nx  =   512
+ Resolution Ny  =   512
+ Time Step Size =      1.0000E-03
+ Final Time T   =      2.0000E+02
+ Viscosity      =      1.0000E+00
+ Processors     =    32
+  Initial guess  = machepsnoise
+  Norm Constr    = H1semi
+ ============================================== 
+  Successful FFT Initialization. 
+ ============================================== 
+  Successful Initial Condition. 
+ ============================================== 
+  Solving Forward DNS...
+ Initial time value      =      0.0000E+00
+ Number of elements      = 200000
+ Initial Enstrophy       =       6.7455E-27
+ Initial L^2 In.Prod.    =       1.3491E-26
+ Initial H^1 In.Prod.    =       3.4471E-19
+ Initial H^2 In.Prod.    =       1.9108E-11
+ Initial H^(-1) In.Prod. =       1.4863E-30
+ Initial Kinetic Energy  =       8.6970E-30
+ Initial Palinstrophy    =       2.8753E-23
+ ============================================== 
+ Final time value       =      2.0000E+02
+ Time iterations        = 200001
+ Final Enstrophy        =       1.4736E+03
+ Final L^2 In.Prod.     =       9.4313E+04
+ Final H^1 In.Prod.     =       2.7856E+05
+ Final H^2 In.Prod.     =       1.3427E+06
+ Final H^(-1) In.Prod.  =       4.2655E+04
+ Final Kinetic Energy   =       4.8000E+03
+ Final Palinstrophy     =       9.4981E+02
+ Mean of final solution =       0.0000E+00
+ ============================================== 
+  DNS solved.
+ ============================================== 
+  Successful Deallocation. 
+ ============================================== 
+ Exit Normally!
+Job ID: 54411416
+Cluster: beluga
+User/Group: zigicj/zigicj
+State: RUNNING
+Nodes: 1
+Cores per node: 32
+CPU Utilized: 11:32:54
+CPU Efficiency: 96.24% of 12:00:00 core-walltime
+Job Wall-clock time: 00:22:30
+Memory Utilized: 2.40 GB (estimated maximum)
+Memory Efficiency: 1.28% of 186.52 GB (186.52 GB/node)
+WARNING: Efficiency statistics may be misleading for RUNNING jobs.
