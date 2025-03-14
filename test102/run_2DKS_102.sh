@@ -10,8 +10,8 @@
 #SBATCH --job-name=dnsT200x102y102            	# keep track of jobs
 
 module load StdEnv/2020 fftw-mpi/3.3.8 netcdf-fortran-mpi/4.5.2
-rm -rf /home/zigicj/scratch/2D_KS_Optimization-1/DNS_T200_dt1e-3_X10.2Y10.2_machepsnoise/
-mkdir /home/zigicj/scratch/2D_KS_Optimization-1/DNS_T200_dt1e-3_X10.2Y10.2_machepsnoise/
+rm -rf /home/zigicj/projects/def-bprotas/zigicj/2D_KS_Optimization/DNS_T200_dt1e-3_X10.2Y10.2_machepsnoise/
+mkdir /home/zigicj/projects/def-bprotas/zigicj/2D_KS_Optimization/DNS_T200_dt1e-3_X10.2Y10.2_machepsnoise/
 make clean
 make type=DNS
 srun ./prog			    # run the job

@@ -32,8 +32,8 @@ MODULE global_variables
   CHARACTER(len=*), PARAMETER :: str_dt      = "1e-3"
   CHARACTER(len=*), PARAMETER :: str_domain1 = "3.2"
   CHARACTER(len=*), PARAMETER :: str_domain2 = "3.2" 
-  CHARACTER(len=*), PARAMETER :: bin_pathname = "/home/zigicj/scratch/2D_KS_Optimization-1/DNS_T"//str_endTime//"_dt"//str_dt//"_X"//str_domain1//"Y"//str_domain2//"_"//IC_type//"/" !! beluga
-  CHARACTER(len=*), PARAMETER :: dir_pathname = "/home/zigicj/scratch/2D_KS_Optimization-1/bin_files/" !! beluga
+  CHARACTER(len=*), PARAMETER :: bin_pathname = "/home/zigicj/projects/def-bprotas/zigicj/2D_KS_Optimization/DNS_T"//str_endTime//"_dt"//str_dt//"_X"//str_domain1//"Y"//str_domain2//"_"//IC_type//"/" !! beluga
+  CHARACTER(len=*), PARAMETER :: dir_pathname = "/home/zigicj/projects/def-bprotas/zigicj/2D_KS_Optimization/bin_files/" !! beluga
 
   INTEGER, PARAMETER          :: RESOLP   = RESOL     ! Number of discretization points from previous optimization for bootstrapping
   REAL, PARAMETER             :: viscP    = visc      ! Viscosity from previous optimization for bootstrapping
