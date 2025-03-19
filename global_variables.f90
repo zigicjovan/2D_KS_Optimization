@@ -18,7 +18,7 @@ MODULE global_variables
   REAL(pr), PARAMETER         :: endTime      = 150.0_pr        ! final time ! {700k elts/hr} => {10m elts = 15h, 1m elts = 1h30}, {<700k = 1 hour}
   INTEGER, PARAMETER          :: RESOL        = 512            ! Number of discretization points in one direction
   REAL(pr), PARAMETER         :: dt           = 0.001_pr       ! Time step size
-  REAL(pr), PARAMETER         :: dt_save      = 100.0_pr       ! Number of time steps saved to file
+  REAL(pr), PARAMETER         :: dt_save      = endTime       ! Number of time steps saved to file
   REAL(pr), PARAMETER         :: domain1      = 1.2_pr         ! domain size 
   REAL(pr), PARAMETER         :: domain2      = 1.2_pr         ! domain size 
   CHARACTER(len=*), PARAMETER :: IC_type      = "machepssinN" ! Type of initial vorticity to use ! 2DKS
