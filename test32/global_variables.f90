@@ -15,20 +15,20 @@ MODULE global_variables
   REAL, PARAMETER             :: MACH_EPSILON = 1.0e-16        ! Define machine epsilon
   REAL(pr), PARAMETER         :: PalinIV      = 0.0_pr         ! Value of initial cost functional at time 0 (for H1 semi norm)
   REAL(pr), PARAMETER         :: iniTime      = 0.0_pr         ! Initial time 
-  REAL(pr), PARAMETER         :: endTime      = 200.0_pr        ! final time ! {700k elts/hr} => {10m elts = 15h, 1m elts = 1h30}, {<700k = 1 hour}
+  REAL(pr), PARAMETER         :: endTime      = 150.0_pr        ! final time ! {700k elts/hr} => {10m elts = 15h, 1m elts = 1h30}, {<700k = 1 hour}
   INTEGER, PARAMETER          :: RESOL        = 512            ! Number of discretization points in one direction
   REAL(pr), PARAMETER         :: dt           = 0.001_pr       ! Time step size
-  REAL(pr), PARAMETER         :: dt_save      = 200.0_pr       ! Number of time steps saved to file
+  REAL(pr), PARAMETER         :: dt_save      = 100.0_pr       ! Number of time steps saved to file
   REAL(pr), PARAMETER         :: domain1      = 3.2_pr         ! domain size 
   REAL(pr), PARAMETER         :: domain2      = 3.2_pr         ! domain size 
-  CHARACTER(len=*), PARAMETER :: IC_type      = "machepsnoise" ! Type of initial vorticity to use ! 2DKS
+  CHARACTER(len=*), PARAMETER :: IC_type      = "machepssinN" ! Type of initial vorticity to use ! 2DKS
   CHARACTER(len=*), PARAMETER :: normconstr   = "H1semi"       ! Type of norm constraint to enforce on problem
   CHARACTER(len=*), PARAMETER :: Grad_type    = "H1"           ! Type of gradient used in optimization scheme
   REAL, PARAMETER             :: visc         = 1e0            ! Kinematic viscosity
   REAL(pr), PARAMETER         :: ell          = 1.0_pr         ! Sobolev parameter for H1 Gradient
 
   ! Directories for saving (update strings according to parameters above)
-  CHARACTER(len=*), PARAMETER :: str_endTime = "200"
+  CHARACTER(len=*), PARAMETER :: str_endTime = "150"
   CHARACTER(len=*), PARAMETER :: str_dt      = "1e-3"
   CHARACTER(len=*), PARAMETER :: str_domain1 = "3.2"
   CHARACTER(len=*), PARAMETER :: str_domain2 = "3.2" 
