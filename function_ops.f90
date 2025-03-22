@@ -152,6 +152,43 @@ MODULE function_ops
           END DO
         END DO
 
+        ! Domain-scaled multimodal sinusoidal initial condition
+        CASE ("multisineLn1")
+        DO j=1,local_Ny
+          DO i=1,n_nse(1)
+            ! x and y coordinates
+            X = REAL(i-1,pr)*dx(1)
+            Y = REAL(local_y_offset-1+j,pr)*dx(2)
+            vort0(i,j) = ((10.0_pr)**(-4))*( sin(1.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(2.0*((2.0_pr*PI)/Lx)*X) + sin(3.0*((2.0_pr*PI)/Ly)*Y) &
+                        + sin(6.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(5.0*((2.0_pr*PI)/Lx)*X) + sin(4.0*((2.0_pr*PI)/Ly)*Y) &
+                        + sin(8.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(8.0*((2.0_pr*PI)/Lx)*X) + sin(9.0*((2.0_pr*PI)/Ly)*Y) )
+          END DO
+        END DO
+
+        CASE ("multisineLn5")
+        DO j=1,local_Ny
+          DO i=1,n_nse(1)
+            ! x and y coordinates
+            X = REAL(i-1,pr)*dx(1)
+            Y = REAL(local_y_offset-1+j,pr)*dx(2)
+            vort0(i,j) = ((10.0_pr)**(-8))*( sin(1.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(2.0*((2.0_pr*PI)/Lx)*X) + sin(3.0*((2.0_pr*PI)/Ly)*Y) &
+                        + sin(6.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(5.0*((2.0_pr*PI)/Lx)*X) + sin(4.0*((2.0_pr*PI)/Ly)*Y) &
+                        + sin(8.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(8.0*((2.0_pr*PI)/Lx)*X) + sin(9.0*((2.0_pr*PI)/Ly)*Y) )
+          END DO
+        END DO
+
+        CASE ("multisineLn10")
+        DO j=1,local_Ny
+          DO i=1,n_nse(1)
+            ! x and y coordinates
+            X = REAL(i-1,pr)*dx(1)
+            Y = REAL(local_y_offset-1+j,pr)*dx(2)
+            vort0(i,j) = ((10.0_pr)**(-13))*( sin(1.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(2.0*((2.0_pr*PI)/Lx)*X) + sin(3.0*((2.0_pr*PI)/Ly)*Y) &
+                        + sin(6.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(5.0*((2.0_pr*PI)/Lx)*X) + sin(4.0*((2.0_pr*PI)/Ly)*Y) &
+                        + sin(8.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(8.0*((2.0_pr*PI)/Lx)*X) + sin(9.0*((2.0_pr*PI)/Ly)*Y) )
+          END DO
+        END DO
+
         ! Random noise initial condition
         CASE ("machepsnoise")
         DO j=1,local_Ny

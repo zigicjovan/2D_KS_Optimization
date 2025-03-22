@@ -62,7 +62,7 @@
 # Tp copy all files to a testing subdirectory:
 # 	mkdir test1
 #   cd test1
-# 	scp /home/zigicj/scratch/2D_KS_Optimization-1/* .
+# 	scp /home/zigicj/projects/def-bprotas/zigicj/2D_KS_Optimization/* .
 # To cancel:
 # 	scancel [job id] 
 # To add time:
