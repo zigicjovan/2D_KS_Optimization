@@ -553,7 +553,7 @@ MODULE data_ops
       ! Viscosity as a character
       !WRITE(viscchar, '(i13.13)') int(visc*(1.0e12)) ! 2DNS
       ! Filename path for saving in the scratch folder, for current timestep
-      filename = TRIM(bin_pathname)//"Vorticity_"//IC_type//"_N"//Nchar//"_"//mytype//"_"//indexchar//".nc"
+      filename = TRIM(bin_pathname)//"Velocity_N"//Nchar//"_"//mytype//"_"//indexchar//".nc" ! 2DKS
       ! Save the vorticity as a netCDF file
       CALL save_field_R2toR1_ncdf(w, "w", filename)
     END SUBROUTINE save_NS_vorticity
