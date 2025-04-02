@@ -66,7 +66,7 @@
 # To cancel:
 # 	scancel [job id] 
 # To add time:
-# 	scontrol update jobid=[job_id] TimeLimit=0-02:00
+# 	scontrol update jobid=[job_id] TimeLimit=0-00:30
 # To remove a subdirectory:
 # 	rm -rf [subdirectory] 
 # To debug [not on VScode, only on terminal]:

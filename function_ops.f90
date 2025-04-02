@@ -189,7 +189,7 @@ MODULE function_ops
           END DO
         END DO
 
-      CASE ("mn1")
+        CASE ("mn1")
         DO j=1,local_Ny
           DO i=1,n_nse(1)
             ! x and y coordinates
