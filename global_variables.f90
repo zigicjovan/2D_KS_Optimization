@@ -21,7 +21,7 @@ MODULE global_variables
   REAL(pr), PARAMETER         :: dt_save      = endTime        ! Number of time steps saved to file
   REAL(pr), PARAMETER         :: domain1      = 1.5_pr         ! domain size 
   REAL(pr), PARAMETER         :: domain2      = 1.5_pr         ! domain size 
-  CHARACTER(len=*), PARAMETER :: IC_type      = "mn1"          ! Type of initial vorticity to use ! 2DKS
+  CHARACTER(len=*), PARAMETER :: IC_type      = "sineL"          ! Type of initial vorticity to use ! 2DKS
   CHARACTER(len=*), PARAMETER :: normconstr   = "H1semi"       ! Type of norm constraint to enforce on problem
   CHARACTER(len=*), PARAMETER :: Grad_type    = "H1"           ! Type of gradient used in optimization scheme
   REAL, PARAMETER             :: visc         = 1e0            ! Kinematic viscosity
