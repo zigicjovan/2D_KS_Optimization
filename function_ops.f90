@@ -130,7 +130,7 @@ MODULE function_ops
           END DO
         END DO
 
-        ! Kuramoto-Sivashinsky sinusoidal initial condition
+        ! Kuramoto-Sivashinsky fixed-scale sinusoidal initial condition
         CASE ("sineKS")
         DO j=1,local_Ny
           DO i=1,n_nse(1)
@@ -152,50 +152,14 @@ MODULE function_ops
           END DO
         END DO
 
-        ! Domain-scaled multimodal sinusoidal initial condition
-        CASE ("multisineLn1")
-        DO j=1,local_Ny
-          DO i=1,n_nse(1)
-            ! x and y coordinates
-            X = REAL(i-1,pr)*dx(1)
-            Y = REAL(local_y_offset-1+j,pr)*dx(2)
-            vort0(i,j) = ((10.0_pr)**(-4))*( sin(1.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(2.0*((2.0_pr*PI)/Lx)*X) + sin(3.0*((2.0_pr*PI)/Ly)*Y) &
-                        + sin(6.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(5.0*((2.0_pr*PI)/Lx)*X) + sin(4.0*((2.0_pr*PI)/Ly)*Y) &
-                        + sin(8.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(8.0*((2.0_pr*PI)/Lx)*X) + sin(9.0*((2.0_pr*PI)/Ly)*Y) )
-          END DO
-        END DO
-
-        CASE ("multisineLn5")
-        DO j=1,local_Ny
-          DO i=1,n_nse(1)
-            ! x and y coordinates
-            X = REAL(i-1,pr)*dx(1)
-            Y = REAL(local_y_offset-1+j,pr)*dx(2)
-            vort0(i,j) = ((10.0_pr)**(-8))*( sin(1.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(2.0*((2.0_pr*PI)/Lx)*X) + sin(3.0*((2.0_pr*PI)/Ly)*Y) &
-                        + sin(6.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(5.0*((2.0_pr*PI)/Lx)*X) + sin(4.0*((2.0_pr*PI)/Ly)*Y) &
-                        + sin(8.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(8.0*((2.0_pr*PI)/Lx)*X) + sin(9.0*((2.0_pr*PI)/Ly)*Y) )
-          END DO
-        END DO
-
-        CASE ("multisineLn10")
-        DO j=1,local_Ny
-          DO i=1,n_nse(1)
-            ! x and y coordinates
-            X = REAL(i-1,pr)*dx(1)
-            Y = REAL(local_y_offset-1+j,pr)*dx(2)
-            vort0(i,j) = ((10.0_pr)**(-13))*( sin(1.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(2.0*((2.0_pr*PI)/Lx)*X) + sin(3.0*((2.0_pr*PI)/Ly)*Y) &
-                        + sin(6.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(5.0*((2.0_pr*PI)/Lx)*X) + sin(4.0*((2.0_pr*PI)/Ly)*Y) &
-                        + sin(8.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(8.0*((2.0_pr*PI)/Lx)*X) + sin(9.0*((2.0_pr*PI)/Ly)*Y) )
-          END DO
-        END DO
-
+        ! Domain-scaled multimodal sinusoidal initial conditions of varying magnitudes
         CASE ("mn1")
         DO j=1,local_Ny
           DO i=1,n_nse(1)
             ! x and y coordinates
             X = REAL(i-1,pr)*dx(1)
             Y = REAL(local_y_offset-1+j,pr)*dx(2)
-            vort0(i,j) = ((10.0_pr)**(-4))*( sin(1.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(5.0*((2.0_pr*PI)/Lx)*X) + sin(10.0*((2.0_pr*PI)/Ly)*Y) &
+            vort0(i,j) = ((10.0_pr)**(-1))*( sin(1.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(5.0*((2.0_pr*PI)/Lx)*X) + sin(10.0*((2.0_pr*PI)/Ly)*Y) &
                                           + sin(60.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(50.0*((2.0_pr*PI)/Lx)*X) + sin(30.0*((2.0_pr*PI)/Ly)*Y) &
                                           + sin(80.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(150.0*((2.0_pr*PI)/Lx)*X) + sin(90.0*((2.0_pr*PI)/Ly)*Y) )
           END DO
@@ -207,7 +171,7 @@ MODULE function_ops
             ! x and y coordinates
             X = REAL(i-1,pr)*dx(1)
             Y = REAL(local_y_offset-1+j,pr)*dx(2)
-            vort0(i,j) = ((10.0_pr)**(-8))*( sin(1.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(5.0*((2.0_pr*PI)/Lx)*X) + sin(10.0*((2.0_pr*PI)/Ly)*Y) &
+            vort0(i,j) = ((10.0_pr)**(-5))*( sin(1.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(5.0*((2.0_pr*PI)/Lx)*X) + sin(10.0*((2.0_pr*PI)/Ly)*Y) &
                                           + sin(60.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(50.0*((2.0_pr*PI)/Lx)*X) + sin(30.0*((2.0_pr*PI)/Ly)*Y) &
                                           + sin(80.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(150.0*((2.0_pr*PI)/Lx)*X) + sin(90.0*((2.0_pr*PI)/Ly)*Y) )
           END DO
@@ -219,7 +183,19 @@ MODULE function_ops
             ! x and y coordinates
             X = REAL(i-1,pr)*dx(1)
             Y = REAL(local_y_offset-1+j,pr)*dx(2)
-            vort0(i,j) = ((10.0_pr)**(-13))*( sin(1.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(5.0*((2.0_pr*PI)/Lx)*X) + sin(10.0*((2.0_pr*PI)/Ly)*Y) &
+            vort0(i,j) = ((10.0_pr)**(-10))*( sin(1.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(5.0*((2.0_pr*PI)/Lx)*X) + sin(10.0*((2.0_pr*PI)/Ly)*Y) &
+                                           + sin(60.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(50.0*((2.0_pr*PI)/Lx)*X) + sin(30.0*((2.0_pr*PI)/Ly)*Y) &
+                                           + sin(80.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(150.0*((2.0_pr*PI)/Lx)*X) + sin(90.0*((2.0_pr*PI)/Ly)*Y) )
+          END DO
+        END DO
+
+        CASE ("mn14")
+        DO j=1,local_Ny
+          DO i=1,n_nse(1)
+            ! x and y coordinates
+            X = REAL(i-1,pr)*dx(1)
+            Y = REAL(local_y_offset-1+j,pr)*dx(2)
+            vort0(i,j) = ((10.0_pr)**(-14))*( sin(1.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(5.0*((2.0_pr*PI)/Lx)*X) + sin(10.0*((2.0_pr*PI)/Ly)*Y) &
                                            + sin(60.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(50.0*((2.0_pr*PI)/Lx)*X) + sin(30.0*((2.0_pr*PI)/Ly)*Y) &
                                            + sin(80.0*(((2.0_pr*PI)/Lx)*X + ((2.0_pr*PI)/Ly)*Y)) + sin(150.0*((2.0_pr*PI)/Lx)*X) + sin(90.0*((2.0_pr*PI)/Ly)*Y) )
           END DO
@@ -236,28 +212,6 @@ MODULE function_ops
             call random_number(noise) ! Generate uniform random noise in the range [0,1)
             noise = 2.0 * noise - 1.0 ! Generate random noise in the range [-1, 1)
             vort0(i,j) = noise(i)*MACH_EPSILON*100 ! assign value at mach-eps magnitude to solution grid
-          END DO
-        END DO
-
-        ! mach eps level sinusoidal initial condition
-        CASE ("machepssinN")
-        DO j=1,local_Ny
-          DO i=1,n_nse(1)
-            ! x and y coordinates
-            X = REAL(i-1,pr)*dx(1)
-            Y = REAL(local_y_offset-1+j,pr)*dx(2)
-            vort0(i,j) = MACH_EPSILON*100*( sin(n_nse(1)*2.0_pr*PI*((2.0_pr*PI)/Lx)*X) + sin(n_nse(2)*2.0_pr*PI*((2.0_pr*PI)/Ly)*Y) +  cos(n_nse(1)*2.0_pr*PI*((2.0_pr*PI)/Lx)*X) + cos(n_nse(2)*2.0_pr*PI*((2.0_pr*PI)/Ly)*Y) )
-          END DO
-        END DO
-
-        ! mach eps level sinusoidal initial condition #2
-        CASE ("machepssinN2")
-        DO j=1,local_Ny
-          DO i=1,n_nse(1)
-            ! x and y coordinates
-            X = REAL(i-1,pr)*dx(1)
-            Y = REAL(local_y_offset-1+j,pr)*dx(2)
-            vort0(i,j) = sin(n_nse(1)/2.0_pr*((2.0_pr*PI)/Lx)*X) + sin(n_nse(2)/2.0_pr*((2.0_pr*PI)/Ly)*Y)
           END DO
         END DO
 

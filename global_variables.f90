@@ -15,10 +15,10 @@ MODULE global_variables
   REAL, PARAMETER             :: MACH_EPSILON = 1.0e-16        ! Define machine epsilon
   REAL(pr), PARAMETER         :: PalinIV      = 0.0_pr         ! Value of initial cost functional at time 0 (for H1 semi norm)
   REAL(pr), PARAMETER         :: iniTime      = 0.0_pr         ! Initial time 
-  REAL(pr), PARAMETER         :: endTime      = 150.0_pr       ! final time ! {700k elts/hr} => {10m elts = 15h, 1m elts = 1h30}, {<700k = 1 hour}
+  REAL(pr), PARAMETER         :: endTime      = 150.0_pr       ! final time ! {500k steps/hr (N=512)} => {10m steps = 20h, 1m steps = 2h}
   INTEGER, PARAMETER          :: RESOL        = 512            ! Number of discretization points in one direction
   REAL(pr), PARAMETER         :: dt           = 0.001_pr       ! Time step size
-  REAL(pr), PARAMETER         :: dt_save      = endTime        ! Number of time steps saved to file
+  REAL(pr), PARAMETER         :: dt_save      = endTime        ! Number of time steps saved to file (10x steps = 2.2x time)
   REAL(pr), PARAMETER         :: domain1      = 1.5_pr         ! domain size 
   REAL(pr), PARAMETER         :: domain2      = 1.5_pr         ! domain size 
   CHARACTER(len=*), PARAMETER :: IC_type      = "sineL"          ! Type of initial vorticity to use ! 2DKS
