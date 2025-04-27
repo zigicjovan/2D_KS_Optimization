@@ -15,24 +15,25 @@ MODULE global_variables
   REAL, PARAMETER             :: MACH_EPSILON = 1.0e-16        ! Define machine epsilon
   REAL(pr), PARAMETER         :: PalinIV      = 0.0_pr         ! Value of initial cost functional at time 0 (for H1 semi norm)
   REAL(pr), PARAMETER         :: iniTime      = 0.0_pr         ! Initial time 
-  REAL(pr), PARAMETER         :: endTime      = 150.0_pr       ! final time ! {500k steps/hr (N=512)} => {10m steps = 20h, 1m steps = 2h}
-  INTEGER, PARAMETER          :: RESOL        = 512            ! Number of discretization points in one direction
-  REAL(pr), PARAMETER         :: dt           = 0.001_pr       ! Time step size
-  REAL(pr), PARAMETER         :: dt_save      = endTime        ! Number of time steps saved to file (10x steps = 2.2x time)
-  REAL(pr), PARAMETER         :: domain1      = 1.5_pr         ! domain size 
-  REAL(pr), PARAMETER         :: domain2      = 1.5_pr         ! domain size 
-  CHARACTER(len=*), PARAMETER :: IC_type      = "sineL"          ! Type of initial vorticity to use ! 2DKS
+  REAL(pr), PARAMETER         :: endTime      = 1.0_pr         ! final time ! {0.5m steps/hr (N=2^9)} => {10m steps = 20h, 1m steps = 2h}
+  INTEGER, PARAMETER          :: RESOL        = 128            ! Number of discretization points in one direction
+  REAL(pr), PARAMETER         :: dt           = 0.00001_pr     ! Time step size
+  INTEGER, PARAMETER          :: dt_save      = endTime        ! Number of time steps saved to file (10x steps = 2.2x time)
+  REAL(pr), PARAMETER         :: domain1      = 1.40_pr        ! domain size 
+  REAL(pr), PARAMETER         :: domain2      = 1.40_pr        ! domain size 
+  CHARACTER(len=*), PARAMETER :: IC_type      = "sineL"        ! Type of initial vorticity to use ! 2DKS
   CHARACTER(len=*), PARAMETER :: normconstr   = "H1semi"       ! Type of norm constraint to enforce on problem
   CHARACTER(len=*), PARAMETER :: Grad_type    = "H1"           ! Type of gradient used in optimization scheme
   REAL, PARAMETER             :: visc         = 1e0            ! Kinematic viscosity
   REAL(pr), PARAMETER         :: ell          = 1.0_pr         ! Sobolev parameter for H1 Gradient
 
   ! Directories for saving (update strings according to parameters above)
-  CHARACTER(len=*), PARAMETER :: str_endTime = "150"
-  CHARACTER(len=*), PARAMETER :: str_dt      = "1e-3"
-  CHARACTER(len=*), PARAMETER :: str_domain1 = "1.5"
-  CHARACTER(len=*), PARAMETER :: str_domain2 = "1.5" 
-  CHARACTER(len=*), PARAMETER :: bin_pathname = "/home/zigicj/projects/def-bprotas/zigicj/2D_KS_Optimization/DNS_T"//str_endTime//"_dt"//str_dt//"_X"//str_domain1//"Y"//str_domain2//"_"//IC_type//"/" !! beluga
+  CHARACTER(len=*), PARAMETER :: str_endTime  = "500"
+  CHARACTER(len=*), PARAMETER :: str_resol    = "128"
+  CHARACTER(len=*), PARAMETER :: str_dt       = "1e-5"
+  CHARACTER(len=*), PARAMETER :: str_domain1  = "1.40"
+  CHARACTER(len=*), PARAMETER :: str_domain2  = "1.40" 
+  CHARACTER(len=*), PARAMETER :: bin_pathname = "/home/zigicj/projects/def-bprotas/zigicj/2D_KS_Optimization/DNS_T"//str_endTime//"_N"//str_resol//"_dt"//str_dt//"_X"//str_domain1//"Y"//str_domain2//"_"//IC_type//"/" !! beluga
   CHARACTER(len=*), PARAMETER :: dir_pathname = "/home/zigicj/projects/def-bprotas/zigicj/2D_KS_Optimization/bin_files/" !! beluga
 
   INTEGER, PARAMETER          :: RESOLP   = RESOL     ! Number of discretization points from previous optimization for bootstrapping

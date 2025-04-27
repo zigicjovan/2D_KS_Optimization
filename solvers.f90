@@ -189,30 +189,26 @@ MODULE solvers
 
             ! Update video counter
             Ni = Ni + 1
-          END IF
           
-          local_enst = enstrophy(w_hat) ! Compute enstrophy in Fourier space
-          CALL vort2velFR(w_hat, u_hat) ! Transform vorticity to velocity in Fourier space         
-          local_kin = kinetic_energy(u_hat) ! Compute the kinetic energy in Fourier space
-          ! Compute inner products in Fourier space
-          CALL fftbwd(w_hat, w1) ! 2DNS 
-          local_L2 = inner_product(w1, w1, "L2")   ! 2DKS
-          local_H1 = inner_product(w1, w1, "H1")   ! 2DKS
-          local_H2 = inner_product(w1, w1, "H2")   ! 2DKS
-          local_Hn1 = inner_product(w1, w1, "Hn1") ! 2DKS
+            local_enst = enstrophy(w_hat) ! Compute enstrophy in Fourier space
+            CALL vort2velFR(w_hat, u_hat) ! Transform vorticity to velocity in Fourier space         
+            local_kin = kinetic_energy(u_hat) ! Compute the kinetic energy in Fourier space
+            ! Compute inner products in Fourier space
+            CALL fftbwd(w_hat, w1) ! 2DNS 
+            local_L2 = inner_product(w1, w1, "L2")   ! 2DKS
+            local_H1 = inner_product(w1, w1, "H1")   ! 2DKS
+            local_H2 = inner_product(w1, w1, "H2")   ! 2DKS
+            local_Hn1 = inner_product(w1, w1, "Hn1") ! 2DKS
 
-          ! Store enstrophy (only on rank 0 needs a copy)
-          CALL MPI_REDUCE(local_enst,   Enst(Time_iter),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)
-          ! Store inner products (only on rank 0 needs a copy)
-          CALL MPI_REDUCE(local_L2,   InnerProduct_L2(Time_iter),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)
-          CALL MPI_REDUCE(local_H1,   InnerProduct_H1(Time_iter),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)
-          CALL MPI_REDUCE(local_H2,   InnerProduct_H2(Time_iter),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)
-          CALL MPI_REDUCE(local_Hn1,   InnerProduct_Hn1(Time_iter),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)
-          ! Store kinetic energy (only on rank 0 needs a copy)
-          CALL MPI_REDUCE(local_kin,    KinEn(Time_iter), 1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)
-          ! Compute Palinstrophy
-          palins(Time_iter) = palinstrophyreal(w_hat)
-          ! MPI Reduce is a blocking communication, so all processes are good to proceed with next timestep
+            CALL MPI_REDUCE(local_enst,   Enst(Ni),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)             ! Store enstrophy (only on rank 0 needs a copy)
+            CALL MPI_REDUCE(local_L2,   InnerProduct_L2(Ni),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)    ! Store inner products (only on rank 0 needs a copy) 
+            CALL MPI_REDUCE(local_H1,   InnerProduct_H1(Ni),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)
+            CALL MPI_REDUCE(local_H2,   InnerProduct_H2(Ni),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)
+            CALL MPI_REDUCE(local_Hn1,   InnerProduct_Hn1(Ni),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)
+            CALL MPI_REDUCE(local_kin,    KinEn(Ni), 1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)             ! Store kinetic energy (only on rank 0 needs a copy)
+            palins(Time_iter) = palinstrophyreal(w_hat)                                                                         ! Compute Palinstrophy
+            ! MPI Reduce is a blocking communication, so all processes are good to proceed with next timestep
+          END IF
         ELSE
           ! If flag true, save bin files for adjoint solver
           IF (bin_flag) THEN
@@ -237,14 +233,14 @@ MODULE solvers
         mean_val = mean_vort(w1)
 
         IF (rank==0) THEN
-          PRINT'(a,ES15.4)', " Final time value       = ", t_vec(numel_T+1)
+          PRINT'(a,ES15.4)', " Final time value       = ", t_vec(dt_save+1)
           PRINT'(a,I6)',     " Time iterations        = ", Time_iter
-          PRINT'(a,ES16.4)', " Final Enstrophy        = ", Enst(Time_iter)
-          PRINT'(a,ES16.4)', " Final L^2 In.Prod.     = ", InnerProduct_L2(Time_iter)
-          PRINT'(a,ES16.4)', " Final H^1 In.Prod.     = ", InnerProduct_H1(Time_iter)
-          PRINT'(a,ES16.4)', " Final H^2 In.Prod.     = ", InnerProduct_H2(Time_iter)
-          PRINT'(a,ES16.4)', " Final H^(-1) In.Prod.  = ", InnerProduct_Hn1(Time_iter)
-          PRINT'(a,ES16.4)', " Final Kinetic Energy   = ", KinEn(Time_iter)
+          PRINT'(a,ES16.4)', " Final Enstrophy        = ", Enst(dt_save+1)
+          PRINT'(a,ES16.4)', " Final L^2 In.Prod.     = ", InnerProduct_L2(dt_save+1)
+          PRINT'(a,ES16.4)', " Final H^1 In.Prod.     = ", InnerProduct_H1(dt_save+1)
+          PRINT'(a,ES16.4)', " Final H^2 In.Prod.     = ", InnerProduct_H2(dt_save+1)
+          PRINT'(a,ES16.4)', " Final H^(-1) In.Prod.  = ", InnerProduct_Hn1(dt_save+1)
+          PRINT'(a,ES16.4)', " Final Kinetic Energy   = ", KinEn(dt_save+1)
           PRINT'(a,ES16.4)', " Final Palinstrophy     = ", palins(Time_iter)
           PRINT'(a,ES16.4)', " Mean of final solution = ", mean_val
           PRINT *, "============================================== "
@@ -261,7 +257,7 @@ MODULE solvers
           mean_val = mean_vort(w1)
 
           IF (rank==0) THEN
-            PRINT'(a,ES15.4)', " Final time value       = ", t_vec(numel_T+1)
+            PRINT'(a,ES15.4)', " Final time value       = ", t_vec(dt_save+1)
             PRINT'(a,I6)',     " Time iterations        = ", Time_iter
             PRINT'(a,ES16.4)', " Final Palinstrophy     = ", palins(Time_iter)
             PRINT'(a,ES16.4)', " Mean of final solution = ", mean_val
@@ -373,4 +369,3 @@ MODULE solvers
     END SUBROUTINE IMEX_bwd
 
 END MODULE
-

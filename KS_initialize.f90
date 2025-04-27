@@ -14,7 +14,7 @@ SUBROUTINE KS_initialize
   IMPLICIT NONE                       ! Prevent using implicit typing rules
 
   ! Temporary integer for loops to create wavenumbers
-  INTEGER :: i, i1, i2
+  INTEGER :: i, i1, i2, Nsave
 
   ! Time window
   T1      = endTime - iniTime
@@ -77,14 +77,15 @@ SUBROUTINE KS_initialize
   ! Allocate storage for arrays that will be dynamically created
   ALLOCATE (K1(1:nh))                       ! Wavenumbers in x (r2c transform)
   ALLOCATE (K2(1:n_nse(2)))                 ! Wavenumbers in y
-  ALLOCATE (t_vec(1:numel_T+1))             ! Time vector
-  ALLOCATE (KinEn(1:numel_T+1))             ! Kinetic Energy vector
-  ALLOCATE (InnerProduct_L2(1:numel_T+1))   ! L^2 inner product vector
-  ALLOCATE (InnerProduct_H1(1:numel_T+1))   ! H^1 inner product vector
-  ALLOCATE (InnerProduct_H2(1:numel_T+1))   ! H^2 inner product vector
-  ALLOCATE (InnerProduct_Hn1(1:numel_T+1))  ! H^(-1) inner product vector
-  ALLOCATE (Enst(1:numel_T+1))              ! Enstrophy vector
-  ALLOCATE (Palin(1:numel_T+1))             ! Palinstrophy vector
+  !ALLOCATE (t_vec(1:numel_T+1))             ! Time vector
+  ALLOCATE (t_vec(1:dt_save+1))             ! Time vector
+  ALLOCATE (KinEn(1:dt_save+1))             ! Kinetic Energy vector
+  ALLOCATE (InnerProduct_L2(1:dt_save+1))   ! L^2 inner product vector
+  ALLOCATE (InnerProduct_H1(1:dt_save+1))   ! H^1 inner product vector
+  ALLOCATE (InnerProduct_H2(1:dt_save+1))   ! H^2 inner product vector
+  ALLOCATE (InnerProduct_Hn1(1:dt_save+1))  ! H^(-1) inner product vector
+  ALLOCATE (Enst(1:dt_save+1))              ! Enstrophy vector
+  ALLOCATE (Palin(1:dt_save+1))             ! Palinstrophy vector
   ALLOCATE (vort0(1:n_nse(1), 1:local_Ny))  ! Vorticity field
   ALLOCATE (ksq(1:n_nse(2),1:local_Nx))     ! Vorticity field (laplace operator)
   ALLOCATE (lin_hat(1:n_nse(2),1:local_Nx))     ! Vorticity field (linear term)
@@ -115,7 +116,7 @@ SUBROUTINE KS_initialize
     END DO
   END DO
   ! Time vector
-  DO i = 0, numel_T
+  DO i = 0, dt_save !numel_T
     t_vec(i+1) = i*dt
   END DO
   ! Frequency cutoff for dealiasing
