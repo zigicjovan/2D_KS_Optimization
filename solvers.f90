@@ -148,7 +148,7 @@ MODULE solvers
           CALL save_bin(w_hat) ! Save vorticity
         END IF
 
-        palins(1) = palinstrophyreal(w_hat) ! Compute Palinstrophy
+        !palins(1) = palinstrophyreal(w_hat) ! Compute Palinstrophy
         ! MPI Reduce is a blocking communication, so all processes are good to proceed with timestepping
       END IF
 
@@ -199,14 +199,14 @@ MODULE solvers
             local_H1 = inner_product(w1, w1, "H1")   ! 2DKS
             local_H2 = inner_product(w1, w1, "H2")   ! 2DKS
             local_Hn1 = inner_product(w1, w1, "Hn1") ! 2DKS
-
             CALL MPI_REDUCE(local_enst,   Enst(Ni),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)             ! Store enstrophy (only on rank 0 needs a copy)
             CALL MPI_REDUCE(local_L2,   InnerProduct_L2(Ni),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)    ! Store inner products (only on rank 0 needs a copy) 
             CALL MPI_REDUCE(local_H1,   InnerProduct_H1(Ni),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)
             CALL MPI_REDUCE(local_H2,   InnerProduct_H2(Ni),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)
             CALL MPI_REDUCE(local_Hn1,   InnerProduct_Hn1(Ni),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)
             CALL MPI_REDUCE(local_kin,    KinEn(Ni), 1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)             ! Store kinetic energy (only on rank 0 needs a copy)
-            palins(Time_iter) = palinstrophyreal(w_hat)                                                                         ! Compute Palinstrophy
+            palins(Ni) = palinstrophyreal(w_hat)                                                                         ! Compute Palinstrophy
+            !PRINT'(a,I5)',     " palins ", Ni
             ! MPI Reduce is a blocking communication, so all processes are good to proceed with next timestep
           END IF
         ELSE
@@ -216,7 +216,7 @@ MODULE solvers
             CALL save_bin(w_hat)
           END IF
           ! Compute Palinstrophy
-          palins(Time_iter) = palinstrophyreal(w_hat)
+          !palins(Time_iter) = palinstrophyreal(w_hat)
           ! MPI Reduce is a blocking communication, so all processes are good to proceed with next timestep
         END IF
       END DO
@@ -241,7 +241,7 @@ MODULE solvers
           PRINT'(a,ES16.4)', " Final H^2 In.Prod.     = ", InnerProduct_H2(dt_save+1)
           PRINT'(a,ES16.4)', " Final H^(-1) In.Prod.  = ", InnerProduct_Hn1(dt_save+1)
           PRINT'(a,ES16.4)', " Final Kinetic Energy   = ", KinEn(dt_save+1)
-          PRINT'(a,ES16.4)', " Final Palinstrophy     = ", palins(Time_iter)
+          PRINT'(a,ES16.4)', " Final Palinstrophy     = ", palins(dt_save+1)
           PRINT'(a,ES16.4)', " Mean of final solution = ", mean_val
           PRINT *, "============================================== "
         END IF
@@ -259,7 +259,7 @@ MODULE solvers
           IF (rank==0) THEN
             PRINT'(a,ES15.4)', " Final time value       = ", t_vec(dt_save+1)
             PRINT'(a,I6)',     " Time iterations        = ", Time_iter
-            PRINT'(a,ES16.4)', " Final Palinstrophy     = ", palins(Time_iter)
+            PRINT'(a,ES16.4)', " Final Palinstrophy     = ", palins(dt_save+1)
             PRINT'(a,ES16.4)', " Mean of final solution = ", mean_val
             PRINT *, "============================================== "
           END IF

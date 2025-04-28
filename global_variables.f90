@@ -15,9 +15,9 @@ MODULE global_variables
   REAL, PARAMETER             :: MACH_EPSILON = 1.0e-16        ! Define machine epsilon
   REAL(pr), PARAMETER         :: PalinIV      = 0.0_pr         ! Value of initial cost functional at time 0 (for H1 semi norm)
   REAL(pr), PARAMETER         :: iniTime      = 0.0_pr         ! Initial time 
-  REAL(pr), PARAMETER         :: endTime      = 1.0_pr         ! final time ! {0.5m steps/hr (N=2^9)} => {10m steps = 20h, 1m steps = 2h}
+  REAL(pr), PARAMETER         :: endTime      = 1000.0_pr         ! final time ! {0.5m steps/hr (N=2^9)} => {10m steps = 20h, 1m steps = 2h}
   INTEGER, PARAMETER          :: RESOL        = 128            ! Number of discretization points in one direction
-  REAL(pr), PARAMETER         :: dt           = 0.00001_pr     ! Time step size
+  REAL(pr), PARAMETER         :: dt           = 0.0001_pr     ! Time step size
   INTEGER, PARAMETER          :: dt_save      = endTime        ! Number of time steps saved to file (10x steps = 2.2x time)
   REAL(pr), PARAMETER         :: domain1      = 1.40_pr        ! domain size 
   REAL(pr), PARAMETER         :: domain2      = 1.40_pr        ! domain size 
@@ -28,9 +28,9 @@ MODULE global_variables
   REAL(pr), PARAMETER         :: ell          = 1.0_pr         ! Sobolev parameter for H1 Gradient
 
   ! Directories for saving (update strings according to parameters above)
-  CHARACTER(len=*), PARAMETER :: str_endTime  = "500"
+  CHARACTER(len=*), PARAMETER :: str_endTime  = "1000"
   CHARACTER(len=*), PARAMETER :: str_resol    = "128"
-  CHARACTER(len=*), PARAMETER :: str_dt       = "1e-5"
+  CHARACTER(len=*), PARAMETER :: str_dt       = "1e-4"
   CHARACTER(len=*), PARAMETER :: str_domain1  = "1.40"
   CHARACTER(len=*), PARAMETER :: str_domain2  = "1.40" 
   CHARACTER(len=*), PARAMETER :: bin_pathname = "/home/zigicj/projects/def-bprotas/zigicj/2D_KS_Optimization/DNS_T"//str_endTime//"_N"//str_resol//"_dt"//str_dt//"_X"//str_domain1//"Y"//str_domain2//"_"//IC_type//"/" !! beluga
