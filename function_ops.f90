@@ -959,7 +959,8 @@ MODULE function_ops
       ! Compute the derivatives of the adjoint field
       CALL cal_deriv(z_hat, zx, zy)
       ! Calculate the nonlinear term
-      nonlin = u*zx - v*zy
+      !nonlin = u*zx - v*zy
+      nonlin = v*zx + u*zy
       ! Compute Fourier transform of nonlinear term
       CALL fftfwd(nonlin, ghat)
       ! Dealias

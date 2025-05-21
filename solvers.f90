@@ -162,7 +162,7 @@ MODULE solvers
             ! Compute vorticity
             DO i1=1,n_nse(2)
               !w2_hat(i1, i2) = ( ( 1.0_pr + BetaI(rk) * (-visc * ksq(i1, i2)) ) * w_hat(i1, i2) + AlphaE(rk) * conv_hat(i1, i2) &
-               !                 + BetaE(rk) * conv0_hat(i1, i2) ) / ( 1.0_pr - AlphaI(rk) * (-visc * ksq(i1, i2)) ) ! 2DNS
+              !                 + BetaE(rk) * conv0_hat(i1, i2) ) / ( 1.0_pr - AlphaI(rk) * (-visc * ksq(i1, i2)) ) ! 2DNS
               w2_hat(i1, i2) = ( ( 1.0_pr + BetaI(rk) * (lin_hat(i1, i2)) ) * w_hat(i1, i2) + AlphaE(rk) * conv_hat(i1, i2) &
                                 + BetaE(rk) * conv0_hat(i1, i2) ) / ( 1.0_pr - AlphaI(rk) * (lin_hat(i1, i2)) ) ! 2DKS
             END DO
@@ -206,7 +206,7 @@ MODULE solvers
             CALL MPI_REDUCE(local_Hn1,   InnerProduct_Hn1(Ni),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)
             CALL MPI_REDUCE(local_kin,    KinEn(Ni), 1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)             ! Store kinetic energy (only on rank 0 needs a copy)
             palins(Ni) = palinstrophyreal(w_hat)                                                                         ! Compute Palinstrophy
-            !PRINT'(a,I5)',     " palins ", Ni
+            !PRINT'(*(a,I5))', " L2 inner product ", local_L2, " at saved step ", Ni
             ! MPI Reduce is a blocking communication, so all processes are good to proceed with next timestep
           END IF
         ELSE
@@ -292,17 +292,17 @@ MODULE solvers
       COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx)  :: psi_hat, wpsi_hat   ! Adjoint and vorticity streamfunction in Fourier space
       COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx)  :: nonlin_hat          ! Adjoint nonlinear terms in Fourier space
       COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx)  :: nonlin0_hat         ! Storage for RK adjoint nonlinear terms in Fourier space
-      COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx)  :: conv_hat            ! Convection term in Fourier space
+      COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx)  :: conv_hat, con2_hat  ! Convection term in Fourier space
       REAL(pr),    DIMENSION(1:n_nse(1),1:local_Ny)  :: w, wx, wy, u, v     ! Vorticity, partial derivatives, and velocity components from the forward solution
       INTEGER                                        :: rk, i1, i2          ! Integers for looping through values
       REAL(pr)                                       :: mean_val            ! Scalar for storing the mean of vorticity
-      ! Set the terminal condition for adjoint system as the zero solution
-      z_hat   = 0.0_pr
-      psi_hat = 0.0_pr
       ! Read the terminal vorticity solution
       CALL read_bin(w_hat)
       ! Dealias (ensure no round-off errors were introduced from read/write)
       CALL dealiasing(w_hat)
+      ! Set the terminal condition for adjoint system as the twice the terminal vorticity solution
+      z_hat   = 2.0_pr * w_hat
+      !psi_hat = 0.0_pr
 
       ! Ensure all processes have completed before proceeding with timestepping method
       CALL MPI_BARRIER(MPI_COMM_WORLD,Statinfo)
@@ -328,9 +328,12 @@ MODULE solvers
         ! IMEX time stepping
         DO rk = 1, 4
           ! Determine adjoint convection term
-          CALL adj_conv(z_hat, u, v, conv_hat)
+          !CALL adj_conv(z_hat, u, v, conv_hat)
+          CALL adj_conv(z_hat, wy, wx, conv_hat) ! grad phi times grad phi^* ; vector multiplication
+          con2_hat = ( ksq(i1, i2) ) * w_hat(i1, i2) * z_hat ! lap phi times phi^* ; scalar multiplication
           ! Add adjoint streamfunction to nonlinear term, since it is treated explicity in calculations
-          nonlin_hat = conv_hat - psi_hat
+          !nonlin_hat = conv_hat - psi_hat ! 2DNS
+          nonlin_hat = conv_hat + con2_hat  ! 2DKS
 
           ! Compute Solution at the next step using IMEX time-stepping
           DO i2=1,local_Nx
@@ -338,11 +341,10 @@ MODULE solvers
               ! Compute vorticity
               ! Note: RHS of the adjoint equation is simply a constant times the Laplacian of the vorticity solution
               ! hence the additional implicitly treated w_hat term independent of the RK scheme (dt/4 to account for the 4 step method).
-              z2_hat(i1, i2) = (  ( 1.0_pr + BetaI(rk) * (-visc * ksq(i1, i2)) ) * z_hat(i1, i2) + &
-                                  (dt/4.0_pr) * ( ksq(i1, i2) ) * w_hat(i1, i2) + &
-                                  AlphaE(rk) * nonlin_hat(i1, i2) + &
-                                  BetaE(rk) * nonlin0_hat(i1, i2) ) / &
-                                  ( 1.0_pr - AlphaI(rk) * (-visc * ksq(i1, i2)) )
+              !z2_hat(i1, i2) = (  ( 1.0_pr + BetaI(rk) * (-visc * ksq(i1, i2)) ) * z_hat(i1, i2) + (dt/4.0_pr) * ( ksq(i1, i2) ) * w_hat(i1, i2) + &
+              !                 AlphaE(rk) * nonlin_hat(i1, i2) + BetaE(rk) * nonlin0_hat(i1, i2) ) / ( 1.0_pr - AlphaI(rk) * (-visc * ksq(i1, i2)) ) ! 2DNS
+              z2_hat(i1, i2) = ( ( 1.0_pr + BetaI(rk) * (lin_hat(i1, i2)) ) * z_hat(i1, i2) + AlphaE(rk) * nonlin_hat(i1, i2) + & 
+                               BetaE(rk) * nonlin0_hat(i1, i2) ) /  ( 1.0_pr - AlphaI(rk) * (lin_hat(i1, i2)) ) ! 2DKS
             END DO
           END DO
           ! Update vorticity for next step
@@ -351,7 +353,7 @@ MODULE solvers
           CALL fftbwd(z_hat, z)
 
           ! Determine adjoint streamfunction
-          CALL adj_stream(z, wx, wy, psi_hat)
+          !CALL adj_stream(z, wx, wy, psi_hat)
 
           ! Update explicit part, for next substep
           nonlin0_hat = nonlin_hat
