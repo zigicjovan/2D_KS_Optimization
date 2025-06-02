@@ -129,6 +129,7 @@ MODULE solvers
         
         CALL MPI_REDUCE(local_kin,    KinEn(1), 1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo) ! Store kinetic energy (only on rank 0 needs a copy)
         palins(1) = palinstrophyreal(w_hat) ! Compute Palinstrophy
+        !palins(1) = InnerProduct_L2(1) ! Compute Palinstrophy
 
         IF (rank==0) THEN  ! Print information
           PRINT'(a,ES15.4)', " Initial time value      = ", t_vec(1)
@@ -163,8 +164,8 @@ MODULE solvers
             DO i1=1,n_nse(2)
               !w2_hat(i1, i2) = ( ( 1.0_pr + BetaI(rk) * (-visc * ksq(i1, i2)) ) * w_hat(i1, i2) + AlphaE(rk) * conv_hat(i1, i2) &
               !                 + BetaE(rk) * conv0_hat(i1, i2) ) / ( 1.0_pr - AlphaI(rk) * (-visc * ksq(i1, i2)) ) ! 2DNS
-              w2_hat(i1, i2) = ( ( 1.0_pr + BetaI(rk) * (lin_hat(i1, i2)) ) * w_hat(i1, i2) + AlphaE(rk) * conv_hat(i1, i2) &
-                                + BetaE(rk) * conv0_hat(i1, i2) ) / ( 1.0_pr - AlphaI(rk) * (lin_hat(i1, i2)) ) ! 2DKS
+              w2_hat(i1, i2) = ( ( 1.0_pr - BetaI(rk) * (lin_hat(i1, i2)) ) * w_hat(i1, i2) - AlphaE(rk) * conv_hat(i1, i2) &
+                                - BetaE(rk) * conv0_hat(i1, i2) ) / ( 1.0_pr + AlphaI(rk) * (lin_hat(i1, i2)) ) ! 2DKS
             END DO
           END DO
           
@@ -190,7 +191,7 @@ MODULE solvers
             ! Update video counter
             Ni = Ni + 1
           
-            local_enst = enstrophy(w_hat) ! Compute enstrophy in Fourier space
+            local_enst = 1.0_pr*enstrophy(w_hat) ! Compute enstrophy in Fourier space
             CALL vort2velFR(w_hat, u_hat) ! Transform vorticity to velocity in Fourier space         
             local_kin = kinetic_energy(u_hat) ! Compute the kinetic energy in Fourier space
             ! Compute inner products in Fourier space
@@ -206,6 +207,7 @@ MODULE solvers
             CALL MPI_REDUCE(local_Hn1,   InnerProduct_Hn1(Ni),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)
             CALL MPI_REDUCE(local_kin,    KinEn(Ni), 1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)             ! Store kinetic energy (only on rank 0 needs a copy)
             palins(Ni) = palinstrophyreal(w_hat)                                                                         ! Compute Palinstrophy
+            !palins(Ni) = InnerProduct_L2(Ni)
             !PRINT'(*(a,I5))', " L2 inner product ", local_L2, " at saved step ", Ni
             ! MPI Reduce is a blocking communication, so all processes are good to proceed with next timestep
           END IF
@@ -319,25 +321,23 @@ MODULE solvers
         CALL dealiasing(w_hat)
 
         ! Determine the forward streamfunction in Fourier space: -lap(p) = w
-        CALL cal_stream(w1_hat, wpsi_hat)
+        !CALL cal_stream(w1_hat, wpsi_hat)
+        CALL cal_streamKS(w_hat, wpsi_hat)
         ! Determine the components of the forward velocity field
         CALL cal_deriv(wpsi_hat, v, u)
         ! Partial derivatives of vorticity solution (explicitly treated)
-        CALL cal_deriv(w1_hat, wx, wy)
+        CALL cal_deriv(w_hat, wx, wy)
 
         ! IMEX time stepping
         DO rk = 1, 4
-          ! Determine adjoint convection term
+
+          ! Determine adjoint convection** term ! **ADVECTION for 2DKS**
           !CALL adj_conv(z_hat, u, v, conv_hat)
           CALL adj_conv(z_hat, wy, wx, conv_hat) ! grad phi times grad phi^* ; vector multiplication
-          DO i2=1,local_Nx
-            DO i1=1,n_nse(2)
-              con2_hat(i1, i2) =  ( ksq(i1, i2) * w_hat(i1, i2) ) * z_hat(i1, i2) ! lap phi times phi^* ; scalar multiplication
-            END DO
-          END DO
+          CALL adj_streamKS(wpsi_hat, z_hat, con2_hat) ! lap phi times phi^* ; scalar multiplication
           ! Add adjoint streamfunction to nonlinear term, since it is treated explicity in calculations
           !nonlin_hat = conv_hat - psi_hat ! 2DNS
-          nonlin_hat = conv_hat + con2_hat  ! 2DKS
+          nonlin_hat =  conv_hat + con2_hat   ! 2DKS
 
           ! Compute Solution at the next step using IMEX time-stepping
           DO i2=1,local_Nx
@@ -347,8 +347,8 @@ MODULE solvers
               ! hence the additional implicitly treated w_hat term independent of the RK scheme (dt/4 to account for the 4 step method).
               !z2_hat(i1, i2) = (  ( 1.0_pr + BetaI(rk) * (-visc * ksq(i1, i2)) ) * z_hat(i1, i2) + (dt/4.0_pr) * ( ksq(i1, i2) ) * w_hat(i1, i2) + &
               !                 AlphaE(rk) * nonlin_hat(i1, i2) + BetaE(rk) * nonlin0_hat(i1, i2) ) / ( 1.0_pr - AlphaI(rk) * (-visc * ksq(i1, i2)) ) ! 2DNS
-              z2_hat(i1, i2) = ( ( 1.0_pr + BetaI(rk) * (lin_hat(i1, i2)) ) * z_hat(i1, i2) + AlphaE(rk) * nonlin_hat(i1, i2) + & 
-                                BetaE(rk) * nonlin0_hat(i1, i2) ) /  ( 1.0_pr - AlphaI(rk) * (lin_hat(i1, i2)) ) ! 2DKS
+              z2_hat(i1, i2) =  (( 1.0_pr - BetaI(rk) * (lin_hat(i1, i2)) ) * z_hat(i1, i2) - AlphaE(rk) * nonlin_hat(i1, i2) - & 
+                                BetaE(rk) * nonlin0_hat(i1, i2) ) /  ( 1.0_pr + AlphaI(rk) * (lin_hat(i1, i2)) ) ! 2DKS
             END DO
           END DO
           ! Update vorticity for next step

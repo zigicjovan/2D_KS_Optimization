@@ -1,0 +1,530 @@
+
+Due to MODULEPATH changes, the following have been reloaded:
+  1) mii/1.1.2
+
+The following have been reloaded with a version change:
+  1) StdEnv/2023 => StdEnv/2020           5) libfabric/1.18.0 => libfabric/1.10.1
+  2) gcccore/.12.3 => gcccore/.9.3.0      6) openmpi/4.1.5 => openmpi/4.0.3
+  3) gentoo/2023 => gentoo/2020           7) ucx/1.14.1 => ucx/1.8.0
+  4) imkl/2023.2.0 => imkl/2020.1.217
+
+rm -f *.o *~ *.mod
+mpif90  -c   global_variables.f90
+mpif90  -c   fftwfunction.f90
+mpif90  -c   KS_initialize.f90
+mpif90  -c   data_ops.f90
+mpif90  -c   function_ops.f90
+mpif90  -c   solvers.f90
+mpif90  -c   optimization.f90
+mpif90  -c   Kappa2DKS_main.f90
+mpif90  -o prog global_variables.o fftwfunction.o KS_initialize.o data_ops.o function_ops.o solvers.o optimization.o Kappa2DKS_main.o -lm -lmpi                 -lfftw3_mpi -lfftw3 -lm   -lnetcdff -lnetcdf       
+ ============================================== 
+                   Kappa Test                   
+ ============================================== 
+ Resolution Nx  =    32
+ Resolution Ny  =    32
+ Time Step Size =      1.0000E-02
+ Final Time T   =      2.5000E+01
+ Viscosity      =      1.0000E+00
+ Processors     =    32
+  Initial guess  = sineL
+ ============================================== 
+  Successful FFT Initialization. 
+ ============================================== 
+  Successful Initial Condition. 
+ ============================================== 
+ Mean of IC =       1.4211E-14
+  Solving Forward DNS...
+ Initial time value      =      0.0000E+00
+ Number of elements      =   2500
+ Initial Enstrophy       =       1.0689E+02
+ Initial L^2 In.Prod.    =       2.1378E+02
+ Initial H^1 In.Prod.    =       4.0450E+02
+ Initial H^2 In.Prod.    =       7.9459E+02
+ Initial H^(-1) In.Prod. =       1.1690E+02
+ Initial Kinetic Energy  =       2.2509E+02
+ Initial Palinstrophy    =       3.9478E+01
+ ============================================== 
+ Final time value       =      2.5000E-01
+ Time iterations        =   2501
+ Final Enstrophy        =       3.2867E+02
+ Final L^2 In.Prod.     =       4.2070E+04
+ Final H^1 In.Prod.     =       1.0850E+05
+ Final H^2 In.Prod.     =       3.3858E+05
+ Final H^(-1) In.Prod.  =       1.7150E+04
+ Final Kinetic Energy   =       5.8424E+02
+ Final Palinstrophy     =       3.8653E+02
+ Mean of final solution =       5.6483E-15
+ ============================================== 
+  DNS solved.
+ Initial Cost Functional =       3.8653E+02
+  *** Initial Condition Perturbation ***
+  Solving Adjoint System...
+ Time iteration =      0
+ ============================================== 
+ Mean of final adjoint solution =       1.3878E-17
+ Denominator of Kappa Test =       7.1158E-03
+ Mean of perturbation =       0.0000E+00
+ Initial time value      =      0.0000E+00
+ Number of elements      =   2500
+ Initial Enstrophy       =       1.0689E+02
+ Initial L^2 In.Prod.    =       2.1378E+02
+ Initial H^1 In.Prod.    =       4.0450E+02
+ Initial H^2 In.Prod.    =       7.9459E+02
+ Initial H^(-1) In.Prod. =       1.1690E+02
+ Initial Kinetic Energy  =       2.2509E+02
+ Initial Palinstrophy    =       3.9478E+01
+ ============================================== 
+ Final time value       =      2.5000E-01
+ Time iterations        =   2501
+ Final Enstrophy        =       3.2867E+02
+ Final L^2 In.Prod.     =       4.2070E+04
+ Final H^1 In.Prod.     =       1.0850E+05
+ Final H^2 In.Prod.     =       3.3858E+05
+ Final H^(-1) In.Prod.  =       1.7150E+04
+ Final Kinetic Energy   =       5.8424E+02
+ Final Palinstrophy     =       3.8653E+02
+ Mean of final solution =       3.4833E-15
+ ============================================== 
+ Epsilon                   =       1.0000E-15
+ Initial Cost Functional   =       3.8653E+02
+ Perturbed Cost Functional =       3.8653E+02
+ Kappa Test Numerator      =      -2.8422E+02
+ Kappa Value               =      -3.99415750E+04
+ ============================================== 
+ Mean of perturbation =       7.1054E-15
+ Initial time value      =      0.0000E+00
+ Number of elements      =   2500
+ Initial Enstrophy       =       1.0689E+02
+ Initial L^2 In.Prod.    =       2.1378E+02
+ Initial H^1 In.Prod.    =       4.0450E+02
+ Initial H^2 In.Prod.    =       7.9459E+02
+ Initial H^(-1) In.Prod. =       1.1690E+02
+ Initial Kinetic Energy  =       2.2509E+02
+ Initial Palinstrophy    =       3.9478E+01
+ ============================================== 
+ Final time value       =      2.5000E-01
+ Time iterations        =   2501
+ Final Enstrophy        =       3.2867E+02
+ Final L^2 In.Prod.     =       4.2070E+04
+ Final H^1 In.Prod.     =       1.0850E+05
+ Final H^2 In.Prod.     =       3.3858E+05
+ Final H^(-1) In.Prod.  =       1.7150E+04
+ Final Kinetic Energy   =       5.8424E+02
+ Final Palinstrophy     =       3.8653E+02
+ Mean of final solution =       2.8588E-15
+ ============================================== 
+ Epsilon                   =       1.0000E-14
+ Initial Cost Functional   =       3.8653E+02
+ Perturbed Cost Functional =       3.8653E+02
+ Kappa Test Numerator      =      -2.2737E+01
+ Kappa Value               =      -3.19532600E+03
+ ============================================== 
+ Mean of perturbation =       0.0000E+00
+ Initial time value      =      0.0000E+00
+ Number of elements      =   2500
+ Initial Enstrophy       =       1.0689E+02
+ Initial L^2 In.Prod.    =       2.1378E+02
+ Initial H^1 In.Prod.    =       4.0450E+02
+ Initial H^2 In.Prod.    =       7.9459E+02
+ Initial H^(-1) In.Prod. =       1.1690E+02
+ Initial Kinetic Energy  =       2.2509E+02
+ Initial Palinstrophy    =       3.9478E+01
+ ============================================== 
+ Final time value       =      2.5000E-01
+ Time iterations        =   2501
+ Final Enstrophy        =       3.2867E+02
+ Final L^2 In.Prod.     =       4.2070E+04
+ Final H^1 In.Prod.     =       1.0850E+05
+ Final H^2 In.Prod.     =       3.3858E+05
+ Final H^(-1) In.Prod.  =       1.7150E+04
+ Final Kinetic Energy   =       5.8424E+02
+ Final Palinstrophy     =       3.8653E+02
+ Mean of final solution =       1.2490E-15
+ ============================================== 
+ Epsilon                   =       1.0000E-13
+ Initial Cost Functional   =       3.8653E+02
+ Perturbed Cost Functional =       3.8653E+02
+ Kappa Test Numerator      =       0.0000E+00
+ Kappa Value               =       0.00000000E+00
+ ============================================== 
+ Mean of perturbation =       7.1054E-15
+ Initial time value      =      0.0000E+00
+ Number of elements      =   2500
+ Initial Enstrophy       =       1.0689E+02
+ Initial L^2 In.Prod.    =       2.1378E+02
+ Initial H^1 In.Prod.    =       4.0450E+02
+ Initial H^2 In.Prod.    =       7.9459E+02
+ Initial H^(-1) In.Prod. =       1.1690E+02
+ Initial Kinetic Energy  =       2.2509E+02
+ Initial Palinstrophy    =       3.9478E+01
+ ============================================== 
+ Final time value       =      2.5000E-01
+ Time iterations        =   2501
+ Final Enstrophy        =       3.2867E+02
+ Final L^2 In.Prod.     =       4.2070E+04
+ Final H^1 In.Prod.     =       1.0850E+05
+ Final H^2 In.Prod.     =       3.3858E+05
+ Final H^(-1) In.Prod.  =       1.7150E+04
+ Final Kinetic Energy   =       5.8424E+02
+ Final Palinstrophy     =       3.8653E+02
+ Mean of final solution =       4.9821E-15
+ ============================================== 
+ Epsilon                   =       1.0000E-12
+ Initial Cost Functional   =       3.8653E+02
+ Perturbed Cost Functional =       3.8653E+02
+ Kappa Test Numerator      =       3.4106E-01
+ Kappa Value               =       4.79298900E+01
+ ============================================== 
+ Mean of perturbation =       7.1054E-15
+ Initial time value      =      0.0000E+00
+ Number of elements      =   2500
+ Initial Enstrophy       =       1.0689E+02
+ Initial L^2 In.Prod.    =       2.1378E+02
+ Initial H^1 In.Prod.    =       4.0450E+02
+ Initial H^2 In.Prod.    =       7.9459E+02
+ Initial H^(-1) In.Prod. =       1.1690E+02
+ Initial Kinetic Energy  =       2.2509E+02
+ Initial Palinstrophy    =       3.9478E+01
+ ============================================== 
+ Final time value       =      2.5000E-01
+ Time iterations        =   2501
+ Final Enstrophy        =       3.2867E+02
+ Final L^2 In.Prod.     =       4.2070E+04
+ Final H^1 In.Prod.     =       1.0850E+05
+ Final H^2 In.Prod.     =       3.3858E+05
+ Final H^(-1) In.Prod.  =       1.7150E+04
+ Final Kinetic Energy   =       5.8424E+02
+ Final Palinstrophy     =       3.8653E+02
+ Mean of final solution =       4.6074E-15
+ ============================================== 
+ Epsilon                   =       1.0000E-11
+ Initial Cost Functional   =       3.8653E+02
+ Perturbed Cost Functional =       3.8653E+02
+ Kappa Test Numerator      =      -2.1600E-01
+ Kappa Value               =      -3.03555970E+01
+ ============================================== 
+ Mean of perturbation =       1.4211E-14
+ Initial time value      =      0.0000E+00
+ Number of elements      =   2500
+ Initial Enstrophy       =       1.0689E+02
+ Initial L^2 In.Prod.    =       2.1378E+02
+ Initial H^1 In.Prod.    =       4.0450E+02
+ Initial H^2 In.Prod.    =       7.9459E+02
+ Initial H^(-1) In.Prod. =       1.1690E+02
+ Initial Kinetic Energy  =       2.2509E+02
+ Initial Palinstrophy    =       3.9478E+01
+ ============================================== 
+ Final time value       =      2.5000E-01
+ Time iterations        =   2501
+ Final Enstrophy        =       3.2867E+02
+ Final L^2 In.Prod.     =       4.2070E+04
+ Final H^1 In.Prod.     =       1.0850E+05
+ Final H^2 In.Prod.     =       3.3858E+05
+ Final H^(-1) In.Prod.  =       1.7150E+04
+ Final Kinetic Energy   =       5.8424E+02
+ Final Palinstrophy     =       3.8653E+02
+ Mean of final solution =       4.1772E-15
+ ============================================== 
+ Epsilon                   =       1.0000E-10
+ Initial Cost Functional   =       3.8653E+02
+ Perturbed Cost Functional =       3.8653E+02
+ Kappa Test Numerator      =      -5.5707E-02
+ Kappa Value               =      -7.82854869E+00
+ ============================================== 
+ Mean of perturbation =       7.1054E-15
+ Initial time value      =      0.0000E+00
+ Number of elements      =   2500
+ Initial Enstrophy       =       1.0689E+02
+ Initial L^2 In.Prod.    =       2.1378E+02
+ Initial H^1 In.Prod.    =       4.0450E+02
+ Initial H^2 In.Prod.    =       7.9459E+02
+ Initial H^(-1) In.Prod. =       1.1690E+02
+ Initial Kinetic Energy  =       2.2509E+02
+ Initial Palinstrophy    =       3.9478E+01
+ ============================================== 
+ Final time value       =      2.5000E-01
+ Time iterations        =   2501
+ Final Enstrophy        =       3.2867E+02
+ Final L^2 In.Prod.     =       4.2070E+04
+ Final H^1 In.Prod.     =       1.0850E+05
+ Final H^2 In.Prod.     =       3.3858E+05
+ Final H^(-1) In.Prod.  =       1.7150E+04
+ Final Kinetic Energy   =       5.8424E+02
+ Final Palinstrophy     =       3.8653E+02
+ Mean of final solution =       1.6376E-15
+ ============================================== 
+ Epsilon                   =       1.0000E-09
+ Initial Cost Functional   =       3.8653E+02
+ Perturbed Cost Functional =       3.8653E+02
+ Kappa Test Numerator      =      -5.0250E-02
+ Kappa Value               =      -7.06167045E+00
+ ============================================== 
+ Mean of perturbation =       7.1054E-15
+ Initial time value      =      0.0000E+00
+ Number of elements      =   2500
+ Initial Enstrophy       =       1.0689E+02
+ Initial L^2 In.Prod.    =       2.1378E+02
+ Initial H^1 In.Prod.    =       4.0450E+02
+ Initial H^2 In.Prod.    =       7.9459E+02
+ Initial H^(-1) In.Prod. =       1.1690E+02
+ Initial Kinetic Energy  =       2.2509E+02
+ Initial Palinstrophy    =       3.9478E+01
+ ============================================== 
+ Final time value       =      2.5000E-01
+ Time iterations        =   2501
+ Final Enstrophy        =       3.2867E+02
+ Final L^2 In.Prod.     =       4.2070E+04
+ Final H^1 In.Prod.     =       1.0850E+05
+ Final H^2 In.Prod.     =       3.3858E+05
+ Final H^(-1) In.Prod.  =       1.7150E+04
+ Final Kinetic Energy   =       5.8424E+02
+ Final Palinstrophy     =       3.8653E+02
+ Mean of final solution =       4.9682E-15
+ ============================================== 
+ Epsilon                   =       1.0000E-08
+ Initial Cost Functional   =       3.8653E+02
+ Perturbed Cost Functional =       3.8653E+02
+ Kappa Test Numerator      =      -5.1966E-02
+ Kappa Value               =      -7.30291757E+00
+ ============================================== 
+ Mean of perturbation =       1.4211E-14
+ Initial time value      =      0.0000E+00
+ Number of elements      =   2500
+ Initial Enstrophy       =       1.0689E+02
+ Initial L^2 In.Prod.    =       2.1378E+02
+ Initial H^1 In.Prod.    =       4.0450E+02
+ Initial H^2 In.Prod.    =       7.9459E+02
+ Initial H^(-1) In.Prod. =       1.1690E+02
+ Initial Kinetic Energy  =       2.2509E+02
+ Initial Palinstrophy    =       3.9478E+01
+ ============================================== 
+ Final time value       =      2.5000E-01
+ Time iterations        =   2501
+ Final Enstrophy        =       3.2867E+02
+ Final L^2 In.Prod.     =       4.2070E+04
+ Final H^1 In.Prod.     =       1.0850E+05
+ Final H^2 In.Prod.     =       3.3858E+05
+ Final H^(-1) In.Prod.  =       1.7150E+04
+ Final Kinetic Energy   =       5.8424E+02
+ Final Palinstrophy     =       3.8653E+02
+ Mean of final solution =       5.3846E-15
+ ============================================== 
+ Epsilon                   =       1.0000E-07
+ Initial Cost Functional   =       3.8653E+02
+ Perturbed Cost Functional =       3.8653E+02
+ Kappa Test Numerator      =      -5.2003E-02
+ Kappa Value               =      -7.30803009E+00
+ ============================================== 
+ Mean of perturbation =       0.0000E+00
+ Initial time value      =      0.0000E+00
+ Number of elements      =   2500
+ Initial Enstrophy       =       1.0689E+02
+ Initial L^2 In.Prod.    =       2.1378E+02
+ Initial H^1 In.Prod.    =       4.0450E+02
+ Initial H^2 In.Prod.    =       7.9459E+02
+ Initial H^(-1) In.Prod. =       1.1690E+02
+ Initial Kinetic Energy  =       2.2509E+02
+ Initial Palinstrophy    =       3.9478E+01
+ ============================================== 
+ Final time value       =      2.5000E-01
+ Time iterations        =   2501
+ Final Enstrophy        =       3.2867E+02
+ Final L^2 In.Prod.     =       4.2070E+04
+ Final H^1 In.Prod.     =       1.0850E+05
+ Final H^2 In.Prod.     =       3.3858E+05
+ Final H^(-1) In.Prod.  =       1.7150E+04
+ Final Kinetic Energy   =       5.8424E+02
+ Final Palinstrophy     =       3.8653E+02
+ Mean of final solution =      -2.9143E-16
+ ============================================== 
+ Epsilon                   =       1.0000E-06
+ Initial Cost Functional   =       3.8653E+02
+ Perturbed Cost Functional =       3.8653E+02
+ Kappa Test Numerator      =      -5.2030E-02
+ Kappa Value               =      -7.31194436E+00
+ ============================================== 
+ Mean of perturbation =       0.0000E+00
+ Initial time value      =      0.0000E+00
+ Number of elements      =   2500
+ Initial Enstrophy       =       1.0689E+02
+ Initial L^2 In.Prod.    =       2.1378E+02
+ Initial H^1 In.Prod.    =       4.0450E+02
+ Initial H^2 In.Prod.    =       7.9460E+02
+ Initial H^(-1) In.Prod. =       1.1690E+02
+ Initial Kinetic Energy  =       2.2509E+02
+ Initial Palinstrophy    =       3.9479E+01
+ ============================================== 
+ Final time value       =      2.5000E-01
+ Time iterations        =   2501
+ Final Enstrophy        =       3.2867E+02
+ Final L^2 In.Prod.     =       4.2070E+04
+ Final H^1 In.Prod.     =       1.0850E+05
+ Final H^2 In.Prod.     =       3.3858E+05
+ Final H^(-1) In.Prod.  =       1.7150E+04
+ Final Kinetic Energy   =       5.8424E+02
+ Final Palinstrophy     =       3.8653E+02
+ Mean of final solution =       4.6074E-15
+ ============================================== 
+ Epsilon                   =       1.0000E-05
+ Initial Cost Functional   =       3.8653E+02
+ Perturbed Cost Functional =       3.8653E+02
+ Kappa Test Numerator      =      -5.2028E-02
+ Kappa Value               =      -7.31157770E+00
+ ============================================== 
+ Mean of perturbation =       0.0000E+00
+ Initial time value      =      0.0000E+00
+ Number of elements      =   2500
+ Initial Enstrophy       =       1.0691E+02
+ Initial L^2 In.Prod.    =       2.1382E+02
+ Initial H^1 In.Prod.    =       4.0458E+02
+ Initial H^2 In.Prod.    =       7.9475E+02
+ Initial H^(-1) In.Prod. =       1.1692E+02
+ Initial Kinetic Energy  =       2.2513E+02
+ Initial Palinstrophy    =       3.9486E+01
+ ============================================== 
+ Final time value       =      2.5000E-01
+ Time iterations        =   2501
+ Final Enstrophy        =       3.2867E+02
+ Final L^2 In.Prod.     =       4.2070E+04
+ Final H^1 In.Prod.     =       1.0850E+05
+ Final H^2 In.Prod.     =       3.3858E+05
+ Final H^(-1) In.Prod.  =       1.7150E+04
+ Final Kinetic Energy   =       5.8424E+02
+ Final Palinstrophy     =       3.8653E+02
+ Mean of final solution =       4.7184E-15
+ ============================================== 
+ Epsilon                   =       1.0000E-04
+ Initial Cost Functional   =       3.8653E+02
+ Perturbed Cost Functional =       3.8653E+02
+ Kappa Test Numerator      =      -5.2021E-02
+ Kappa Value               =      -7.31059929E+00
+ ============================================== 
+ Mean of perturbation =       7.1054E-15
+ Initial time value      =      0.0000E+00
+ Number of elements      =   2500
+ Initial Enstrophy       =       1.0710E+02
+ Initial L^2 In.Prod.    =       2.1420E+02
+ Initial H^1 In.Prod.    =       4.0531E+02
+ Initial H^2 In.Prod.    =       7.9618E+02
+ Initial H^(-1) In.Prod. =       1.1713E+02
+ Initial Kinetic Energy  =       2.2554E+02
+ Initial Palinstrophy    =       3.9557E+01
+ ============================================== 
+ Final time value       =      2.5000E-01
+ Time iterations        =   2501
+ Final Enstrophy        =       3.2867E+02
+ Final L^2 In.Prod.     =       4.2070E+04
+ Final H^1 In.Prod.     =       1.0850E+05
+ Final H^2 In.Prod.     =       3.3858E+05
+ Final H^(-1) In.Prod.  =       1.7150E+04
+ Final Kinetic Energy   =       5.8424E+02
+ Final Palinstrophy     =       3.8653E+02
+ Mean of final solution =       4.1078E-15
+ ============================================== 
+ Epsilon                   =       1.0000E-03
+ Initial Cost Functional   =       3.8653E+02
+ Perturbed Cost Functional =       3.8653E+02
+ Kappa Test Numerator      =      -5.1949E-02
+ Kappa Value               =      -7.30043040E+00
+ ============================================== 
+ Mean of perturbation =       7.1054E-15
+ Initial time value      =      0.0000E+00
+ Number of elements      =   2500
+ Initial Enstrophy       =       1.0904E+02
+ Initial L^2 In.Prod.    =       2.1807E+02
+ Initial H^1 In.Prod.    =       4.1263E+02
+ Initial H^2 In.Prod.    =       8.1056E+02
+ Initial H^(-1) In.Prod. =       1.1925E+02
+ Initial Kinetic Energy  =       2.2961E+02
+ Initial Palinstrophy    =       4.0272E+01
+ ============================================== 
+slurmstepd: error: *** JOB 56204197 ON bc11660 CANCELLED AT 2025-05-30T01:08:19 DUE TO TIME LIMIT ***
+slurmstepd: error: *** STEP 56204197.0 ON bc11660 CANCELLED AT 2025-05-30T01:08:19 DUE TO TIME LIMIT ***
+forrtl: error (78): process killed (SIGTERM)
+
+Stack trace terminated abnormally.
+forrtl: error (78): process killed (SIGTERM)
+Image              PC                Routine            Line        Source             
+
+Stack trace terminated abnormally.
+forrtl: error (78): process killed (SIGTERM)
+Image              PC                Routine            Line        Source             
+
+Stack trace terminated abnormally.
+forrtl: error (78): process killed (SIGTERM)
+Image              PC                Routine            Line        Source             
+
+Stack trace terminated abnormally.
+forrtl: error (78): process killed (SIGTERM)
+Image              PC                Routine            Line        Source             
+
+Stack trace terminated abnormally.
+forrtl: error (78): process killed (SIGTERM)
+Image              PC                Routine            Line        Source             
+
+Stack trace terminated abnormally.
+forrtl: error (78): process killed (SIGTERM)
+Image              PC                Routine            Line        Source             
+
+Stack trace terminated abnormally.
+forrtl: error (78): process killed (SIGTERM)
+Image              PC                Routine            Line        Source             
+
+Stack trace terminated abnormally.
+forrtl: error (78): process killed (SIGTERM)
+Image              PC                Routine            Line        Source             
+
+Stack trace terminated abnormally.
+forrtl: error (78): process killed (SIGTERM)
+Image              PC                Routine            Line        Source             
+
+Stack trace terminated abnormally.
+forrtl: error (78): process killed (SIGTERM)
+Image              PC                Routine            Line        Source             
+
+Stack trace terminated abnormally.
+forrtl: error (78): process killed (SIGTERM)
+Image              PC                Routine            Line        Source             
+
+Stack trace terminated abnormally.
+forrtl: error (78): process killed (SIGTERM)
+Image              PC                Routine            Line        Source             
+
+Stack trace terminated abnormally.
+forrtl: error (78): process killed (SIGTERM)
+Image              PC                Routine            Line        Source             
+
+Stack trace terminated abnormally.
+forrtl: error (78): process killed (SIGTERM)
+Image              PC                Routine            Line        Source             
+
+Stack trace terminated abnormally.
+forrtl: error (78): process killed (SIGTERM)
+Image              PC                Routine            Line        Source             
+
+Stack trace terminated abnormally.
+forrtl: error (78): process killed (SIGTERM)
+Image              PC                Routine            Line        Source             
+
+Stack trace terminated abnormally.
+forrtl: error (78): process killed (SIGTERM)
+Image              PC                Routine            Line        Source             
+
+Stack trace terminated abnormally.
+forrtl: error (78): process killed (SIGTERM)
+Image              PC                Routine            Line        Source             
+
+Stack trace terminated abnormally.
+forrtl: error (78): process killed (SIGTERM)
+Image              PC                Routine            Line        Source             
+
+Stack trace terminated abnormally.
+forrtl: error (78): process killed (SIGTERM)
+Image              PC                Routine            Line        Source             
+
+Stack trace terminated abnormally.
+forrtl: error (78): process killed (SIGTERM)
+Image              PC                Routine            Line        Source             
+
+Stack trace terminated abnormally.
