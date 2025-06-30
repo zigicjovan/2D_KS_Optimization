@@ -659,8 +659,8 @@ MODULE function_ops
 
     !==========================================================================
     ! *** Calculate stream function from vorticity ***
-    ! Input:  faux - vorticity in Fouier space
-    ! Output: fpsi - stream function in Fouier space
+    ! Input:  faux - vorticity in Fourier space
+    ! Output: fpsi - stream function in physical space
     !==========================================================================
     SUBROUTINE cal_streamKS(faux, fpsi)
       ! Load variables
@@ -670,21 +670,23 @@ MODULE function_ops
       ! Initialize variables
 !      COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx), INTENT(IN)  :: faux   ! Vorticity field in Fourier space
 !      COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx), INTENT(OUT) :: fpsi   ! Streamfunction in Fourier space
-      COMPLEX(pr), DIMENSION(:,:), INTENT(IN)  :: faux   ! Vorticity field in Fourier space
-      COMPLEX(pr), DIMENSION(:,:), INTENT(OUT) :: fpsi   ! Streamfunction in Fourier space
-      INTEGER                                                    :: i1, i2 ! Temporary integers for loops
+      COMPLEX(pr), DIMENSION(:,:), INTENT(IN)         :: faux     ! Vorticity field in Fourier space
+      REAL(pr), DIMENSION(:,:), INTENT(OUT)           :: fpsi     ! Laplacian in physical space
+      COMPLEX(pr), DIMENSION(1:n_nse(2), 1:local_Nx)  :: fpsi_hat ! Temporary matrices to store Fourier space values
+      INTEGER                                         :: i1, i2   ! Temporary integers for loops
 
       ! Loop through wavenumbers to determine streamfunction
       DO i2 = 1,local_Nx
         DO i1 = 1,n_nse(2)
           ! Determine stream function (negative cancels from Poisson operator)
           IF (ksq(i1, i2) > MACH_EPSILON) THEN
-            fpsi(i1,i2) = -ksq(i1, i2)*faux(i1,i2)
+            fpsi_hat(i1,i2) = -ksq(i1, i2)*faux(i1,i2)
           ELSE
-            fpsi(i1,i2) = 0.0_pr
+            fpsi_hat(i1,i2) = 0.0_pr
           END IF
         END DO
       END DO
+      CALL fftbwd(fpsi_hat, fpsi)       ! Transform to physical space
     END SUBROUTINE cal_streamKS
 
         !==========================================================================
@@ -700,15 +702,17 @@ MODULE function_ops
       ! Initialize variables
 !      COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx), INTENT(IN)  :: faux   ! Vorticity field in Fourier space
 !      COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx), INTENT(OUT) :: fpsi   ! Streamfunction in Fourier space
-      COMPLEX(pr), DIMENSION(:,:), INTENT(IN)       :: faux, gaux   ! Vorticity field in Fourier space
-      COMPLEX(pr), DIMENSION(:,:), INTENT(OUT)      :: fpsi   ! Streamfunction in Fourier space
+      REAL(pr), DIMENSION(:,:), INTENT(IN)          :: faux   ! Vorticity field in Fourier space
+      COMPLEX(pr), DIMENSION(:,:), INTENT(IN)       :: gaux   ! Vorticity field in Fourier space
+      REAL(pr), DIMENSION(:,:), INTENT(OUT)         :: fpsi   ! Streamfunction in Fourier space
       INTEGER                                       :: i1, i2 ! Temporary integers for loops
       REAL(pr), DIMENSION(1:n_nse(1), 1:local_Ny)   :: fnn, gnn, fgnn   ! Temporary matrices to store in physical space
 
       ! Loop through wavenumbers to determine streamfunction
-      CALL fftbwd(faux, fnn)
-      CALL fftbwd(gaux, gnn)
+      !CALL fftbwd(faux, fnn)
+      CALL fftbwd(gaux, gnn)  ! Transform to physical space
       fgnn = -(fnn*gnn) ! this is the same as doing element-wise
+      fpsi = fgnn
       !DO i2 = 1,local_Ny
         !DO i1 = 1,n_nse(1)
           !IF (gaux(i1, i2) > MACH_EPSILON) THEN
@@ -719,8 +723,8 @@ MODULE function_ops
           !END IF
         !END DO
       !END DO
-      CALL fftfwd(fgnn, fpsi)
-      CALL dealiasing(fpsi)
+      !CALL fftfwd(fgnn, fpsi)
+      !CALL dealiasing(fpsi)
     END SUBROUTINE adj_streamKS
 
     !==========================================================================
@@ -1031,12 +1035,12 @@ MODULE function_ops
 
     !==========================================================================
     ! *** Convection term for the adjoint system ***
-    ! Input:     z - Adjoint vorticity field, in physical space
+    ! Input:     z_hat - Adjoint vorticity field, in Fourier space
     !            u - Derivative of vorticity, wrt y, in physical space
     !            v - Derivative of vorticity, wrt x, in physical space
     ! Output: ghat - Adjoint streamfunction, in Fourier space
     !==========================================================================
-    SUBROUTINE adj_conv(z_hat, u, v, ghat)
+    SUBROUTINE adj_conv(z_hat, u, v, nonlin)
       ! Load variables
       USE global_variables, ONLY: pr, n_nse, local_Ny
       ! Load subroutines
@@ -1044,8 +1048,9 @@ MODULE function_ops
       ! Initialize variables
       COMPLEX(pr), DIMENSION(:, :), INTENT(IN)    :: z_hat  ! Adjoint vorticity field
       REAL(pr),    DIMENSION(:, :), INTENT(IN)    :: u, v   ! Velocity components
-      COMPLEX(pr), DIMENSION(:, :), INTENT(OUT)   :: ghat   ! Adjoint convection field
-      REAL(pr), DIMENSION(1:n_nse(1), 1:local_Ny) :: nonlin ! Nonlinear term
+      !COMPLEX(pr), DIMENSION(:, :), INTENT(OUT)  :: ghat   ! Adjoint convection field
+      REAL(pr), DIMENSION(:, :), INTENT(OUT)      :: nonlin   ! Adjoint convection field
+      !REAL(pr), DIMENSION(1:n_nse(1), 1:local_Ny) :: nonlin ! Nonlinear term
       REAL(pr), DIMENSION(1:n_nse(1), 1:local_Ny) :: zx, zy ! Derivatives of the adjoint field
 
       ! Compute the derivatives of the adjoint field
@@ -1054,9 +1059,9 @@ MODULE function_ops
       !nonlin = u*zx - v*zy
       nonlin = -( v*zx + u*zy )
       ! Compute Fourier transform of nonlinear term
-      CALL fftfwd(nonlin, ghat)
+      !CALL fftfwd(nonlin, ghat)
       ! Dealias
-      CALL dealiasing(ghat)
+      !CALL dealiasing(ghat)
     END SUBROUTINE adj_conv
 
     !==========================================================================

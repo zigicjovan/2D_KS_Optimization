@@ -39,7 +39,7 @@ PROGRAM Kappa2DKS_main
   CALL KS_initialize
 
   ! Flag for saving bin files
-  bin_flag   = .FALSE.
+  bin_flag   = .TRUE.
   ! Flag for saving diagnostics
   diagn_flag = .TRUE.
   ! Flag for saving files for video (need diagn_flag to be true as well)

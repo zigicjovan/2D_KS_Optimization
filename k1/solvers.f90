@@ -128,8 +128,8 @@ MODULE solvers
         local_kin = kinetic_energy(u_hat) ! Compute the kinetic energy in Fourier space
         
         CALL MPI_REDUCE(local_kin,    KinEn(1), 1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo) ! Store kinetic energy (only on rank 0 needs a copy)
-        palins(1) = palinstrophyreal(w_hat) ! Compute Palinstrophy
-        !palins(1) = InnerProduct_L2(1) ! Compute Palinstrophy
+        !palins(1) = palinstrophyreal(w_hat) ! Compute Palinstrophy
+        palins(1) = InnerProduct_L2(1) ! Compute Palinstrophy
 
         IF (rank==0) THEN  ! Print information
           PRINT'(a,ES15.4)', " Initial time value      = ", t_vec(1)
@@ -206,8 +206,8 @@ MODULE solvers
             CALL MPI_REDUCE(local_H2,   InnerProduct_H2(Ni),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)
             CALL MPI_REDUCE(local_Hn1,   InnerProduct_Hn1(Ni),  1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)
             CALL MPI_REDUCE(local_kin,    KinEn(Ni), 1, MPI_DOUBLE_PRECISION, MPI_SUM, 0, MPI_COMM_WORLD, Statinfo)             ! Store kinetic energy (only on rank 0 needs a copy)
-            palins(Ni) = palinstrophyreal(w_hat)                                                                         ! Compute Palinstrophy
-            !palins(Ni) = InnerProduct_L2(Ni)
+            !palins(Ni) = palinstrophyreal(w_hat)                                                                         ! Compute Palinstrophy
+            palins(Ni) = local_L2
             !PRINT'(*(a,I5))', " L2 inner product ", local_L2, " at saved step ", Ni
             ! MPI Reduce is a blocking communication, so all processes are good to proceed with next timestep
           END IF
@@ -285,16 +285,17 @@ MODULE solvers
       USE data_ops            ! Contains functions/subroutines that read/write data
       USE mpi                 ! Use MPI module (binding works well with fftw libraries)
       ! Initialize variables
-!      REAL(pr),    DIMENSION(:,:),      INTENT(OUT)  :: z                   ! Initial vorticity field
-!      COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx)  :: z_hat, z2_hat       ! Complex adjoint vorticity, its Fourier transform, and RK storage term
+      !REAL(pr),    DIMENSION(:,:),      INTENT(OUT)  :: z                  ! Initial vorticity field
+      !COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx)  :: z_hat, z2_hat      ! Complex adjoint vorticity, its Fourier transform, and RK storage term
       COMPLEX(pr), DIMENSION(:,:),      INTENT(OUT)  :: z_hat               ! Initial vorticity field
-      REAL(pr),    DIMENSION(1:n_nse(1),1:local_Ny)  :: z                   ! Initial vorticity field
+      REAL(pr),    DIMENSION(1:n_nse(1),1:local_Ny)  :: z , wpsi            ! Initial vorticity field
       COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx)  :: z2_hat              ! Complex adjoint vorticity, its Fourier transform, and RK storage term
       COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx)  :: w_hat, w1_hat       ! Complex vorticity storage from the forward solution
       COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx)  :: psi_hat, wpsi_hat   ! Adjoint and vorticity streamfunction in Fourier space
       COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx)  :: nonlin_hat          ! Adjoint nonlinear terms in Fourier space
       COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx)  :: nonlin0_hat         ! Storage for RK adjoint nonlinear terms in Fourier space
       COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx)  :: conv_hat, con2_hat  ! Convection term in Fourier space
+      REAL(pr),    DIMENSION(1:n_nse(2),1:local_Nx)  :: conv, con2, nonlin  ! Convection term in physical space
       REAL(pr),    DIMENSION(1:n_nse(1),1:local_Ny)  :: w, wx, wy, u, v     ! Vorticity, partial derivatives, and velocity components from the forward solution
       INTEGER                                        :: rk, i1, i2          ! Integers for looping through values
       REAL(pr)                                       :: mean_val            ! Scalar for storing the mean of vorticity
@@ -322,22 +323,24 @@ MODULE solvers
 
         ! Determine the forward streamfunction in Fourier space: -lap(p) = w
         !CALL cal_stream(w1_hat, wpsi_hat)
-        CALL cal_streamKS(w_hat, wpsi_hat)
+        CALL cal_streamKS(w_hat, wpsi) ! (lap u_n) 
         ! Determine the components of the forward velocity field
-        CALL cal_deriv(wpsi_hat, v, u)
+        !CALL cal_deriv(wpsi_hat, v, u)
         ! Partial derivatives of vorticity solution (explicitly treated)
-        CALL cal_deriv(w_hat, wx, wy)
+        CALL cal_deriv(w_hat, wx, wy) ! (u_n)_x and (u_n)_y
 
         ! IMEX time stepping
         DO rk = 1, 4
 
           ! Determine adjoint convection** term ! **ADVECTION for 2DKS**
           !CALL adj_conv(z_hat, u, v, conv_hat)
-          CALL adj_conv(z_hat, wy, wx, conv_hat) ! grad phi times grad phi^* ; vector multiplication
-          CALL adj_streamKS(wpsi_hat, z_hat, con2_hat) ! lap phi times phi^* ; scalar multiplication
+          CALL adj_conv(z_hat, wy, wx, conv) ! grad phi times grad phi^* in physical space
+          CALL adj_streamKS(wpsi, z_hat, con2) ! lap phi times phi^* in physical space
           ! Add adjoint streamfunction to nonlinear term, since it is treated explicity in calculations
           !nonlin_hat = conv_hat - psi_hat ! 2DNS
-          nonlin_hat =  conv_hat + con2_hat   ! 2DKS
+          nonlin =  conv + con2   ! 2DKS
+          CALL fftfwd(nonlin, nonlin_hat)
+          CALL dealiasing(nonlin_hat)
 
           ! Compute Solution at the next step using IMEX time-stepping
           DO i2=1,local_Nx
@@ -351,16 +354,14 @@ MODULE solvers
                                 BetaE(rk) * nonlin0_hat(i1, i2) ) /  ( 1.0_pr + AlphaI(rk) * (lin_hat(i1, i2)) ) ! 2DKS
             END DO
           END DO
-          ! Update vorticity for next step
-          z_hat = z2_hat
-          ! Transform back to physical space
-          CALL fftbwd(z_hat, z)
+
+          z_hat = z2_hat          ! Update vorticity for next step
+          CALL fftbwd(z_hat, z)   ! Transform back to physical space
 
           ! Determine adjoint streamfunction
           !CALL adj_stream(z, wx, wy, psi_hat)
 
-          ! Update explicit part, for next substep
-          nonlin0_hat = nonlin_hat
+          nonlin0_hat = nonlin_hat ! Update explicit part, for next substep
         END DO
       END DO
 

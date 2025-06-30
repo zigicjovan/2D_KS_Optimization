@@ -1,0 +1,78 @@
+
+Due to MODULEPATH changes, the following have been reloaded:
+  1) mii/1.1.2
+
+The following have been reloaded with a version change:
+  1) StdEnv/2023 => StdEnv/2020           5) libfabric/1.18.0 => libfabric/1.10.1
+  2) gcccore/.12.3 => gcccore/.9.3.0      6) openmpi/4.1.5 => openmpi/4.0.3
+  3) gentoo/2023 => gentoo/2020           7) ucx/1.14.1 => ucx/1.8.0
+  4) imkl/2023.2.0 => imkl/2020.1.217
+
+rm -f *.o *~ *.mod
+mpif90  -c   global_variables.f90
+mpif90  -c   fftwfunction.f90
+mpif90  -c   KS_initialize.f90
+mpif90  -c   data_ops.f90
+mpif90  -c   function_ops.f90
+mpif90  -c   solvers.f90
+mpif90  -c   optimization.f90
+mpif90  -c   Kappa2DKS_main.f90
+mpif90  -o prog global_variables.o fftwfunction.o KS_initialize.o data_ops.o function_ops.o solvers.o optimization.o Kappa2DKS_main.o -lm -lmpi                 -lfftw3_mpi -lfftw3 -lm   -lnetcdff -lnetcdf       
+ ============================================== 
+                   Kappa Test                   
+ ============================================== 
+ Resolution Nx  =    48
+ Resolution Ny  =    48
+ Time Step Size =      1.0000E-02
+ Final Time T   =      2.0000E+01
+ Viscosity      =      1.0000E+00
+ Processors     =    32
+  Initial guess  = sineL
+ ============================================== 
+  Successful FFT Initialization. 
+ ============================================== 
+  Successful Initial Condition. 
+ ============================================== 
+ Mean of IC =       7.1054E-15
+  Solving Forward DNS...
+ Initial time value      =      0.0000E+00
+ Number of elements      =   2000
+ Initial Enstrophy       =       1.0689E+02
+ Initial L^2 In.Prod.    =       2.1378E+02
+ Initial H^1 In.Prod.    =       4.0450E+02
+ Initial H^2 In.Prod.    =       7.9459E+02
+ Initial H^(-1) In.Prod. =       1.1690E+02
+ Initial Kinetic Energy  =       2.2509E+02
+ Initial Palinstrophy    =       2.1378E+02
+ ============================================== 
+ Final time value       =      2.0000E-01
+ Time iterations        =   2001
+ Final Enstrophy        =       3.2912E+02
+ Final L^2 In.Prod.     =       4.2127E+04
+ Final H^1 In.Prod.     =       1.0865E+05
+ Final H^2 In.Prod.     =       3.3920E+05
+ Final H^(-1) In.Prod.  =       1.7173E+04
+ Final Kinetic Energy   =       5.8506E+02
+ Final Palinstrophy     =       1.3165E+03
+ Mean of final solution =       1.2657E-14
+ ============================================== 
+  DNS solved.
+ Initial Cost Functional =       1.3165E+03
+  *** Initial Condition Perturbation ***
+  Solving Adjoint System...
+ Time iteration =      0
+ ============================================== 
+ Mean of final adjoint solution =              NaN
+ Denominator of Kappa Test =              NaN
+ Mean of perturbation =       2.1316E-14
+ Initial time value      =      0.0000E+00
+ Number of elements      =   2000
+ Initial Enstrophy       =       1.0689E+02
+ Initial L^2 In.Prod.    =       2.1378E+02
+ Initial H^1 In.Prod.    =       4.0450E+02
+ Initial H^2 In.Prod.    =       7.9459E+02
+ Initial H^(-1) In.Prod. =       1.1690E+02
+ Initial Kinetic Energy  =       2.2509E+02
+ Initial Palinstrophy    =       2.1378E+02
+ ============================================== 
+slurmstepd: error: *** JOB 63338548 ON cdr1962 CANCELLED AT 2025-06-12T21:24:48 ***

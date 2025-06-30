@@ -535,11 +535,12 @@ MODULE optimization
       ! Input initial guess of vorticity field
       REAL(pr), DIMENSION(:,:),       INTENT(IN)    :: w0                     ! Initial condition
       COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx) :: gradL2_hat             ! Fourier transform of L2 Gradient
-      REAL(pr), DIMENSION(1:n_nse(1),1:local_Ny)    :: grad_H1                ! L2 Gradient
+      REAL(pr), DIMENSION(1:n_nse(1),1:local_Ny)    :: grad_H1 , gradL2       ! L2 Gradient
       REAL(pr), DIMENSION(1:n_nse(1),1:local_Ny)    :: wpert                  ! Perturbation
       REAL(pr), DIMENSION(1:n_nse(1),1:local_Ny)    :: wprime                 ! Perturbation system field
       COMPLEX(pr), DIMENSION(1:n_nse(2),1:local_Nx) :: w_hat                  ! Fourier transform of complex vorticity
       REAL(pr)                                      :: kap_denom, kap_numer   ! Numerator and denominator for Kappa Test
+      REAL(pr)                                      :: kap_denom1, kap_denom2 ! test values for denominator for Kappa Test
       REAL(pr)                                      :: J, J1                  ! Value of cost functional and perturbation cost functional
       REAL(pr)                                      :: ep                     ! Epsilon value for Kappa test
       REAL(pr)                                      :: X, Y                   ! Scalars for storing x and y coordinates
@@ -572,10 +573,16 @@ MODULE optimization
       CALL IMEX_bwd(gradL2_hat)
 
       ! Compute the H1 Sobolev gradient
-      CALL SobolevGrad(gradL2_hat, grad_H1)
+      !CALL SobolevGrad(gradL2_hat, grad_H1)
+      CALL fftbwd(gradL2_hat, gradL2)
       ! L2 denominator for Kappa Test
-      kap_denom = inner_product(grad_H1, wpert, Grad_type)
+      !kap_denom = inner_product(grad_H1, wpert, Grad_type)
+      kap_denom1 = inner_product(gradL2, gradL2, Grad_type)
+      kap_denom2 = inner_product(wpert, wpert, Grad_type)
+      kap_denom = inner_product(gradL2, wpert, Grad_type)
       IF (rank==0) PRINT'(a,ES16.4)', " Denominator of Kappa Test = ", kap_denom
+      IF (rank==0) PRINT'(a,ES16.4)', " gradL2 = ", kap_denom1
+      IF (rank==0) PRINT'(a,ES16.4)', " wpert = ", kap_denom2
       CALL MPI_BARRIER(MPI_COMM_WORLD,Statinfo)
 
       ! Loop through values of epsilon for Kappa Test
